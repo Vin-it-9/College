@@ -2,10 +2,13 @@ package org.nexus.entity;
 
 public enum RoomType {
     CLASSROOM,
-    LABORATORY,
+    LABS,
     STAFF_ROOM,
     AUDITORIUM,
-    HALL,
+    SEMINAR_HALL,
+    LIBRARY,
     OFFICE,
+    WORKSHOP,
+    EXAM_HALL,
     OTHER
 }

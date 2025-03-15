@@ -1,6 +1,11 @@
 package org.nexus.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "inventory_items")
@@ -10,27 +15,43 @@ public class InventoryItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 20)
-    private String itemCode;
-
     @Column(nullable = false, length = 100)
-    private String itemName;
+    private String name;
+
+    @Column(length = 50)
+    private String serialNumber;
 
     @Column(nullable = false)
     private Integer quantity;
 
-    @Column(length = 255)
-    private String description;
+    @Column
+    private Double unitCost;
+
+    @Column
+    private LocalDate purchaseDate;
+
+    @Column
+    private LocalDate warrantyExpiryDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ItemCategory category;
+    private InventoryStatus status = InventoryStatus.AVAILABLE;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @JsonIgnoreProperties("items")
+    private InventoryCategory category;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
+    @JsonIgnoreProperties("inventoryItems")
     private Room room;
 
-    // Getters and setters
+    @OneToMany(mappedBy = "inventoryItem", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("inventoryItem")
+    private Set<InventoryItemDetail> details = new HashSet<>();
+
+    // Getters and Setters
     public Integer getId() {
         return id;
     }
@@ -39,20 +60,20 @@ public class InventoryItem {
         this.id = id;
     }
 
-    public String getItemCode() {
-        return itemCode;
+    public String getName() {
+        return name;
     }
 
-    public void setItemCode(String itemCode) {
-        this.itemCode = itemCode;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     public Integer getQuantity() {
@@ -63,19 +84,43 @@ public class InventoryItem {
         this.quantity = quantity;
     }
 
-    public String getDescription() {
-        return description;
+    public Double getUnitCost() {
+        return unitCost;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setUnitCost(Double unitCost) {
+        this.unitCost = unitCost;
     }
 
-    public ItemCategory getCategory() {
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(LocalDate purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    public LocalDate getWarrantyExpiryDate() {
+        return warrantyExpiryDate;
+    }
+
+    public void setWarrantyExpiryDate(LocalDate warrantyExpiryDate) {
+        this.warrantyExpiryDate = warrantyExpiryDate;
+    }
+
+    public InventoryStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(InventoryStatus status) {
+        this.status = status;
+    }
+
+    public InventoryCategory getCategory() {
         return category;
     }
 
-    public void setCategory(ItemCategory category) {
+    public void setCategory(InventoryCategory category) {
         this.category = category;
     }
 
@@ -85,5 +130,22 @@ public class InventoryItem {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public Set<InventoryItemDetail> getDetails() {
+        return details;
+    }
+
+    public void setDetails(Set<InventoryItemDetail> details) {
+        this.details = details;
+    }
+
+    // Helper method to add a detail
+    public void addDetail(String key, String value) {
+        InventoryItemDetail detail = new InventoryItemDetail();
+        detail.setKeyName(key);
+        detail.setValue(value);
+        detail.setInventoryItem(this);
+        this.details.add(detail);
     }
 }
