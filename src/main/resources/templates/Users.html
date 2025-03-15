@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Home Admin</title>
+	
+	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+	<link th:href="@{https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css}" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script th:src="@{/nav.js}" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" th:href="@{/animation.css}">
+	<link rel="apple-touch-icon" th:href="@{/apple-touch-icon.png}" sizes="180x180">
+	<!-- <link rel="icon" type="image/x-icon" th:href="@{/nexkart_fav.png}"> -->
+	<link rel="icon" type="image/x-icon" th:href="@{/nexfav.ico}">
+	<link rel="manifest" th:href="@{/site.webmanifest}">
+	<link rel="mask-icon" th:href="@{/safari-pinned-tab.svg}" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+
+
+	<style>
+		@media only screen and (max-width: 768px) {
+			.logo {
+				height: 1.8em;
+			}
+		}
+		@media (max-width: 768px) {
+			.manage-users {
+				flex-direction: column;
+				text-align: center;
+				padding: 0.5rem;
+				justify-content: start;
+			}
+
+			.manage-users h2 {
+				font-size: 20px ;
+				margin-top:15px ;
+				margin-bottom: 0.5rem;
+			}
+
+			.manage-users img {
+				height: 25px ;
+				margin-top:15px ;
+				margin-bottom: 0.5rem;
+			}
+			.manage-users a {
+				font-size: 13px ;
+				margin-bottom: 0.5rem;
+			}
+
+		}
+
+		@media (max-width: 576px) {
+			.container {
+				padding: 0.5rem;
+			}
+		}
+
+		#table{
+			background-color:#0561f4;
+		}
+		@media (max-width: 578px) {
+			.ph{
+				display: none;
+			}
+			.mobile-hidden {
+				display: none;
+			}
+
+			#table{
+				background-color:#0561f4;
+			}
+			table {
+				display: block;
+				overflow-x: auto;
+				white-space: nowrap;
+			}
+
+			th, td {
+				min-width: 120px;
+				padding: 0.75rem 0.5rem;
+			}
+
+			th:first-child, td:first-child {
+				min-width: auto;
+				padding-left: 0.75rem;
+			}
+
+			th:last-child, td:last-child {
+				padding-right: 0.75rem;
+			}
+		}
+	</style>
+</head>
+<body class="" >
+
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+		<!-- Header Section -->
+		<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
+			<div>
+				<h1 class="text-3xl font-bold text-gray-900">Manage Users</h1>
+				<p class="mt-1 text-sm text-gray-500">Manage your user accounts and details</p>
+			</div>
+			<div class="flex space-x-3">
+				<a th:href="@{/users/export/csv}" class="inline-flex items-center px-3 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150">
+					<img class="h-6" th:src="@{/images/csv.png}" alt="Export CSV">
+				</a>
+				<a th:href="@{/users/export/excel}" class="inline-flex items-center px-3 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150">
+					<img class="h-6" th:src="@{/images/excel.png}" alt="Export Excel">
+				</a>
+				<a th:href="@{/users/export/pdf}" class="inline-flex items-center px-3 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150">
+					<img class="h-6" th:src="@{/images/pdf.png}" alt="Export PDF">
+				</a>
+				<a th:href="@{/users/new}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150">
+					Create New User
+				</a>
+			</div>
+		</div>
+		<!-- Alert Message -->
+		<div th:if="${message != null}" class="bg-green-100 border mb-5 border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+			<span class="block sm:inline">[[${message}]]</span>
+		</div>
+
+		<!-- Filter/Search Form -->
+		<div class="mb-6 bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+			<form th:action="@{/users/page/1}" class="flex-1 w-full">
+				<div class="relative w-full flex items-center gap-2 bg-white border border-gray-300 rounded-xl hover:border-gray-400 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
+					<input type="search"	name="keyword"	th:value="${keyword}" required class="w-full px-4 py-2.5 border-none outline-none bg-transparent placeholder-gray-400 focus:ring-0" 	placeholder="Search users...">
+					<div class="flex items-center gap-2 pr-2">
+						<button type="submit" class="px-3 py-1 bg-blue-600 text-white rounded-md transition hover:bg-blue-700">
+							<i class="fas fa-search"></i>
+						</button>
+						<button type="button" class="px-3 py-1 bg-gray-300 text-gray-700 rounded-md transition hover:bg-gray-400" onclick="clearFilter()">
+							<i class="fas fa-times"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="pl-8 pr-8 mb-16">
+		<table class="w-full border border-collapse ">
+			<thead id="table" class="text-white">
+				<tr>
+					<th class="px-4 py-2 text-left border">User ID</th>
+					<th class="px-4 py-2 text-left border ph">Photos</th>
+					<th class="px-4 py-2 text-left border">Email</th>
+					<th class="px-4 py-2 text-left border">First Name</th>
+					<th class="px-4 py-2 text-left border">Last Name</th>
+					<th class="px-4 py-2 text-left border">Roles</th>
+					<th class="px-4 py-2 text-left border">Enabled</th>
+					<th class="px-4 py-2 text-left border"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user : ${listUsers}" class="border-b mb-16 text-center border-gray-300 hover:bg-gray-100">
+					<td class="px-4 py-2 text-left border hover:bg-gray-200" th:text="${user.id}"></td>
+					<td class="px-4 py-2 border hover:bg-gray-200 flex mobile-hidden items-center justify-center" style="height: 100px;">
+						<div class="w-24 h-24 rounded-full  overflow-hidden inline-flex items-center justify-center">
+							<img th:if="${user.photos != null}" th:src="@{${user.photoImagePath}}"
+								 class="w-full h-full object-cover">
+							<i th:if="${user.photos == null}" class="fas fa-user-circle text-4xl"
+							   style="color: rgb(40, 40, 255);"></i>
+						</div>
+					</td>
+					<td class="px-4 py-2 text-left border hover:bg-gray-200" th:text="${user.email}"></td>
+					<td class="px-4 py-2 text-left border hover:bg-gray-200" th:text="${user.firstName}"></td>
+					<td class="px-4 py-2 text-left border hover:bg-gray-200" th:text="${user.lastName}"></td>
+					<td class="px-4 py-2 text-left border hover:bg-gray-200" th:text="${user.roles}"></td>
+					<td class="px-4 py-2 text-center border hover:bg-gray-200">
+						<span th:if="${user.enabled}" class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+             			   Enabled
+						</span>
+						<span th:unless="${user.enabled}" class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-sm">
+							Disabled
+						</span>
+					</td>
+					<td class="px-4 py-2 text-center border hover:bg-gray-200 space-x-3">
+						<a th:href="@{'/users/edit/' + ${user.id}}" title="Edit User" class="text-blue-600 hover:text-blue-800">
+							<i class="fas fa-edit "></i>
+						</a>
+						<a th:href="@{'/users/delete/' + ${user.id}}" title="Delete User" class="text-red-600 hover:text-red-800 link-delete">
+							<i class="fas fa-trash"></i>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="flex justify-center items-center mb-20" th:if="${totalItems > 0}">
+		<span>Showing Users # [[${startcount}]] to [[${endcount}]] of [[${totalItems}]]</span>
+	</div>
+	<div class="flex justify-center items-center mb-20" th:unless="${totalItems > 0}">
+		<span>No User found</span>
+	</div>
+
+	<div class="flex justify-center items-center mb-20 " th:if="${totalPages > 1}" >
+	<nav >
+		<ul class="flex items-center -space-x-px h-8 text-sm">
+			<li>
+				<a th:href="@{'/users/page/' + ${currentpage - 1} + ${keyword != null ? '?keyword=' + keyword : ''} }"  class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+					<span class="sr-only">Previous</span>
+					<svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+					</svg>
+				</a>
+			</li>
+
+			<li>
+				<a th:href="@{/users/page/1} "  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">First</a>
+			</li>
+
+			<!--Numbers below of the pages -->
+				<li th:each="i : ${#numbers.sequence(1, totalPages)}"
+					th:classappend="${currentpage == i} ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-blue-600 border-gray-300'"
+					class="px-3 h-8  border  hover:bg-blue-100 hover:text-blue-700 transition-all duration-200">
+					<a th:href="@{'/users/page/' + ${i} + ${keyword != null ? '?keyword=' + keyword : ''} }"
+					   class="flex items-center justify-center  h-8  w-full h-full">
+						[[${i}]]
+					</a>
+				</li>
+
+			<!--Numbers above of the pages -->
+			<li>
+				<a th:href="@{'/users/page/' + ${totalPages}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Last</a>
+			</li>
+			<li>
+				<a th:href="@{'/users/page/' + ${currentpage + 1} + ${keyword != null ? '?keyword=' + keyword : ''}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+					<span class="sr-only">Next</span>
+					<svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+					</svg>
+				</a>
+			</li>
+		</ul>
+	 </nav>
+	</div>
+
+<script type="text/javascript" >
+	function clearFilter() {
+		window.location = "[[@{/users}]]";
+	}
+</script>
+</body>
+</html>
