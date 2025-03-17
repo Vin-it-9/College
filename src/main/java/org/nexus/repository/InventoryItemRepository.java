@@ -54,4 +54,6 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, In
                     "GROUP BY r.id " +
                     "ORDER BY item_count DESC")
     List<Object[]> findRoomsWithMostInventoryItems();
+
+
 }
