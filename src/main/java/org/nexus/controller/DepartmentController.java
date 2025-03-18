@@ -3,20 +3,18 @@ package org.nexus.controller;
 import org.nexus.entity.Department;
 import org.nexus.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import jakarta.validation.Valid;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
-@RestController
-@RequestMapping("/api/departments")
+@Controller
+@RequestMapping("/departments")
 public class DepartmentController {
 
     private final DepartmentService departmentService;
@@ -26,152 +24,117 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
+    // Done
     @GetMapping
-    public ResponseEntity<List<Department>> getAllDepartments() {
+    public String getAllDepartments(Model model) {
         List<Department> departments = departmentService.findAllDepartments();
-        return ResponseEntity.ok(departments);
+        model.addAttribute("departments", departments);
+        return "departments/list";
     }
 
-    @GetMapping("/paged")
-    public ResponseEntity<Map<String, Object>> getAllDepartmentsPaged(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String direction) {
-
-        // Validate page and size parameters
-        if (page < 0) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Page number cannot be negative"));
-        }
-        if (size <= 0) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Page size must be greater than 0"));
-        }
-
-        // Validate and sanitize sort parameters
-        List<String> allowedSortFields = List.of("id", "departmentCode", "departmentName");
-        if (!allowedSortFields.contains(sortBy)) {
-            sortBy = "id"; // Default to sorting by ID if invalid sort field
-        }
-
-        Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ?
-                Sort.Direction.DESC : Sort.Direction.ASC;
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
-        Page<Department> departmentsPage = departmentService.findAllDepartments(pageable);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("departments", departmentsPage.getContent());
-        response.put("currentPage", departmentsPage.getNumber());
-        response.put("totalItems", departmentsPage.getTotalElements());
-        response.put("totalPages", departmentsPage.getTotalPages());
-
-        return ResponseEntity.ok(response);
-    }
-
+    // Done
     @GetMapping("/{id}")
-    public ResponseEntity<Department> getDepartmentById(@PathVariable Integer id) {
-        return departmentService.findDepartmentById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public String getDepartmentById(@PathVariable Integer id, Model model) {
+        Optional<Department> department = departmentService.findDepartmentById(id);
+        if (department.isPresent()) {
+            model.addAttribute("department", department.get());
+            return "departments/detail";
+        }
+        return "redirect:/departments";
     }
 
     @GetMapping("/code/{code}")
-    public ResponseEntity<Department> getDepartmentByCode(@PathVariable String code) {
-        return departmentService.findDepartmentByCode(code)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public String getDepartmentByCode(@PathVariable String code, Model model) {
+        Optional<Department> department = departmentService.findDepartmentByCode(code);
+        if (department.isPresent()) {
+            model.addAttribute("department", department.get());
+            return "departments/detail";
+        }
+        return "redirect:/departments";
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Department>> searchDepartmentsByName(@RequestParam String name) {
+    public String searchDepartmentsByName(@RequestParam String name, Model model) {
         List<Department> departments = departmentService.findDepartmentsByName(name);
-        return ResponseEntity.ok(departments);
+        model.addAttribute("departments", departments);
+        model.addAttribute("searchTerm", name);
+        return "departments/search-results";
     }
 
+    // Done
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("department", new Department());
+        return "departments/create-form";
+    }
+
+    // Done
     @PostMapping
-    public ResponseEntity<?> createDepartment(@RequestBody Department department) {
-        try {
-            // Basic validation
-            if (department == null) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Department cannot be null"));
-            }
-            if (department.getDepartmentCode() == null || department.getDepartmentCode().trim().isEmpty()) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Department code is required"));
-            }
-            if (department.getDepartmentName() == null || department.getDepartmentName().trim().isEmpty()) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Department name is required"));
-            }
+    public String createDepartment(@Valid @ModelAttribute Department department,
+                                   BindingResult result,
+                                   RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "departments/create-form";
+        }
 
+        try {
             Department createdDepartment = departmentService.createDepartment(department);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdDepartment);
+            redirectAttributes.addFlashAttribute("success", "Department created successfully!");
+            return "redirect:/departments/" + createdDepartment.getId();
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "An error occurred: " + e.getMessage()));
+            result.rejectValue("departmentCode", "error.department", e.getMessage());
+            return "departments/create-form";
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateDepartment(
-            @PathVariable Integer id,
-            @RequestBody Department departmentDetails) {
+    // Done
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Integer id, Model model) {
+        Optional<Department> department = departmentService.findDepartmentById(id);
+        if (department.isPresent()) {
+            model.addAttribute("department", department.get());
+            return "departments/edit-form";
+        }
+        return "redirect:/departments";
+    }
+
+    // Done
+    @PostMapping("/{id}")
+    public String updateDepartment(@PathVariable Integer id,
+                                   @Valid @ModelAttribute Department departmentDetails,
+                                   BindingResult result,
+                                   RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "departments/edit-form";
+        }
+
         try {
-            // Basic validation
-            if (id == null || id <= 0) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Invalid department ID"));
-            }
-            if (departmentDetails == null) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Department details cannot be null"));
-            }
-            if (departmentDetails.getDepartmentCode() == null || departmentDetails.getDepartmentCode().trim().isEmpty()) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Department code is required"));
-            }
-            if (departmentDetails.getDepartmentName() == null || departmentDetails.getDepartmentName().trim().isEmpty()) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Department name is required"));
-            }
-
             Department updatedDepartment = departmentService.updateDepartment(id, departmentDetails);
-            return ResponseEntity.ok(updatedDepartment);
+            redirectAttributes.addFlashAttribute("success", "Department updated successfully!");
+            return "redirect:/departments/" + updatedDepartment.getId();
         } catch (RuntimeException e) {
-            if (e instanceof IllegalArgumentException) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", e.getMessage()));
-            }
-            if (e.getMessage().contains("not found")) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "An error occurred: " + e.getMessage()));
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/departments/" + id + "/edit";
         }
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteDepartment(@PathVariable Integer id) {
+
+    // Done
+    @PostMapping("/{id}/delete")
+    public String deleteDepartment(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         try {
             departmentService.deleteDepartment(id);
-            return ResponseEntity.noContent().build();
+            redirectAttributes.addFlashAttribute("success", "Department deleted successfully!");
         } catch (RuntimeException e) {
-            if (e instanceof IllegalStateException) {
-                return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body(Map.of("error", e.getMessage()));
-            }
-            return ResponseEntity.notFound().build();
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
+        return "redirect:/departments";
     }
 
+    // Done
     @GetMapping("/count")
-    public ResponseEntity<Map<String, Long>> getDepartmentCount() {
-        Map<String, Long> countInfo = new HashMap<>();
-        countInfo.put("totalDepartments", departmentService.countDepartments());
-        return ResponseEntity.ok(countInfo);
+    public String getDepartmentCount(Model model) {
+        long count = departmentService.countDepartments();
+        model.addAttribute("count", count);
+        return "departments/count";
     }
-
-    @GetMapping("/exists/{code}")
-    public ResponseEntity<Map<String, Boolean>> checkDepartmentExists(@PathVariable String code) {
-        Map<String, Boolean> exists = new HashMap<>();
-        exists.put("exists", departmentService.existsByDepartmentCode(code));
-        return ResponseEntity.ok(exists);
-    }
-
-
-
 }

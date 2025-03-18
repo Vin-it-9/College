@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900">
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Search Results for "<span th:text="${searchTerm}"></span>"</h1>
+
+    <div th:if="${not #lists.isEmpty(departments)}" class="overflow-x-auto">
+        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead class="bg-gray-800 text-white">
+            <tr>
+                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">ID</th>
+                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Code</th>
+                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Name</th>
+                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Actions</th>
+            </tr>
+            </thead>
+            <tbody class="text-gray-700">
+            <tr th:each="dept : ${departments}" class="border-b">
+                <td class="py-3 px-4" th:text="${dept.id}"></td>
+                <td class="py-3 px-4" th:text="${dept.departmentCode}"></td>
+                <td class="py-3 px-4" th:text="${dept.departmentName}"></td>
+                <td class="py-3 px-4">
+                    <a th:href="@{/departments/{id}(id=${dept.id})}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded mr-2">View</a>
+                    <a th:href="@{/departments/{id}/edit(id=${dept.id})}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded mr-2">Edit</a>
+                    <form th:action="@{/departments/{id}/delete(id=${dept.id})}" method="post" class="inline">
+                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${#lists.isEmpty(departments)}" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+        <p>No departments found matching your search</p>
+    </div>
+</div>
+</body>
+</html>
