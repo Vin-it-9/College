@@ -1,153 +1,136 @@
 package org.nexus.controller;
 
 import org.nexus.entity.Building;
+import org.nexus.repository.DepartmentRepository;
 import org.nexus.service.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-@RestController
-@RequestMapping("/api/buildings")
+
+@Controller
+@RequestMapping("/buildings")
 public class BuildingController {
 
     private final BuildingService buildingService;
+    private final DepartmentRepository departmentRepository;
 
     @Autowired
-    public BuildingController(BuildingService buildingService) {
+    public BuildingController(BuildingService buildingService, DepartmentRepository departmentRepository) {
         this.buildingService = buildingService;
+        this.departmentRepository = departmentRepository;
     }
 
+//    done
     @GetMapping
-    public ResponseEntity<List<Building>> getAllBuildings() {
+    public String getAllBuildings(Model model) {
         List<Building> buildings = buildingService.findAllBuildings();
-        return ResponseEntity.ok(buildings);
-    }
-
-    @GetMapping("/paged")
-    public ResponseEntity<Map<String, Object>> getAllBuildingsPaged(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String direction) {
-
-        Sort.Direction sortDirection = direction.equalsIgnoreCase("desc") ?
-                Sort.Direction.DESC : Sort.Direction.ASC;
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
-        Page<Building> buildingsPage = buildingService.findAllBuildings(pageable);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("buildings", buildingsPage.getContent());
-        response.put("currentPage", buildingsPage.getNumber());
-        response.put("totalItems", buildingsPage.getTotalElements());
-        response.put("totalPages", buildingsPage.getTotalPages());
-
-        return ResponseEntity.ok(response);
+        model.addAttribute("buildings", buildings);
+        return "buildings/list";
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Building> getBuildingById(@PathVariable Integer id) {
+    public String getBuildingById(@PathVariable Integer id, Model model) {
         return buildingService.findBuildingById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(building -> {
+                    model.addAttribute("building", building);
+                    return "buildings/detail";
+                })
+                .orElse("error/404");
     }
 
     @GetMapping("/code/{code}")
-    public ResponseEntity<Building> getBuildingByCode(@PathVariable String code) {
+    public String getBuildingByCode(@PathVariable String code, Model model) {
         return buildingService.findBuildingByCode(code)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(building -> {
+                    model.addAttribute("building", building);
+                    return "buildings/detail";
+                })
+                .orElse("error/404");
     }
+
 
     @GetMapping("/department/{departmentId}")
-    public ResponseEntity<List<Building>> getBuildingsByDepartment(@PathVariable Integer departmentId) {
+    public String getBuildingsByDepartment(@PathVariable Integer departmentId, Model model) {
         List<Building> buildings = buildingService.findBuildingsByDepartment(departmentId);
-        return ResponseEntity.ok(buildings);
+        model.addAttribute("buildings", buildings);
+        return "buildings/list";
     }
 
+    // Done
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("building", new Building());
+        model.addAttribute("departments", departmentRepository.findAll()); // Add departments to the model
+
+        return "buildings/create";
+    }
+
+    // Done
     @PostMapping
-    public ResponseEntity<?> createBuilding(@RequestBody Building building) {
-        try {
-            if (buildingService.existsByBuildingCode(building.getBuildingCode())) {
-                return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body(Map.of("error", "Building code already exists"));
-            }
-            Building createdBuilding = buildingService.createBuilding(building);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdBuilding);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", e.getMessage()));
+    public String createBuilding(@ModelAttribute Building building, Model model) {
+        if (buildingService.existsByBuildingCode(building.getBuildingCode())) {
+            model.addAttribute("error", "Building code already exists");
+            model.addAttribute("departments", departmentRepository.findAll()); // Re-add departments if error
+            return "buildings/create";
         }
+        buildingService.createBuilding(building);
+        return "redirect:/buildings";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateBuilding(
-            @PathVariable Integer id,
-            @RequestBody Building buildingDetails) {
+    // Done
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Integer id, Model model) {
+        return buildingService.findBuildingById(id)
+                .map(building -> {
+                    model.addAttribute("building", building);
+                    model.addAttribute("departments", departmentRepository.findAll()); // Add departments to the model
+                    return "buildings/edit";
+                })
+                .orElse("error/404");
+    }
+
+   //Done
+    @PostMapping("/{id}")
+    public String updateBuilding(@PathVariable Integer id, @ModelAttribute Building buildingDetails, Model model) {
         try {
-            Building updatedBuilding = buildingService.updateBuilding(id, buildingDetails);
-            return ResponseEntity.ok(updatedBuilding);
+            buildingService.updateBuilding(id, buildingDetails);
+            return "redirect:/buildings";
         } catch (RuntimeException e) {
             if (e.getMessage().contains("Building not found")) {
-                return ResponseEntity.notFound().build();
+                return "error/404";
             }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", e.getMessage()));
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("departments", departmentRepository.findAll()); // Re-add departments on error
+            return "buildings/edit";
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBuilding(@PathVariable Integer id) {
-        try {
-            if (buildingService.findBuildingById(id).isPresent()) {
-                buildingService.deleteBuilding(id);
-                return ResponseEntity.noContent().build();
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", e.getMessage()));
+    // Done
+    @PostMapping("/{id}/delete")
+    public String deleteBuilding(@PathVariable Integer id) {
+        if (buildingService.findBuildingById(id).isPresent()) {
+            buildingService.deleteBuilding(id);
+            return "redirect:/buildings";
+        } else {
+            return "error/404";
         }
     }
 
-    @PutMapping("/{buildingId}/department/{departmentId}")
-    public ResponseEntity<?> assignDepartmentToBuilding(
-            @PathVariable Integer buildingId,
-            @PathVariable Integer departmentId) {
-        try {
-            Building updatedBuilding = buildingService.assignDepartmentToBuilding(buildingId, departmentId);
-            return ResponseEntity.ok(updatedBuilding);
-        } catch (RuntimeException e) {
-            if (e.getMessage().contains("not found")) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", e.getMessage()));
-        }
-    }
-
+    // Done
     @GetMapping("/count")
-    public ResponseEntity<Map<String, Long>> getBuildingCount() {
-        Map<String, Long> countInfo = new HashMap<>();
-        countInfo.put("totalBuildings", buildingService.countBuildings());
-        return ResponseEntity.ok(countInfo);
+    public String getBuildingCount(Model model) {
+        model.addAttribute("count", buildingService.countBuildings());
+        return "buildings/count";
     }
+
 
     @GetMapping("/count/department/{departmentId}")
-    public ResponseEntity<Map<String, Long>> getBuildingCountByDepartment(@PathVariable Integer departmentId) {
-        Map<String, Long> countInfo = new HashMap<>();
-        countInfo.put("buildingCount", buildingService.countBuildingsByDepartment(departmentId));
-        return ResponseEntity.ok(countInfo);
+    public String getBuildingCountByDepartment(@PathVariable Integer departmentId, Model model) {
+        model.addAttribute("count", buildingService.countBuildingsByDepartment(departmentId));
+        return "buildings/count";
     }
-
 }

@@ -117,4 +117,5 @@ public class BuildingService {
     public long countBuildingsByDepartment(Integer departmentId) {
         return buildingRepository.countByDepartmentId(departmentId);
     }
+
 }

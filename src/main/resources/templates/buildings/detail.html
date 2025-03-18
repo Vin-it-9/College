@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900">
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Building Details</h1>
+    <div th:if="${building}" class="bg-white shadow-md rounded-lg p-6">
+        <p class="text-lg mb-4"><strong>ID:</strong> <span th:text="${building.id}"></span></p>
+        <p class="text-lg mb-4"><strong>Code:</strong> <span th:text="${building.buildingCode}"></span></p>
+        <p class="text-lg mb-4"><strong>Name:</strong> <span th:text="${building.buildingName}"></span></p>
+        <a th:href="@{/buildings}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Back to List</a>
+    </div>
+    <div th:unless="${building}" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mt-4" role="alert">
+        <p>Building not found!</p>
+    </div>
+</div>
+</body>
+</html>

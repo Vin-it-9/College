@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buildings List</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900">
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Buildings List</h1>
+
+    <div class="flex justify-end mb-4">
+        <a href="/buildings/new" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Create New</a>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead class="bg-gray-800 text-white">
+            <tr>
+                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Code</th>
+                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Name</th>
+                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Department Name</th>
+                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Floors</th>
+                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Actions</th>
+            </tr>
+            </thead>
+            <tbody class="text-gray-700">
+            <tr th:each="building : ${buildings}" class="border-b">
+                <td class="py-3 px-4" th:text="${building.buildingCode}"></td>
+                <td class="py-3 px-4" th:text="${building.buildingName}"></td>
+                <td class="py-3 px-4" th:text="${building.department.getDepartmentName()}"></td>
+                <td class="py-3 px-4" th:text="${building.getNumberOfFloors()}"></td>
+                <td class="py-3 px-4">
+                    <a th:href="@{/buildings/{id}(id=${building.id})}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded mr-2">View</a>
+                    <a th:href="@{/buildings/{id}/edit(id=${building.id})}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded mr-2">Edit</a>
+                    <form th:action="@{/buildings/{id}/delete(id=${building.id})}" method="post" class="inline">
+                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

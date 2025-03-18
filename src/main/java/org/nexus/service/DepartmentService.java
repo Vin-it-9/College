@@ -25,10 +25,6 @@ public class DepartmentService {
         return departmentRepository.findAll();
     }
 
-    public Page<Department> findAllDepartments(Pageable pageable) {
-        return departmentRepository.findAll(pageable);
-    }
-
     public Optional<Department> findDepartmentById(Integer id) {
         return departmentRepository.findById(id);
     }
