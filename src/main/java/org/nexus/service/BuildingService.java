@@ -1,8 +1,6 @@
 package org.nexus.service;
 
-import org.nexus.entity.Building;
-import org.nexus.entity.Department;
-import org.nexus.entity.Floor;
+import org.nexus.entity.*;
 import org.nexus.repository.BuildingRepository;
 import org.nexus.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;

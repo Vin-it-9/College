@@ -22,6 +22,10 @@ public class Department {
     @JsonIgnoreProperties("department")
     private Set<Building> buildings;
 
+    @OneToMany(mappedBy = "department")
+    @JsonIgnoreProperties("department")
+    private Set<Lab> labs;
+
     // Getters and Setters
     public Integer getId() {
         return id;
@@ -54,4 +58,6 @@ public class Department {
     public void setBuildings(Set<Building> buildings) {
         this.buildings = buildings;
     }
+    
+    
 }

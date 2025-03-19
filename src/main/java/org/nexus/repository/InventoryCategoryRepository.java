@@ -31,9 +31,9 @@ public interface InventoryCategoryRepository extends JpaRepository<InventoryCate
     @Query("SELECT c FROM InventoryCategory c WHERE SIZE(c.items) > 0 ORDER BY SIZE(c.items) DESC")
     List<InventoryCategory> findCategoriesWithMostItems();
 
-    @Query("SELECT DISTINCT c FROM InventoryCategory c JOIN c.items i JOIN i.room r WHERE r.id = :roomId")
+    @Query("SELECT DISTINCT c FROM InventoryCategory c JOIN c.items i JOIN i.lab r WHERE r.id = :roomId")
     List<InventoryCategory> findCategoriesByRoomId(Integer roomId);
 
-    @Query("SELECT DISTINCT c FROM InventoryCategory c JOIN c.items i JOIN i.room r JOIN r.floor f WHERE f.building.id = :buildingId")
+    @Query("SELECT DISTINCT c FROM InventoryCategory c JOIN c.items i JOIN i.lab r JOIN r.floor f WHERE f.building.id = :buildingId")
     List<InventoryCategory> findCategoriesByBuildingId(Integer buildingId);
 }

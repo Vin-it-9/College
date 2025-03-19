@@ -1,12 +1,9 @@
 package org.nexus.controller;
 
 
-import org.nexus.Exporter.UserCsvExporter;
-import org.nexus.Exporter.UserExcelExporter;
-import org.nexus.Exporter.UserPdfExporter;
+import org.nexus.Exporter.*;
 import org.nexus.aws.AmazonS3Util;
-import org.nexus.entity.Role;
-import org.nexus.entity.User;
+import org.nexus.entity.*;
 import org.nexus.exception.UserNotFoundException;
 import org.nexus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +12,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 import jakarta.servlet.http.HttpServletResponse;
-
 
 
 @Controller
@@ -51,6 +44,7 @@ public class UserController {
         List<User> listUsers = page.getContent();
 
         long startcount = (pageNum - 1) * userService.USERS_PER_PAGE  + 1;
+
         long endcount = startcount + userService.USERS_PER_PAGE - 1;
 
         if(endcount > page.getTotalElements()) {
@@ -68,9 +62,6 @@ public class UserController {
         return "Users" ;
     }
 
-
-
-
     @GetMapping("/users/new")
     public String newUser(Model model) {
         List<Role> listRoles = service.listRoles();
@@ -81,11 +72,10 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("listRoles", listRoles);
         model.addAttribute("pageTitle","Create New User");
-
-
         return "user_form";
 
     }
+
 
     @PostMapping("/users/save")
     public String saveUser(User user , RedirectAttributes redirectAttributes, @RequestParam("fileImage") MultipartFile multipartFile ) throws IOException  {
@@ -104,7 +94,6 @@ public class UserController {
 //            FileUploadUtil.saveFile(uploadDir,filename,multipartFile);
 
         }
-
         else
         {
             if(user.getPhotos().isEmpty()) {
@@ -112,13 +101,9 @@ public class UserController {
             }
             service.save(user);
         }
-
         //        service.save(user);
-
         redirectAttributes.addFlashAttribute("message" , "User added successfully ");
-
         return "redirect:/users";
-
     }
 
 
@@ -140,7 +125,6 @@ public class UserController {
 
         }
         return "redirect:/users";
-
     }
 
     @GetMapping("/users/delete/{id}")
@@ -157,7 +141,6 @@ public class UserController {
         } catch (UserNotFoundException ex) {
             redirectAttributes.addFlashAttribute("message", ex.getMessage());
         }
-
         return "redirect:/users";
     }
 

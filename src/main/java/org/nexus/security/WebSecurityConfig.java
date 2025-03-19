@@ -43,7 +43,7 @@ public class WebSecurityConfig {
 
         http.csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll()
+//                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/api/**").permitAll() // Allow all requests to /api/**
                         .requestMatchers("/Users/**").hasAuthority("Admin")
                         .requestMatchers("/images/**", "/js/**", "/webjars/**").permitAll()

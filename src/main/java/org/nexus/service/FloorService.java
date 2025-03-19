@@ -1,9 +1,7 @@
 package org.nexus.service;
 
-import org.nexus.entity.Building;
-import org.nexus.entity.Floor;
-import org.nexus.repository.BuildingRepository;
-import org.nexus.repository.FloorRepository;
+import org.nexus.entity.*;
+import org.nexus.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

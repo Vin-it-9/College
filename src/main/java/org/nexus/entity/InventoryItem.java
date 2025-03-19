@@ -45,7 +45,7 @@ public class InventoryItem {
     @ManyToOne
     @JoinColumn(name = "room_id")
     @JsonIgnoreProperties("inventoryItems")
-    private Room room;
+    private Lab lab;
 
     @OneToMany(mappedBy = "inventoryItem", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("inventoryItem")
@@ -124,12 +124,12 @@ public class InventoryItem {
         this.category = category;
     }
 
-    public Room getRoom() {
-        return room;
+    public Lab getRoom() {
+        return lab;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setRoom(Lab lab) {
+        this.lab = lab;
     }
 
     public Set<InventoryItemDetail> getDetails() {

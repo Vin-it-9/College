@@ -13,8 +13,6 @@ import java.util.Optional;
 @Repository
 public interface InventoryItemRepository extends JpaRepository<InventoryItem, Integer> {
 
-    List<InventoryItem> findByRoomId(Integer roomId);
-
     List<InventoryItem> findByCategoryId(Integer categoryId);
 
     List<InventoryItem> findByStatus(InventoryStatus status);
@@ -23,10 +21,10 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, In
 
     List<InventoryItem> findByNameContainingIgnoreCase(String name);
 
-    @Query("SELECT i FROM InventoryItem i WHERE i.room.floor.id = :floorId")
+    @Query("SELECT i FROM InventoryItem i WHERE i.lab.floor.id = :floorId")
     List<InventoryItem> findByFloorId(Integer floorId);
 
-    @Query("SELECT i FROM InventoryItem i WHERE i.room.floor.building.id = :buildingId")
+    @Query("SELECT i FROM InventoryItem i WHERE i.lab.floor.building.id = :buildingId")
     List<InventoryItem> findByBuildingId(Integer buildingId);
 
     @Query("SELECT i FROM InventoryItem i LEFT JOIN FETCH i.details WHERE i.id = :id")
@@ -35,25 +33,19 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, In
     @Query("SELECT i FROM InventoryItem i WHERE i.warrantyExpiryDate BETWEEN :startDate AND :endDate")
     List<InventoryItem> findByWarrantyExpiringBetween(LocalDate startDate, LocalDate endDate);
 
-    @Query("SELECT SUM(i.unitCost * i.quantity) FROM InventoryItem i WHERE i.room.id = :roomId")
+    @Query("SELECT SUM(i.unitCost * i.quantity) FROM InventoryItem i WHERE i.lab.id = :roomId")
     Double calculateTotalValueByRoom(Integer roomId);
 
-    @Query("SELECT COUNT(i) FROM InventoryItem i WHERE i.room.id = :roomId")
+    @Query("SELECT COUNT(i) FROM InventoryItem i WHERE i.lab.id = :roomId")
     Long countByRoomId(Integer roomId);
 
     @Query("SELECT i FROM InventoryItem i WHERE EXISTS (SELECT d FROM InventoryItemDetail d WHERE d.inventoryItem = i AND d.keyName = :key AND d.value = :value)")
     List<InventoryItem> findByItemDetailKeyAndValue(String key, String value);
 
-    @Query("SELECT DISTINCT i.room FROM InventoryItem i WHERE i.category.id = :categoryId")
+    @Query("SELECT DISTINCT i.lab FROM InventoryItem i WHERE i.category.id = :categoryId")
     List<Object[]> findRoomsByCategory(Integer categoryId);
 
-    @Query(nativeQuery = true, value =
-            "SELECT COUNT(i.id) as item_count, r.room_number, r.room_name, r.id as room_id " +
-                    "FROM inventory_items i " +
-                    "JOIN rooms r ON i.room_id = r.id " +
-                    "GROUP BY r.id " +
-                    "ORDER BY item_count DESC")
-    List<Object[]> findRoomsWithMostInventoryItems();
+
 
 
 }

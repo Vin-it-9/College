@@ -23,7 +23,7 @@ public interface InventoryItemDetailRepository extends JpaRepository<InventoryIt
     @Query("SELECT DISTINCT d.keyName FROM InventoryItemDetail d WHERE d.inventoryItem.category.id = :categoryId")
     List<String> findDistinctKeyNamesByCategory(Integer categoryId);
 
-    @Query("SELECT d FROM InventoryItemDetail d WHERE d.inventoryItem.room.id = :roomId AND d.keyName = :keyName")
+    @Query("SELECT d FROM InventoryItemDetail d WHERE d.inventoryItem.lab.id = :roomId AND d.keyName = :keyName")
     List<InventoryItemDetail> findByRoomIdAndKeyName(Integer roomId, String keyName);
 
     @Query("SELECT COUNT(d) FROM InventoryItemDetail d WHERE d.inventoryItem.id = :itemId")

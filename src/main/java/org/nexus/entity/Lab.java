@@ -1,7 +1,6 @@
 package org.nexus.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -9,24 +8,39 @@ import java.util.*;
 
 @Entity
 @Table(name = "rooms")
-public class Room {
+public class Lab {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false, length = 20)
-    private String roomNumber;
+    private String labNumber;
 
     @Column(nullable = false, length = 20)
-    private String roomName;
+    private String labName;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private RoomType roomType;
+    @ManyToOne
+    @JoinColumn(name = "assistant_id")
+    private User labAssistant;
+
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    private User labTeacher;
+
+    @Column
+    private Double Cost;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    @JsonIgnoreProperties("labs")
+    private Department department;
 
     @Column
     private Integer capacity;
+
+    @Column
+    private Double area;
 
     @Column(length = 500)
     private String description;
@@ -34,7 +48,7 @@ public class Room {
     @Column
     private Boolean isActive = true;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "lab", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("room")
     private Set<InventoryItem> inventoryItems = new HashSet<>();
 
@@ -43,12 +57,60 @@ public class Room {
     @JsonBackReference(value = "floor-room")
     private Floor floor;
 
+    public String getLabNumber() {
+        return labNumber;
+    }
+
+    public void setLabNumber(String labNumber) {
+        this.labNumber = labNumber;
+    }
+
+    public String getLabName() {
+        return labName;
+    }
+
+    public void setLabName(String labName) {
+        this.labName = labName;
+    }
+
+    public User getLabAssistant() {
+        return labAssistant;
+    }
+
+    public void setLabAssistant(User labAssistant) {
+        this.labAssistant = labAssistant;
+    }
+
+    public User getLabTeacher() {
+        return labTeacher;
+    }
+
+    public void setLabTeacher(User labTeacher) {
+        this.labTeacher = labTeacher;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public Double getArea() {
+        return area;
+    }
+
+    public void setArea(Double area) {
+        this.area = area;
+    }
+
     public String getRoomName() {
-        return roomName;
+        return labName;
     }
 
     public void setRoomName(String roomName) {
-        this.roomName = roomName;
+        this.labName = roomName;
     }
 
     public Boolean getActive() {
@@ -69,19 +131,11 @@ public class Room {
     }
 
     public String getRoomNumber() {
-        return roomNumber;
+        return labNumber;
     }
 
     public void setRoomNumber(String roomNumber) {
-        this.roomNumber = roomNumber;
-    }
-
-    public RoomType getRoomType() {
-        return roomType;
-    }
-
-    public void setRoomType(RoomType roomType) {
-        this.roomType = roomType;
+        this.labNumber = roomNumber;
     }
 
     public Integer getCapacity() {
@@ -115,6 +169,7 @@ public class Room {
     public void setFloor(Floor floor) {
         this.floor = floor;
     }
+
     public Set<InventoryItem> getInventoryItems() {
         return inventoryItems;
     }

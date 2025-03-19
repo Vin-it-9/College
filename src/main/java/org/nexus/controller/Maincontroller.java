@@ -1,9 +1,7 @@
 package org.nexus.controller;
 
-import org.nexus.repository.RoleRepository;
-import org.nexus.repository.UserRepository;
-import org.nexus.entity.Role;
-import org.nexus.entity.User;
+import org.nexus.repository.*;
+import org.nexus.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -62,23 +60,15 @@ public class Maincontroller {
                 new Role("Director", "supervise specific departments or branches, manage high-level inventory decisions"),
                 new Role("HOD", "manage department-specific inventory requests, approvals, and tracking"),
                 new Role("Faculty", "request inventory items, view available items, and track order status"),
-                new Role("Lab Assistant", "manage lab equipment, update inventory status, and report damage or loss"),
-                new Role("Accountant", "manage purchase orders, payments, and inventory budgets"),
-                new Role("Maintenance Staff", "track maintenance-related items and update their status"),
-                new Role("TNP Officer", "manage inventory related to placement activities, seminars, and workshops"),
-                new Role("Management Staff", "oversee administrative supplies and resources, handle inventory reports"),
-                new Role("Library Staff", "manage books, journals, and other educational materials inventory"),
-                new Role("IT Support", "manage technological equipment inventory like computers, routers, etc."),
-                new Role("Clerk", "assist in managing departmental inventory records and documentation")
-        );
-
-
+                new Role("Lab Assistant", "manage lab equipment, update inventory status, and report damage or loss")
+         );
         roles.forEach(role -> {
             if (!roleRepository.existsByName(role.getName())) {
                 roleRepository.save(role);
             }
         });
     }
+
 
     @PostMapping("/logout")
     public String logout() {

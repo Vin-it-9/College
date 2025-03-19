@@ -1,9 +1,7 @@
 package org.nexus.service;
 
-import org.nexus.entity.InventoryCategory;
-import org.nexus.entity.InventoryItem;
-import org.nexus.repository.InventoryCategoryRepository;
-import org.nexus.repository.InventoryItemRepository;
+import org.nexus.entity.*;
+import org.nexus.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

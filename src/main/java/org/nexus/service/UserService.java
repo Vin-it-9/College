@@ -1,13 +1,9 @@
 package org.nexus.service;
 
 
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import org.nexus.repository.RoleRepository;
-import org.nexus.repository.UserRepository;
-import org.nexus.entity.Role;
-import org.nexus.entity.User;
+import java.util.*;
+import org.nexus.repository.*;
+import org.nexus.entity.*;
 import org.nexus.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

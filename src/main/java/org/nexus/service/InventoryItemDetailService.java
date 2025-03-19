@@ -1,9 +1,7 @@
 package org.nexus.service;
 
-import org.nexus.entity.InventoryItem;
-import org.nexus.entity.InventoryItemDetail;
-import org.nexus.repository.InventoryItemDetailRepository;
-import org.nexus.repository.InventoryItemRepository;
+import org.nexus.entity.*;
+import org.nexus.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

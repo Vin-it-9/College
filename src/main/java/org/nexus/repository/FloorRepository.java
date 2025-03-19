@@ -19,13 +19,13 @@ public interface FloorRepository extends JpaRepository<Floor, Integer> {
     @Query("SELECT f FROM Floor f WHERE f.building.id = :buildingId ORDER BY f.floorNumber ASC")
     List<Floor> findByBuildingIdOrderByFloorNumberAsc(Integer buildingId);
 
-    @Query("SELECT f FROM Floor f JOIN f.rooms r GROUP BY f.id ORDER BY COUNT(r) DESC")
+    @Query("SELECT f FROM Floor f JOIN f.labs r GROUP BY f.id ORDER BY COUNT(r) DESC")
     List<Floor> findAllOrderByRoomCountDesc();
 
     @Query("SELECT COUNT(f) FROM Floor f WHERE f.building.id = :buildingId")
     long countByBuildingId(Integer buildingId);
 
-    @Query("SELECT f FROM Floor f WHERE SIZE(f.rooms) = 0")
+    @Query("SELECT f FROM Floor f WHERE SIZE(f.labs) = 0")
     List<Floor> findFloorsWithNoRooms();
 
 }

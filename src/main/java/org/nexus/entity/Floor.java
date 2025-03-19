@@ -22,7 +22,7 @@ public class Floor {
 
     @OneToMany(mappedBy = "floor", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("floor")
-    private Set<Room> rooms;
+    private Set<Lab> labs;
 
     // Getters and Setters
     public Integer getId() {
@@ -49,11 +49,11 @@ public class Floor {
         this.building = building;
     }
 
-    public Set<Room> getRooms() {
-        return rooms;
+    public Set<Lab> getRooms() {
+        return labs;
     }
 
-    public void setRooms(Set<Room> rooms) {
-        this.rooms = rooms;
+    public void setRooms(Set<Lab> labs) {
+        this.labs = labs;
     }
 }
