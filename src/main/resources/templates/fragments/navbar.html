@@ -40,6 +40,7 @@
         <li><a th:href="@{/users}" sec:authorize = "hasAuthority('Admin')"  class="text-sm text-black font-semibold hover:bg-blue-50 hover:text-blue-600 rounded">Users</a></li>
         <li><a th:href="@{/departments}" sec:authorize = "hasAuthority('Admin')"  class="text-sm text-black font-semibold hover:bg-blue-50 hover:text-blue-600 rounded">departments</a></li>
         <li><a th:href="@{/buildings}" sec:authorize = "hasAuthority('Admin')"  class="text-sm text-black font-semibold hover:bg-blue-50 hover:text-blue-600 rounded">buildings</a></li>
+        <li><a th:href="@{/labs}" sec:authorize = "hasAuthority('Admin')"  class="text-sm text-black font-semibold hover:bg-blue-50 hover:text-blue-600 rounded">labs</a></li>
 
         <li class="relative">
             <button class="border border-blue-500 p-2 text-bold text-blue-500 font-semibold hover:bg-blue-50 hover:text-blue-600 rounded w-full flex items-center justify-between">
@@ -82,6 +83,7 @@
                 <li sec:authorize = "hasAuthority('Admin')"   class="mb-1 border-b"><a th:href="@{/users}"   class="block p-3 text-sm font-semibold hover:bg-blue-50 hover:text-blue-600 rounded">Users</a></li>
                 <li><a th:href="@{/departments}" sec:authorize = "hasAuthority('Admin')"  class="text-sm text-black font-semibold hover:bg-blue-50 hover:text-blue-600 rounded">departments</a></li>
                 <li><a th:href="@{/buildings}" sec:authorize = "hasAuthority('Admin')"  class="text-sm text-black font-semibold hover:bg-blue-50 hover:text-blue-600 rounded">buildings</a></li>
+                <li><a th:href="@{/labs}" sec:authorize = "hasAuthority('Admin')"  class="text-sm text-black font-semibold hover:bg-blue-50 hover:text-blue-600 rounded">buildings</a></li>
                 <li class="relative">
                     <button class="border border-blue-500 p-2 text-bold text-blue-500 font-semibold hover:bg-blue-50 hover:text-blue-600 rounded w-full flex items-center justify-between">
                         <span sec:authentication="principal.Fullname"></span>

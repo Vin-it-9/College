@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,13 @@
 </head>
 <body class="bg-gray-100 text-gray-900">
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">All Labs</h1>
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">All Labs</h1>
+        <div class="text-sm text-gray-600">
+            <p>Welcome, <span sec:authentication="name"></span></p>
+            <p>Role: <span sec:authentication="principal.authorities"></span></p>
+        </div>
+    </div>
 
     <div th:if="${success}" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
         <p th:text="${success}"></p>
@@ -17,39 +24,69 @@
         <p th:text="${error}"></p>
     </div>
 
-    <div class="flex justify-end mb-4">
-        <a href="/labs/new" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Create New</a>
+    <!-- Create New button visible for Admin, Principal, Director, or HOD -->
+    <div class="flex justify-end mb-4" sec:authorize="hasAnyAuthority('Admin', 'Principal', 'Director', 'HOD')">
+        <a href="/labs/new" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create New</a>
     </div>
 
     <div class="overflow-x-auto">
         <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
             <thead class="bg-gray-800 text-white">
             <tr>
-                <th class="py-3 px-4 uppercase font-semibold text-sm text-left">Lab Number</th>
-                <th class="py-3 px-4 uppercase font-semibold text-sm text-left">Lab Name</th>
-                <th class="py-3 px-4 uppercase font-semibold text-sm text-left">Lab Assistant</th>
-                <th class="py-3 px-4 uppercase font-semibold text-sm text-left">Department</th>
-                <th class="py-3 px-4 uppercase font-semibold text-sm text-left">Status</th>
-                <th class="py-3 px-4 uppercase font-semibold text-sm text-left">Actions</th>
+                <th class="py-3 px-4 text-left">Lab Number</th>
+                <th class="py-3 px-4 text-left">Lab Name</th>
+                <th class="py-3 px-4 text-left">Lab Assistant</th>
+                <th class="py-3 px-4 text-left">Department</th>
+                <th class="py-3 px-4 text-left">Status</th>
+                <th class="py-3 px-4 text-left"
+                    sec:authorize="hasAnyAuthority('Admin', 'Principal', 'Director', 'HOD', 'LabAssistant')">Actions</th>
             </tr>
             </thead>
             <tbody class="text-gray-700">
             <tr th:each="lab : ${labs}" class="border-b">
                 <td class="py-3 px-4" th:text="${lab.labNumber}"></td>
                 <td class="py-3 px-4" th:text="${lab.labName}"></td>
-                <td class="py-3 px-4" th:text="${lab.labAssistant != null ? lab.labAssistant.firstName + ' ' + lab.labAssistant.lastName : 'Not Assigned'}"></td>
+                <td class="py-3 px-4"
+                    th:text="${lab.labAssistant != null ? lab.labAssistant.firstName + ' ' + lab.labAssistant.lastName : 'Not Assigned'}">
+                </td>
                 <td class="py-3 px-4" th:text="${lab.department != null ? lab.department.departmentName : 'Not Assigned'}"></td>
                 <td class="py-3 px-4">
-                    <span th:if="${lab.isActive}" class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">Active</span>
-                    <span th:unless="${lab.isActive}" class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full">Inactive</span>
+                    <span th:if="${lab.isActive}" class="px-2 py-1 text-green-700 bg-green-100 rounded-full">Active</span>
+                    <span th:unless="${lab.isActive}" class="px-2 py-1 text-red-700 bg-red-100 rounded-full">Inactive</span>
                 </td>
                 <td class="py-3 px-4">
-                    <a th:href="@{/labs/{id}(id=${lab.id})}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded mr-2">View</a>
-                    <a th:href="@{/labs/{id}/edit(id=${lab.id})}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded mr-2">Edit</a>
-                    <form th:action="@{/labs/{id}/delete(id=${lab.id})}" method="post" class="inline">
-                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">Delete</button>
-                    </form>
+                    <!-- Actions for Admin, Principal, Director, or HOD -->
+                    <div sec:authorize="hasAnyAuthority('Admin', 'Principal', 'Director', 'HOD')">
+                        <a th:href="@{/labs/{id}(id=${lab.id})}"
+                           class="bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded">View</a>
+                        <a th:href="@{/labs/{id}/edit(id=${lab.id})}"
+                           class="bg-yellow-500 hover:bg-yellow-700 text-white py-1 px-2 rounded">Edit</a>
+                        <form th:action="@{/labs/{id}/delete(id=${lab.id})}" method="post" class="inline">
+                            <button type="submit"
+                                    class="bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded"
+                                    onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    </div>
+
+                    <!-- Actions for Lab Assistants -->
+                    <div sec:authorize="hasAuthority('LabAssistant')">
+                        <!-- Always show View button -->
+                        <a th:href="@{/labs/{id}(id=${lab.id})}"
+                           class="bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded">View</a>
+                        <!-- Show Edit and Delete only if the lab is assigned to this lab assistant -->
+                        <div th:if="${lab.labAssistant != null and lab.labAssistant.email == #authentication.name}">
+                            <a th:href="@{/labs/{id}/edit(id=${lab.id})}"
+                               class="bg-yellow-500 hover:bg-yellow-700 text-white py-1 px-2 rounded">Edit</a>
+                            <form th:action="@{/labs/{id}/delete(id=${lab.id})}" method="post" class="inline">
+                                <button type="submit"
+                                        class="bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded"
+                                        onclick="return confirm('Are you sure?')">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+
                 </td>
+
             </tr>
             </tbody>
         </table>
@@ -58,6 +95,12 @@
     <div class="mt-4">
         <p class="text-lg">Total Labs: <span th:text="${#lists.size(labs)}"></span></p>
     </div>
+
 </div>
+
+<div class="fixed bottom-0 right-0 p-4 text-sm text-gray-600">
+    <p th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}"></p>
+</div>
+
 </body>
 </html>

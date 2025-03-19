@@ -17,10 +17,10 @@ public class Lab {
     @Column(nullable = false, length = 20)
     private String labNumber;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 100)
     private String labName;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "assistant_id")
     private User labAssistant;
 
