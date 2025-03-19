@@ -11,6 +11,7 @@
     <h1 class="text-3xl font-bold mb-6">Create New Department</h1>
 
     <form th:action="@{/departments}" th:object="${department}" method="post" class="bg-white shadow-md rounded-lg p-6">
+
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2">Department Code:</label>
             <input type="text" th:field="*{departmentCode}" required
@@ -27,6 +28,36 @@
             <span th:if="${#fields.hasErrors('departmentName')}"
                   th:errors="*{departmentName}"
                   class="text-red-500 text-xs italic"></span>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Select HOD:</label>
+            <select th:field="*{hod}" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="">-- Select HOD --</option>
+                <option th:each="user : ${hodUsers}"
+                        th:value="${user.id}"
+                        th:text="${user.firstName + ' ' + user.lastName}">
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Faculty Count:</label>
+            <input type="number" th:field="*{facultyCount}" min="0"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Establishment Year:</label>
+            <input type="number" th:field="*{establishment}" min="1900" max="2100" required
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Department Description:</label>
+            <textarea th:field="*{departmentDescription}" rows="3"
+                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
         </div>
 
         <div class="flex items-center justify-between">

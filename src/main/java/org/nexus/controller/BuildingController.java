@@ -133,4 +133,5 @@ public class BuildingController {
         model.addAttribute("count", buildingService.countBuildingsByDepartment(departmentId));
         return "buildings/count";
     }
+
 }

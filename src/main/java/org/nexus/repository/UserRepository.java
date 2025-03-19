@@ -9,12 +9,17 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>,  PagingAndSortingRepository<User, Integer>  {
 
     @Query("SELECT u from User u WHERE u.email = :email")
     public User getUserByEmail(@Param("email") String email );
+
+    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = :roleName")
+    List<User> findByRoles_Name(@Param("roleName") String roleName);
 
     @Query("SELECT u FROM User u WHERE CONCAT(u.id, ' ', u.email, ' ', u.firstName, ' ',"
             + " u.lastName) LIKE %?1%")

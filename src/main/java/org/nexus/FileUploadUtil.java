@@ -7,6 +7,7 @@ import org.slf4j.*;
 import org.springframework.web.multipart.MultipartFile;
 
 public class FileUploadUtil {
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUploadUtil.class);
 
     public static void saveFile(String uploadDir, String fileName,

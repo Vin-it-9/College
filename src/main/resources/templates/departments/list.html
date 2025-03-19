@@ -27,6 +27,8 @@
             <tr>
                 <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Code</th>
                 <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Name</th>
+                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">HOD</th>
+                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Faculty Count</th>
                 <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Actions</th>
             </tr>
             </thead>
@@ -34,6 +36,8 @@
             <tr th:each="dept : ${departments}" class="border-b">
                 <td class="py-3 px-4" th:text="${dept.departmentCode}"></td>
                 <td class="py-3 px-4" th:text="${dept.departmentName}"></td>
+                <td class="py-3 px-4" th:text="${dept.hod != null ? dept.hod.firstName + ' ' + dept.hod.lastName : 'Not Assigned'}"></td>
+                <td class="py-3 px-4" th:text="${dept.facultyCount}"></td>
                 <td class="py-3 px-4">
                     <a th:href="@{/departments/{id}(id=${dept.id})}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded mr-2">View</a>
                     <a th:href="@{/departments/{id}/edit(id=${dept.id})}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded mr-2">Edit</a>

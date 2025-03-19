@@ -14,6 +14,13 @@
         <p class="text-lg mb-4"><strong>ID:</strong> <span th:text="${department.id}"></span></p>
         <p class="text-lg mb-4"><strong>Code:</strong> <span th:text="${department.departmentCode}"></span></p>
         <p class="text-lg mb-4"><strong>Name:</strong> <span th:text="${department.departmentName}"></span></p>
+        <p class="text-lg mb-4">
+            <strong>HOD:</strong>
+            <span th:text="${department.hod != null ? department.hod.firstName + ' ' + department.hod.lastName : 'Not Assigned'}"></span>
+        </p>
+        <p class="text-lg mb-4"><strong>Faculty Count:</strong> <span th:text="${department.facultyCount}"></span></p>
+        <p class="text-lg mb-4"><strong>Establishment Year:</strong> <span th:text="${department.establishment}"></span></p>
+        <p class="text-lg mb-4"><strong>Description:</strong> <span th:text="${department.departmentDescription}"></span></p>
 
         <a th:href="@{/departments}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Back to List

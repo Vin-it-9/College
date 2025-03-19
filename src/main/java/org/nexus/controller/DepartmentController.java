@@ -1,6 +1,8 @@
 package org.nexus.controller;
 
 import org.nexus.entity.Department;
+import org.nexus.entity.User;
+import org.nexus.repository.UserRepository;
 import org.nexus.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +20,12 @@ import java.util.Optional;
 public class DepartmentController {
 
     private final DepartmentService departmentService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public DepartmentController(DepartmentService departmentService) {
+    public DepartmentController(DepartmentService departmentService,UserRepository userRepository) {
         this.departmentService = departmentService;
+        this.userRepository = userRepository;
     }
 
     // Done
@@ -64,7 +68,13 @@ public class DepartmentController {
     // Done
     @GetMapping("/new")
     public String showCreateForm(Model model) {
+
+        List<User> hodUsers = userRepository.findByRoles_Name("HOD");
+
         model.addAttribute("department", new Department());
+
+        model.addAttribute("hodUsers", hodUsers);
+
         return "departments/create-form";
     }
 
