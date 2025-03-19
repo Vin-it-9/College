@@ -2,6 +2,8 @@ package org.nexus.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -34,11 +36,10 @@ public class Department {
     @OneToMany(mappedBy = "department")
     @JsonIgnoreProperties("department")
     @Column(nullable = true)
-    private Set<Lab> labs;
+    private Set<Lab> labs =  new HashSet<>();;
 
     private Integer establishment;
 
-    // Getters and Setters
 
     public Integer getId() {
         return id;

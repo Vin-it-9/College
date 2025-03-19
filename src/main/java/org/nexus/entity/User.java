@@ -37,45 +37,30 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-
             name = "users_roles",
-
             joinColumns = @JoinColumn(name = "user_id"),
-
             inverseJoinColumns = @JoinColumn(name = "role_id")
-
     )
 
     private Set<Role> roles = new HashSet<>();
 
     public Integer getId() {
-
         return id;
-
     }
-
     public void setId(Integer id) {
-
         this.id = id;
-
     }
 
     public String getFirstName() {
-
         return firstName;
-
     }
 
     public void setFirstName(String firstName) {
-
         this.firstName = firstName;
-
     }
 
     public String getLastName() {
-
         return lastName;
-
     }
 
     public void setLastName(String lastName) {

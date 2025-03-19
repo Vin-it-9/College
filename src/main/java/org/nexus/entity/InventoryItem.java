@@ -43,12 +43,13 @@ public class InventoryItem {
     private InventoryCategory category;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "lab_id")
     @JsonIgnoreProperties("inventoryItems")
     private Lab lab;
 
     @OneToMany(mappedBy = "inventoryItem", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("inventoryItem")
+
     private Set<InventoryItemDetail> details = new HashSet<>();
 
     // Getters and Setters

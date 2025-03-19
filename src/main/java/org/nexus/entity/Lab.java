@@ -29,7 +29,7 @@ public class Lab {
     private User labTeacher;
 
     @Column
-    private Double Cost;
+    private Double cost;
 
     @ManyToOne
     @JoinColumn(name = "department_id")
@@ -49,13 +49,24 @@ public class Lab {
     private Boolean isActive = true;
 
     @OneToMany(mappedBy = "lab", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("room")
+    @JsonIgnoreProperties("lab")
     private Set<InventoryItem> inventoryItems = new HashSet<>();
+
+    @Column(nullable = true , length = 200)
+    private String additionalFacility;
 
     @ManyToOne
     @JoinColumn(name = "floor_id", nullable = false)
     @JsonBackReference(value = "floor-room")
     private Floor floor;
+
+    public String getAdditionalFacility() {
+        return additionalFacility;
+    }
+
+    public void setAdditionalFacility(String additionalFacility) {
+        this.additionalFacility = additionalFacility;
+    }
 
     public String getLabNumber() {
         return labNumber;
@@ -103,6 +114,14 @@ public class Lab {
 
     public void setArea(Double area) {
         this.area = area;
+    }
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
     }
 
     public String getRoomName() {

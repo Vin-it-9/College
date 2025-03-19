@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900">
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Lab Details</h1>
+
+    <div th:if="${success}" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
+        <p th:text="${success}"></p>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Basic Information</h2>
+                <div class="grid grid-cols-1 gap-3">
+                    <div>
+                        <span class="text-gray-600">Lab Number:</span>
+                        <span th:text="${lab.labNumber}" class="font-medium ml-2"></span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Lab Name:</span>
+                        <span th:text="${lab.labName}" class="font-medium ml-2"></span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Department:</span>
+                        <span th:text="${lab.department != null ? lab.department.departmentName : 'Not Assigned'}" class="font-medium ml-2"></span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Status:</span>
+                        <span th:if="${lab.isActive}" class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full">Active</span>
+                        <span th:unless="${lab.isActive}" class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full">Inactive</span>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Staff Information</h2>
+                <div class="grid grid-cols-1 gap-3">
+                    <div>
+                        <span class="text-gray-600">Lab Assistant:</span>
+                        <span th:text="${lab.labAssistant != null ? lab.labAssistant.firstName + ' ' + lab.labAssistant.lastName : 'Not Assigned'}" class="font-medium ml-2"></span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Lab Teacher:</span>
+                        <span th:text="${lab.labTeacher != null ? lab.labTeacher.firstName + ' ' + lab.labTeacher.lastName : 'Not Assigned'}" class="font-medium ml-2"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <h2 class="text-xl font-semibold mb-2">Physical Details</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <span class="text-gray-600">Capacity:</span>
+                    <span th:text="${lab.capacity != null ? lab.capacity + ' persons' : 'Not specified'}" class="font-medium ml-2"></span>
+                </div>
+                <div>
+                    <span class="text-gray-600">Area:</span>
+                    <span th:text="${lab.area != null ? lab.area + ' sq.m' : 'Not specified'}" class="font-medium ml-2"></span>
+                </div>
+                <div>
+                    <span class="text-gray-600">Floor:</span>
+                    <span th:text="${lab.floor != null ? lab.floor.getFloorNumber() : 'Not specified'}" class="font-medium ml-2"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <h2 class="text-xl font-semibold mb-2">Financial Information</h2>
+            <div>
+                <span class="text-gray-600">Cost:</span>
+                <span th:text="${lab.cost != null ? 'Rs' + #numbers.formatDecimal(lab.cost, 1, 'COMMA', 2, 'POINT') : 'Not specified'}" class="font-medium ml-2"></span>
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <h2 class="text-xl font-semibold mb-2">Description</h2>
+            <p th:text="${lab.description != null ? lab.description : 'No description available.'}" class="text-gray-700"></p>
+        </div>
+        <div class="mt-6">
+            <h2 class="text-xl font-semibold mb-2">additionalFacility</h2>
+            <p th:text="${lab.additionalFacility != null ? lab.additionalFacility : 'No additionalFacility available.'}" class="text-gray-700"></p>
+        </div>
+
+        <div class="mt-6" th:if="${!#lists.isEmpty(lab.inventoryItems)}">
+            <h2 class="text-xl font-semibold mb-2">Inventory Items</h2>
+            <table class="min-w-full bg-white border">
+                <thead>
+                <tr>
+                    <th class="py-2 px-4 border-b">Name</th>
+                    <th class="py-2 px-4 border-b">Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${lab.inventoryItems}" class="border-b">
+                    <td class="py-2 px-4" th:text="${item.name}"></td>
+                    <td class="py-2 px-4 text-center" th:text="${item.quantity != null ? item.quantity : 1}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-6 flex space-x-2">
+            <a th:href="@{/labs}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Back to List</a>
+            <a th:href="@{/labs/{id}/edit(id=${lab.id})}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">Edit</a>
+            <form th:action="@{/labs/{id}/delete(id=${lab.id})}" method="post" class="inline">
+                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this lab?');">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

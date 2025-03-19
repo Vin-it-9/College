@@ -2,6 +2,8 @@ package org.nexus.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,7 +24,7 @@ public class Floor {
 
     @OneToMany(mappedBy = "floor", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("floor")
-    private Set<Lab> labs;
+    private Set<Lab> labs  = new HashSet<>();;
 
     // Getters and Setters
     public Integer getId() {

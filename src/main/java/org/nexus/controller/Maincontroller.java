@@ -60,8 +60,10 @@ public class Maincontroller {
                 new Role("Director", "supervise specific departments or branches, manage high-level inventory decisions"),
                 new Role("HOD", "manage department-specific inventory requests, approvals, and tracking"),
                 new Role("Faculty", "request inventory items, view available items, and track order status"),
-                new Role("Lab Assistant", "manage lab equipment, update inventory status, and report damage or loss")
-         );
+                new Role("LabAssistant", "manage lab equipment, update inventory status, and report damage or loss"),
+                new Role("Teacher", "Teaching")
+
+        );
         roles.forEach(role -> {
             if (!roleRepository.existsByName(role.getName())) {
                 roleRepository.save(role);

@@ -45,7 +45,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/departments/**").permitAll()
                         .requestMatchers("/buildings/**").permitAll()
-                        .requestMatchers("/api/**").permitAll() // Allow all requests to /api/**
+                        .requestMatchers("/labs/**").permitAll() // Allow all requests to /api/**
                         .requestMatchers("/Users/**").hasAuthority("Admin")
                         .requestMatchers("/images/**", "/js/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()
