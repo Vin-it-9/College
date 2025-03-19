@@ -102,6 +102,8 @@ public class DepartmentController {
     public String showEditForm(@PathVariable Integer id, Model model) {
         Optional<Department> department = departmentService.findDepartmentById(id);
         if (department.isPresent()) {
+            List<User> hodUsers = userRepository.findByRoles_Name("HOD");
+            model.addAttribute("hodUsers", hodUsers);
             model.addAttribute("department", department.get());
             return "departments/edit-form";
         }

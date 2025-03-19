@@ -6,16 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="building part completed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/FileUploadUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/FileUploadUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/BuildingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/BuildingController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/DepartmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/DepartmentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Department.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Department.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/departments/create-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/departments/create-form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/departments/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/departments/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/departments/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/departments/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/departments/edit-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/departments/edit-form.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +120,8 @@
       <workItem from="1742327103076" duration="564000" />
       <workItem from="1742331923409" duration="811000" />
       <workItem from="1742360941709" duration="829000" />
-      <workItem from="1742365102211" duration="2676000" />
+      <workItem from="1742365102211" duration="2926000" />
+      <workItem from="1742375338165" duration="768000" />
     </task>
     <task id="LOCAL-00001" summary="commit inventory">
       <option name="closed" value="true" />
@@ -162,7 +155,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742289265401</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="building part completed">
+      <option name="closed" value="true" />
+      <created>1742368034085</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1742368034085</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

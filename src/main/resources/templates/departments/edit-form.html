@@ -31,15 +31,46 @@
                   class="text-red-500 text-xs italic"></span>
         </div>
 
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Select HOD:</label>
+            <select th:field="*{hod}" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="">-- Select HOD --</option>
+                <option th:each="user : ${hodUsers}"
+                        th:value="${user.id}"
+                        th:text="${user.firstName + ' ' + user.lastName}">
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Faculty Count:</label>
+            <input type="number" th:field="*{facultyCount}" min="0"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Establishment Year:</label>
+            <input type="number" th:field="*{establishment}" min="1900" max="2100" required
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Department Description:</label>
+            <textarea th:field="*{departmentDescription}" rows="3"
+                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+        </div>
+
         <div class="flex items-center justify-between">
             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Update
             </button>
-            <a th:href="@{/departments/{id}(id=${department.id})}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <a th:href="@{/departments}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Cancel
             </a>
         </div>
     </form>
+
 </div>
 </body>
 </html>
