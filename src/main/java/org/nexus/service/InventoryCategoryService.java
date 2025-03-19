@@ -36,9 +36,7 @@ public class InventoryCategoryService {
         return inventoryCategoryRepository.findById(id);
     }
 
-    public Optional<InventoryCategory> findCategoryByIdWithChildren(Integer id) {
-        return inventoryCategoryRepository.findByIdWithChildren(id);
-    }
+
 
     public Optional<InventoryCategory> findCategoryByIdWithItems(Integer id) {
         return inventoryCategoryRepository.findByIdWithItems(id);

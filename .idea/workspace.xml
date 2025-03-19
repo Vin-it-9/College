@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="lab code done">
+    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="lab authentication work done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Lab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Lab.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryCategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryCategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryItemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryItemDetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryItemDetailController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/repository/InventoryCategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/InventoryCategoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/repository/InventoryItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/InventoryItemRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/service/InventoryItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/InventoryItemService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -124,7 +129,7 @@
       <workItem from="1742365102211" duration="2926000" />
       <workItem from="1742375338165" duration="768000" />
       <workItem from="1742387776789" duration="5827000" />
-      <workItem from="1742403136845" duration="9363000" />
+      <workItem from="1742403136845" duration="10287000" />
     </task>
     <task id="LOCAL-00001" summary="commit inventory">
       <option name="closed" value="true" />
@@ -198,7 +203,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742405425180</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="lab authentication work done">
+      <option name="closed" value="true" />
+      <created>1742412763826</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1742412763826</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -220,6 +233,7 @@
     <MESSAGE value="updated department" />
     <MESSAGE value="building part completed" />
     <MESSAGE value="lab code done" />
-    <option name="LAST_COMMIT_MESSAGE" value="lab code done" />
+    <MESSAGE value="lab authentication work done" />
+    <option name="LAST_COMMIT_MESSAGE" value="lab authentication work done" />
   </component>
 </project>

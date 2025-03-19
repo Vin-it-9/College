@@ -1,9 +1,7 @@
 package org.nexus.repository;
 
-import org.nexus.entity.InventoryItem;
-import org.nexus.entity.InventoryStatus;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.nexus.entity.*;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -46,6 +44,10 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, In
     List<Object[]> findRoomsByCategory(Integer categoryId);
 
 
+    List<InventoryItem> lab(Lab lab);
+
+    @Query("SELECT i FROM InventoryItem i WHERE i.lab.id = :labId")
+    List<InventoryItem> findByLabId(Integer labId);
 
 
 }

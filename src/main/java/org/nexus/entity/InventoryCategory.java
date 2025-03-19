@@ -26,10 +26,6 @@ public class InventoryCategory {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "childCategories"})
     private InventoryCategory parentCategory;
 
-    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("parentCategory")
-    private Set<InventoryCategory> childCategories = new HashSet<>();
-
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("category")
     private Set<InventoryItem> items = new HashSet<>();
@@ -67,13 +63,6 @@ public class InventoryCategory {
         this.parentCategory = parentCategory;
     }
 
-    public Set<InventoryCategory> getChildCategories() {
-        return childCategories;
-    }
-
-    public void setChildCategories(Set<InventoryCategory> childCategories) {
-        this.childCategories = childCategories;
-    }
 
     public Set<InventoryItem> getItems() {
         return items;

@@ -19,9 +19,6 @@ public interface InventoryCategoryRepository extends JpaRepository<InventoryCate
 
     boolean existsByName(String name);
 
-    @Query("SELECT c FROM InventoryCategory c LEFT JOIN FETCH c.childCategories WHERE c.id = :id")
-    Optional<InventoryCategory> findByIdWithChildren(Integer id);
-
     @Query("SELECT c FROM InventoryCategory c LEFT JOIN FETCH c.items WHERE c.id = :id")
     Optional<InventoryCategory> findByIdWithItems(Integer id);
 
