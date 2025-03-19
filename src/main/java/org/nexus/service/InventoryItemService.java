@@ -4,7 +4,7 @@
 //import org.nexus.repository.InventoryCategoryRepository;
 //import org.nexus.repository.InventoryItemDetailRepository;
 //import org.nexus.repository.InventoryItemRepository;
-//import org.nexus.repository.RoomRepository;
+//import org.nexus.repository.LabRepository;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.data.domain.Page;
 //import org.springframework.data.domain.Pageable;
@@ -21,13 +21,13 @@
 //    private final InventoryItemRepository inventoryItemRepository;
 //    private final InventoryItemDetailRepository inventoryItemDetailRepository;
 //    private final InventoryCategoryRepository inventoryCategoryRepository;
-//    private final RoomRepository roomRepository;
+//    private final LabRepository roomRepository;
 //
 //    @Autowired
 //    public InventoryItemService(InventoryItemRepository inventoryItemRepository,
 //                                InventoryItemDetailRepository inventoryItemDetailRepository,
 //                                InventoryCategoryRepository inventoryCategoryRepository,
-//                                RoomRepository roomRepository) {
+//                                LabRepository roomRepository) {
 //        this.inventoryItemRepository = inventoryItemRepository;
 //        this.inventoryItemDetailRepository = inventoryItemDetailRepository;
 //        this.inventoryCategoryRepository = inventoryCategoryRepository;

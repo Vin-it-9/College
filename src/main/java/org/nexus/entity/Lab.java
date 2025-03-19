@@ -7,7 +7,7 @@ import java.util.*;
 
 
 @Entity
-@Table(name = "rooms")
+@Table(name = "labs")
 public class Lab {
 
     @Id
@@ -20,7 +20,7 @@ public class Lab {
     @Column(nullable = false, length = 20)
     private String labName;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "assistant_id")
     private User labAssistant;
 
