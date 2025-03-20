@@ -46,13 +46,6 @@ public class InventoryCategoryService {
         return inventoryCategoryRepository.findByName(name);
     }
 
-    public List<InventoryCategory> findRootCategories() {
-        return inventoryCategoryRepository.findByParentCategoryIsNull();
-    }
-
-    public List<InventoryCategory> findSubcategories(Integer parentId) {
-        return inventoryCategoryRepository.findByParentCategoryId(parentId);
-    }
 
     public List<InventoryCategory> findCategoriesWithMostItems() {
         return inventoryCategoryRepository.findCategoriesWithMostItems();
@@ -92,23 +85,7 @@ public class InventoryCategoryService {
             existingCategory.setDescription(categoryDetails.getDescription());
         }
 
-        if (categoryDetails.getParentCategory() != null && categoryDetails.getParentCategory().getId() != null) {
-            // Can't set parent to self
-            if (categoryDetails.getParentCategory().getId().equals(id)) {
-                throw new IllegalArgumentException("Category cannot be its own parent");
-            }
 
-            // Check for circular reference
-            checkCircularReference(categoryDetails.getParentCategory().getId(), id);
-
-            InventoryCategory parentCategory = inventoryCategoryRepository.findById(categoryDetails.getParentCategory().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Parent category not found with id: " + categoryDetails.getParentCategory().getId()));
-
-            existingCategory.setParentCategory(parentCategory);
-        } else if (categoryDetails.getParentCategory() == null) {
-            // Explicitly setting to null (making it a root category)
-            existingCategory.setParentCategory(null);
-        }
 
         return inventoryCategoryRepository.save(existingCategory);
     }
@@ -122,12 +99,6 @@ public class InventoryCategoryService {
         Long itemCount = inventoryCategoryRepository.countItemsByCategory(id);
         if (itemCount > 0) {
             throw new IllegalStateException("Cannot delete category that has items. Move or delete items first.");
-        }
-
-        // Check if category has subcategories
-        List<InventoryCategory> subcategories = inventoryCategoryRepository.findByParentCategoryId(id);
-        if (!subcategories.isEmpty()) {
-            throw new IllegalStateException("Cannot delete category that has subcategories. Move or delete subcategories first.");
         }
 
         inventoryCategoryRepository.deleteById(id);
@@ -161,28 +132,6 @@ public class InventoryCategoryService {
         inventoryItemRepository.saveAll(items);
     }
 
-    @Transactional
-    public void moveSubcategoriesToParent(Integer categoryId) {
-        InventoryCategory category = inventoryCategoryRepository.findById(categoryId)
-                .orElseThrow(() -> new IllegalArgumentException("Category not found with id: " + categoryId));
-
-        // Get parent category (if any)
-        InventoryCategory parentCategory = category.getParentCategory();
-
-        // Get subcategories
-        List<InventoryCategory> subcategories = inventoryCategoryRepository.findByParentCategoryId(categoryId);
-
-        if (subcategories.isEmpty()) {
-            return; // No subcategories to move
-        }
-
-        // Update each subcategory's parent
-        for (InventoryCategory subcategory : subcategories) {
-            subcategory.setParentCategory(parentCategory);
-        }
-
-        inventoryCategoryRepository.saveAll(subcategories);
-    }
 
     public Long countItemsByCategory(Integer categoryId) {
         return inventoryCategoryRepository.countItemsByCategory(categoryId);
@@ -204,20 +153,6 @@ public class InventoryCategoryService {
             throw new IllegalArgumentException("Category name already exists: " + category.getName());
         }
 
-        // Check parent category existence
-        if (category.getParentCategory() != null && category.getParentCategory().getId() != null) {
-            if (!inventoryCategoryRepository.existsById(category.getParentCategory().getId())) {
-                throw new IllegalArgumentException("Parent category not found with id: " + category.getParentCategory().getId());
-            }
-
-            // Check for circular reference if this is an update operation
-            if (categoryId != null) {
-                if (category.getParentCategory().getId().equals(categoryId)) {
-                    throw new IllegalArgumentException("Category cannot be its own parent");
-                }
-                checkCircularReference(category.getParentCategory().getId(), categoryId);
-            }
-        }
     }
 
     private void checkCircularReference(Integer parentId, Integer currentId) {
@@ -226,17 +161,6 @@ public class InventoryCategoryService {
             return; // Parent not found, no need to check further
         }
 
-        // If parent has a parent, check for circular reference
-        if (parentCategory.getParentCategory() != null) {
-            Integer grandParentId = parentCategory.getParentCategory().getId();
-
-            if (grandParentId.equals(currentId)) {
-                throw new IllegalArgumentException("Circular reference detected in category hierarchy");
-            }
-
-            // Continue checking up the hierarchy
-            checkCircularReference(grandParentId, currentId);
-        }
     }
 
     @Transactional
@@ -245,13 +169,8 @@ public class InventoryCategoryService {
         category.setName(name);
         category.setDescription(description);
 
-        if (parentId != null) {
-            InventoryCategory parentCategory = inventoryCategoryRepository.findById(parentId)
-                    .orElseThrow(() -> new IllegalArgumentException("Parent category not found with id: " + parentId));
-            category.setParentCategory(parentCategory);
-        }
-
         return createCategory(category);
+
     }
 
     @Transactional
@@ -261,7 +180,6 @@ public class InventoryCategoryService {
 
         if (newParentId == null) {
             // Make it a root category
-            category.setParentCategory(null);
         } else {
             // Can't move to itself
             if (newParentId.equals(categoryId)) {
@@ -271,18 +189,9 @@ public class InventoryCategoryService {
             // Check for circular reference
             checkCircularReference(newParentId, categoryId);
 
-            InventoryCategory newParent = inventoryCategoryRepository.findById(newParentId)
-                    .orElseThrow(() -> new IllegalArgumentException("Parent category not found with id: " + newParentId));
-
-            category.setParentCategory(newParent);
         }
 
         return inventoryCategoryRepository.save(category);
-    }
-
-    public boolean hasSubcategories(Integer categoryId) {
-        List<InventoryCategory> subcategories = inventoryCategoryRepository.findByParentCategoryId(categoryId);
-        return !subcategories.isEmpty();
     }
 
     public boolean hasItems(Integer categoryId) {

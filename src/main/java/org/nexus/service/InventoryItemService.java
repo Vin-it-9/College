@@ -109,8 +109,6 @@ public class InventoryItemService {
         validateItem(item);
 
         InventoryItem savedItem = inventoryItemRepository.save(item);
-
-        // Add details if provided
         if (details != null && !details.isEmpty()) {
             for (Map.Entry<String, String> entry : details.entrySet()) {
                 String key = entry.getKey();
@@ -178,10 +176,10 @@ public class InventoryItemService {
         }
 
         // Update room if provided
-        if (itemDetails.getRoom() != null && itemDetails.getRoom().getId() != null) {
-            Lab lab = roomRepository.findById(itemDetails.getRoom().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Lab not found with id: " + itemDetails.getRoom().getId()));
-            existingItem.setRoom(lab);
+        if (itemDetails.getLab() != null && itemDetails.getLab().getId() != null) {
+            Lab lab = roomRepository.findById(itemDetails.getLab().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Lab not found with id: " + itemDetails.getLab().getId()));
+            existingItem.setLab(lab);
         }
 
         // Update details if provided
@@ -302,7 +300,7 @@ public class InventoryItemService {
 
         // Check if all items are from the same room
         Set<Integer> uniqueRoomIds = items.stream()
-                .map(item -> item.getRoom() != null ? item.getRoom().getId() : null)
+                .map(item -> item.getLab() != null ? item.getLab().getId() : null)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
@@ -312,7 +310,7 @@ public class InventoryItemService {
 
         // Transfer items
         for (InventoryItem item : items) {
-            item.setRoom(toLab);
+            item.setLab(toLab);
         }
 
         inventoryItemRepository.saveAll(items);
@@ -341,12 +339,12 @@ public class InventoryItemService {
             }
         }
 
-        if (item.getRoom() == null || item.getRoom().getId() == null) {
+        if (item.getLab() == null || item.getLab().getId() == null) {
             throw new IllegalArgumentException("Inventory item must be assigned to a room");
         } else {
             // Verify room exists
-            if (!roomRepository.existsById(item.getRoom().getId())) {
-                throw new IllegalArgumentException("Lab not found with id: " + item.getRoom().getId());
+            if (!roomRepository.existsById(item.getLab().getId())) {
+                throw new IllegalArgumentException("Lab not found with id: " + item.getLab().getId());
             }
         }
 

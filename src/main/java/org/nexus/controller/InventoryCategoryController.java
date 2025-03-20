@@ -3,18 +3,11 @@ package org.nexus.controller;
 import org.nexus.entity.InventoryCategory;
 import org.nexus.service.InventoryCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/inventory/categories")
@@ -32,19 +25,6 @@ public class InventoryCategoryController {
         return ResponseEntity.ok(inventoryCategoryService.findAllCategories());
     }
 
-    @GetMapping("/paged")
-    public ResponseEntity<Page<InventoryCategory>> getPagedCategories(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "name") String sortBy) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return ResponseEntity.ok(inventoryCategoryService.findAllCategories(pageable));
-    }
-
-    @GetMapping("/root")
-    public ResponseEntity<List<InventoryCategory>> getRootCategories() {
-        return ResponseEntity.ok(inventoryCategoryService.findRootCategories());
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<InventoryCategory> getCategoryById(@PathVariable Integer id) {
@@ -61,10 +41,7 @@ public class InventoryCategoryController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found with id: " + id));
     }
 
-    @GetMapping("/subcategories/{parentId}")
-    public ResponseEntity<List<InventoryCategory>> getSubcategories(@PathVariable Integer parentId) {
-        return ResponseEntity.ok(inventoryCategoryService.findSubcategories(parentId));
-    }
+
 
     @GetMapping("/by-name/{name}")
     public ResponseEntity<InventoryCategory> getCategoryByName(@PathVariable String name) {
@@ -86,21 +63,6 @@ public class InventoryCategoryController {
     @GetMapping("/most-items")
     public ResponseEntity<List<InventoryCategory>> getCategoriesWithMostItems() {
         return ResponseEntity.ok(inventoryCategoryService.findCategoriesWithMostItems());
-    }
-
-    @GetMapping("/{id}/status")
-    public ResponseEntity<Map<String, Object>> getCategoryStatus(@PathVariable Integer id) {
-        if (!inventoryCategoryService.findCategoryById(id).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found with id: " + id);
-        }
-
-        Map<String, Object> status = new HashMap<>();
-        status.put("categoryId", id);
-        status.put("hasSubcategories", inventoryCategoryService.hasSubcategories(id));
-        status.put("hasItems", inventoryCategoryService.hasItems(id));
-        status.put("itemCount", inventoryCategoryService.countItemsByCategory(id));
-
-        return ResponseEntity.ok(status);
     }
 
     @PostMapping
@@ -171,13 +133,5 @@ public class InventoryCategoryController {
         }
     }
 
-    @PostMapping("/{id}/move-subcategories-to-parent")
-    public ResponseEntity<Void> moveSubcategoriesToParent(@PathVariable Integer id) {
-        try {
-            inventoryCategoryService.moveSubcategoriesToParent(id);
-            return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-    }
+
 }

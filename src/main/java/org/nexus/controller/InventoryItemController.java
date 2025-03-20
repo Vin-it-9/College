@@ -1,349 +1,242 @@
 package org.nexus.controller;
 
-import org.nexus.entity.InventoryCategory;
-import org.nexus.entity.InventoryItem;
-import org.nexus.entity.InventoryStatus;
-import org.nexus.entity.Lab;
+import org.nexus.entity.*;
 import org.nexus.service.InventoryItemService;
+import org.nexus.service.LabService;
+import org.nexus.service.InventoryCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import jakarta.validation.Valid;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-@RestController
-@RequestMapping("/api/inventory/items")
+@Controller
+@RequestMapping("/inventory/items")
 public class InventoryItemController {
 
     private final InventoryItemService inventoryItemService;
+    private final LabService labService;
+    private final InventoryCategoryService categoryService;
 
     @Autowired
-    public InventoryItemController(InventoryItemService inventoryItemService) {
+    public InventoryItemController(InventoryItemService inventoryItemService,
+                                   LabService labService,
+                                   InventoryCategoryService categoryService) {
         this.inventoryItemService = inventoryItemService;
+        this.labService = labService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping
-    public ResponseEntity<List<InventoryItem>> getAllItems() {
-        return ResponseEntity.ok(inventoryItemService.findAllItems());
+    public String getAllItems(Model model) {
+        List<InventoryItem> items = inventoryItemService.findAllItems();
+        model.addAttribute("items", items);
+        return "inventory/list";
     }
 
     @GetMapping("/paged")
-    public ResponseEntity<Page<InventoryItem>> getPagedItems(
+    public String getPagedItems(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy) {
+            @RequestParam(defaultValue = "id") String sortBy,
+            Model model) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return ResponseEntity.ok(inventoryItemService.findAllItems(pageable));
+        Page<InventoryItem> items = inventoryItemService.findAllItems(pageable);
+        model.addAttribute("items", items);
+        return "inventory/paged-list";
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<InventoryItem> getItemById(@PathVariable Integer id) {
-        return inventoryItemService.findItemById(id)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Inventory item not found with id: " + id));
+    public String getItemById(@PathVariable Integer id, Model model) {
+        Optional<InventoryItem> item = inventoryItemService.findItemById(id);
+        if (item.isPresent()) {
+            model.addAttribute("item", item.get());
+            return "inventory/detail";
+        }
+        return "redirect:/inventory/items";
     }
 
-    @GetMapping("/room/{roomId}")
-    public ResponseEntity<List<InventoryItem>> getItemsByRoom(@PathVariable Integer roomId) {
-        return ResponseEntity.ok(inventoryItemService.findItemsByRoom(roomId));
-    }
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
 
-    @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<InventoryItem>> getItemsByCategory(@PathVariable Integer categoryId) {
-        return ResponseEntity.ok(inventoryItemService.findItemsByCategory(categoryId));
-    }
+        List<Lab> labs = labService.findAllLabs();
 
-    @GetMapping("/floor/{floorId}")
-    public ResponseEntity<List<InventoryItem>> getItemsByFloor(@PathVariable Integer floorId) {
-        return ResponseEntity.ok(inventoryItemService.findItemsByFloor(floorId));
-    }
+        List<InventoryCategory> categories = categoryService.findAllCategories();
 
-    @GetMapping("/building/{buildingId}")
-    public ResponseEntity<List<InventoryItem>> getItemsByBuilding(@PathVariable Integer buildingId) {
-        return ResponseEntity.ok(inventoryItemService.findItemsByBuilding(buildingId));
-    }
+        model.addAttribute("item", new InventoryItem());
+        model.addAttribute("labs", labs);
+        model.addAttribute("categories", categories);
+        model.addAttribute("statuses", InventoryStatus.values());
 
-    @GetMapping("/status/{status}")
-    public ResponseEntity<List<InventoryItem>> getItemsByStatus(@PathVariable InventoryStatus status) {
-        return ResponseEntity.ok(inventoryItemService.findItemsByStatus(status));
-    }
+        return "inventory/create-form";
 
-    @GetMapping("/search")
-    public ResponseEntity<List<InventoryItem>> searchItems(@RequestParam String name) {
-        return ResponseEntity.ok(inventoryItemService.findItemsByName(name));
-    }
-
-    @GetMapping("/serial/{serialNumber}")
-    public ResponseEntity<InventoryItem> getItemBySerialNumber(@PathVariable String serialNumber) {
-        return inventoryItemService.findItemBySerialNumber(serialNumber)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found with serial number: " + serialNumber));
-    }
-
-    @GetMapping("/attribute")
-    public ResponseEntity<List<InventoryItem>> getItemsByDetailKeyAndValue(
-            @RequestParam String key,
-            @RequestParam String value) {
-        return ResponseEntity.ok(inventoryItemService.findItemsByDetailKeyAndValue(key, value));
-    }
-
-    @GetMapping("/warranty-expiry")
-    public ResponseEntity<List<InventoryItem>> getItemsWithWarrantyExpiring(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return ResponseEntity.ok(inventoryItemService.findItemsWithWarrantyExpiringBetween(startDate, endDate));
-    }
-
-    @GetMapping("/room/{roomId}/value")
-    public ResponseEntity<Map<String, Object>> getTotalValueByRoom(@PathVariable Integer roomId) {
-        Double value = inventoryItemService.calculateTotalValueByRoom(roomId);
-        Map<String, Object> result = new HashMap<>();
-        result.put("roomId", roomId);
-        result.put("totalValue", value);
-        return ResponseEntity.ok(result);
-    }
-
-    @GetMapping("/room/{roomId}/count")
-    public ResponseEntity<Map<String, Object>> getItemCountByRoom(@PathVariable Integer roomId) {
-        Long count = inventoryItemService.countItemsByRoom(roomId);
-        Map<String, Object> result = new HashMap<>();
-        result.put("roomId", roomId);
-        result.put("itemCount", count);
-        return ResponseEntity.ok(result);
     }
 
     @PostMapping
-    public ResponseEntity<InventoryItem> createItem(
-            @RequestBody Map<String, Object> payload) {
+    public String createItem(@Valid @ModelAttribute InventoryItem item,
+                             @RequestParam Map<String, String> details,
+                             BindingResult result,
+                             RedirectAttributes redirectAttributes) {
+
+        if (result.hasErrors()) {
+            return "inventory/create-form";
+        }
+
         try {
-            // Extract item properties
-            InventoryItem item = new InventoryItem();
+            // Remove non-detail parameters from the map
+            details.remove("_csrf");
+            List<String> fieldsToRemove = List.of("name", "serialNumber", "quantity",
+                    "unitCost", "purchaseDate", "warrantyExpiryDate", "status", "categoryId", "roomId");
+            fieldsToRemove.forEach(details::remove);
 
-            if (payload.containsKey("name")) {
-                item.setName((String) payload.get("name"));
-            }
-
-            if (payload.containsKey("serialNumber")) {
-                item.setSerialNumber((String) payload.get("serialNumber"));
-            }
-
-            if (payload.containsKey("quantity")) {
-                if (payload.get("quantity") instanceof Integer) {
-                    item.setQuantity((Integer) payload.get("quantity"));
-                } else {
-                    item.setQuantity(Integer.valueOf(payload.get("quantity").toString()));
-                }
-            }
-
-            if (payload.containsKey("unitCost")) {
-                if (payload.get("unitCost") instanceof Double) {
-                    item.setUnitCost((Double) payload.get("unitCost"));
-                } else {
-                    item.setUnitCost(Double.valueOf(payload.get("unitCost").toString()));
-                }
-            }
-
-            if (payload.containsKey("purchaseDate")) {
-                String dateStr = (String) payload.get("purchaseDate");
-                item.setPurchaseDate(LocalDate.parse(dateStr));
-            }
-
-            if (payload.containsKey("warrantyExpiryDate")) {
-                String dateStr = (String) payload.get("warrantyExpiryDate");
-                item.setWarrantyExpiryDate(LocalDate.parse(dateStr));
-            }
-
-            if (payload.containsKey("status")) {
-                String statusStr = (String) payload.get("status");
-                item.setStatus(InventoryStatus.valueOf(statusStr));
-            } else {
-                item.setStatus(InventoryStatus.AVAILABLE);
-            }
-
-            // Set category
-            if (payload.containsKey("categoryId")) {
-                InventoryCategory category = new InventoryCategory();
-                Integer categoryId;
-                if (payload.get("categoryId") instanceof Integer) {
-                    categoryId = (Integer) payload.get("categoryId");
-                } else {
-                    categoryId = Integer.valueOf(payload.get("categoryId").toString());
-                }
-                category.setId(categoryId);
-                item.setCategory(category);
-            }
-
-            // Set room
-            if (payload.containsKey("roomId")) {
-                Lab lab = new Lab();
-                Integer roomId;
-                if (payload.get("roomId") instanceof Integer) {
-                    roomId = (Integer) payload.get("roomId");
-                } else {
-                    roomId = Integer.valueOf(payload.get("roomId").toString());
-                }
-                lab.setId(roomId);
-                item.setRoom(lab);
-            }
-
-            // Extract details
-            Map<String, String> details = new HashMap<>();
-            if (payload.containsKey("details") && payload.get("details") instanceof Map) {
-                Map<String, Object> detailsMap = (Map<String, Object>) payload.get("details");
-                for (Map.Entry<String, Object> entry : detailsMap.entrySet()) {
-                    if (entry.getValue() != null) {
-                        details.put(entry.getKey(), entry.getValue().toString());
-                    }
-                }
-            }
-
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(inventoryItemService.createItem(item, details));
+            InventoryItem createdItem = inventoryItemService.createItem(item, details);
+            redirectAttributes.addFlashAttribute("success", "Inventory item created successfully!");
+            return "redirect:/inventory/items/" + createdItem.getId();
         } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            result.rejectValue("serialNumber", "error.item", e.getMessage());
+            return "inventory/create-form";
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<InventoryItem> updateItem(
-            @PathVariable Integer id,
-            @RequestBody Map<String, Object> payload) {
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Integer id, Model model) {
+        Optional<InventoryItem> item = inventoryItemService.findItemById(id);
+        if (item.isPresent()) {
+            InventoryItem inventoryItem = item.get();
+
+            // Format dates if they exist
+            if (inventoryItem.getPurchaseDate() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                model.addAttribute("formattedPurchaseDate",
+                        inventoryItem.getPurchaseDate().format(formatter));
+            }
+
+            if (inventoryItem.getWarrantyExpiryDate() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                model.addAttribute("formattedWarrantyDate",
+                        inventoryItem.getWarrantyExpiryDate().format(formatter));
+            }
+
+            List<Lab> labs = labService.findAllLabs();
+            List<InventoryCategory> categories = categoryService.findAllCategories();
+
+            model.addAttribute("item", inventoryItem);
+            model.addAttribute("labs", labs);
+            model.addAttribute("categories", categories);
+            model.addAttribute("statuses", InventoryStatus.values());
+
+            return "inventory/edit-form";
+        }
+        return "redirect:/inventory/items";
+    }
+
+    @PostMapping("/{id}")
+    public String updateItem(@PathVariable Integer id,
+                             @Valid @ModelAttribute InventoryItem itemDetails,
+                             @RequestParam Map<String, String> details,
+                             BindingResult result,
+                             RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "inventory/edit-form";
+        }
+
         try {
-            // Extract item properties
-            InventoryItem item = new InventoryItem();
-            item.setId(id);
+            // Remove non-detail parameters from the map
+            details.remove("_csrf");
+            List<String> fieldsToRemove = List.of("name", "serialNumber", "quantity",
+                    "unitCost", "purchaseDate", "warrantyExpiryDate", "status", "categoryId", "roomId");
+            fieldsToRemove.forEach(details::remove);
 
-            if (payload.containsKey("name")) {
-                item.setName((String) payload.get("name"));
-            }
-
-            if (payload.containsKey("serialNumber")) {
-                item.setSerialNumber((String) payload.get("serialNumber"));
-            }
-
-            if (payload.containsKey("quantity")) {
-                if (payload.get("quantity") instanceof Integer) {
-                    item.setQuantity((Integer) payload.get("quantity"));
-                } else {
-                    item.setQuantity(Integer.valueOf(payload.get("quantity").toString()));
-                }
-            }
-
-            if (payload.containsKey("unitCost")) {
-                if (payload.get("unitCost") instanceof Double) {
-                    item.setUnitCost((Double) payload.get("unitCost"));
-                } else {
-                    item.setUnitCost(Double.valueOf(payload.get("unitCost").toString()));
-                }
-            }
-
-            if (payload.containsKey("purchaseDate")) {
-                String dateStr = (String) payload.get("purchaseDate");
-                item.setPurchaseDate(LocalDate.parse(dateStr));
-            }
-
-            if (payload.containsKey("warrantyExpiryDate")) {
-                String dateStr = (String) payload.get("warrantyExpiryDate");
-                item.setWarrantyExpiryDate(LocalDate.parse(dateStr));
-            }
-
-            if (payload.containsKey("status")) {
-                String statusStr = (String) payload.get("status");
-                item.setStatus(InventoryStatus.valueOf(statusStr));
-            }
-
-            // Set category
-            if (payload.containsKey("categoryId")) {
-                InventoryCategory category = new InventoryCategory();
-                Integer categoryId;
-                if (payload.get("categoryId") instanceof Integer) {
-                    categoryId = (Integer) payload.get("categoryId");
-                } else {
-                    categoryId = Integer.valueOf(payload.get("categoryId").toString());
-                }
-                category.setId(categoryId);
-                item.setCategory(category);
-            }
-
-            // Set room
-            if (payload.containsKey("roomId")) {
-                Lab lab = new Lab();
-                Integer roomId;
-                if (payload.get("roomId") instanceof Integer) {
-                    roomId = (Integer) payload.get("roomId");
-                } else {
-                    roomId = Integer.valueOf(payload.get("roomId").toString());
-                }
-                lab.setId(roomId);
-                item.setRoom(lab);
-            }
-
-            // Extract details
-            Map<String, String> details = null;
-            if (payload.containsKey("details") && payload.get("details") instanceof Map) {
-                details = new HashMap<>();
-                Map<String, Object> detailsMap = (Map<String, Object>) payload.get("details");
-                for (Map.Entry<String, Object> entry : detailsMap.entrySet()) {
-                    if (entry.getValue() != null) {
-                        details.put(entry.getKey(), entry.getValue().toString());
-                    } else {
-                        details.put(entry.getKey(), null);
-                    }
-                }
-            }
-
-            return ResponseEntity.ok(inventoryItemService.updateItem(id, item, details));
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            InventoryItem updatedItem = inventoryItemService.updateItem(id, itemDetails, details);
+            redirectAttributes.addFlashAttribute("success", "Inventory item updated successfully!");
+            return "redirect:/inventory/items/" + updatedItem.getId();
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/inventory/items/" + id + "/edit";
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteItem(@PathVariable Integer id) {
+    @PostMapping("/{id}/delete")
+    public String deleteItem(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         try {
             inventoryItemService.deleteItem(id);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            redirectAttributes.addFlashAttribute("success", "Inventory item deleted successfully!");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
+        return "redirect:/inventory/items";
+    }
+
+    @GetMapping("/search")
+    public String searchItems(@RequestParam String query, Model model) {
+        List<InventoryItem> items = inventoryItemService.findItemsByName(query);
+        model.addAttribute("items", items);
+        model.addAttribute("searchTerm", query);
+        return "inventory/search-results";
+    }
+
+    @GetMapping("/transfer")
+    public String showTransferForm(Model model) {
+        List<Lab> labs = labService.findAllLabs();
+        model.addAttribute("labs", labs);
+        return "inventory/transfer-form";
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<Void> transferItems(
-            @RequestParam Integer fromRoomId,
-            @RequestParam Integer toRoomId,
-            @RequestBody List<Integer> itemIds) {
+    public String transferItems(@RequestParam Integer fromRoomId,
+                                @RequestParam Integer toRoomId,
+                                @RequestParam List<Integer> itemIds,
+                                RedirectAttributes redirectAttributes) {
         try {
             inventoryItemService.transferItems(fromRoomId, toRoomId, itemIds);
-            return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            redirectAttributes.addFlashAttribute("success", "Items transferred successfully!");
+            return "redirect:/inventory/items";
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/inventory/items/transfer";
         }
     }
 
-    @PutMapping("/{id}/status")
-    public ResponseEntity<InventoryItem> updateItemStatus(
-            @PathVariable Integer id,
-            @RequestParam InventoryStatus status) {
-        try {
-            InventoryItem item = new InventoryItem();
-            item.setId(id);
-            item.setStatus(status);
-            return ResponseEntity.ok(inventoryItemService.updateItem(id, item, null));
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    @GetMapping("/warranty-expiring")
+    public String getItemsWithWarrantyExpiring(
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate,
+            Model model) {
+        if (startDate == null) {
+            startDate = LocalDate.now();
         }
+        if (endDate == null) {
+            endDate = LocalDate.now().plusMonths(3);
+        }
+
+        List<InventoryItem> items = inventoryItemService
+                .findItemsWithWarrantyExpiringBetween(startDate, endDate);
+
+        model.addAttribute("items", items);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+
+        return "inventory/warranty-expiring";
+
     }
 
+    @GetMapping("/status/{status}")
+    public String getItemsByStatus(@PathVariable InventoryStatus status, Model model) {
+        List<InventoryItem> items = inventoryItemService.findItemsByStatus(status);
+        model.addAttribute("items", items);
+        model.addAttribute("currentStatus", status);
+        model.addAttribute("allStatuses", InventoryStatus.values());
+        return "inventory/status-list";
+    }
 
 }

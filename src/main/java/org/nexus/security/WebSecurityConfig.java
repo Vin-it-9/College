@@ -40,11 +40,11 @@ public class WebSecurityConfig {
     @Bean
     SecurityFilterChain configureHttp(HttpSecurity http) throws Exception {
         http.authenticationProvider(authenticationProvider());
-
         http.csrf().disable()
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/departments/**").permitAll()
                         .requestMatchers("/buildings/**").permitAll()
+                        .requestMatchers("/inventory/**").permitAll()
                         .requestMatchers("/labs/**").permitAll() // Allow all requests to /api/**
                         .requestMatchers("/Users/**").hasAuthority("Admin")
                         .requestMatchers("/images/**", "/js/**", "/webjars/**").permitAll()

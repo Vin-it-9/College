@@ -21,11 +21,6 @@ public class InventoryCategory {
     @Column(length = 200)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "childCategories"})
-    private InventoryCategory parentCategory;
-
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("category")
     private Set<InventoryItem> items = new HashSet<>();
@@ -54,15 +49,6 @@ public class InventoryCategory {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public InventoryCategory getParentCategory() {
-        return parentCategory;
-    }
-
-    public void setParentCategory(InventoryCategory parentCategory) {
-        this.parentCategory = parentCategory;
-    }
-
 
     public Set<InventoryItem> getItems() {
         return items;

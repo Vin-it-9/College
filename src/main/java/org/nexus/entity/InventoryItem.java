@@ -2,6 +2,7 @@ package org.nexus.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -28,9 +29,11 @@ public class InventoryItem {
     private Double unitCost;
 
     @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate purchaseDate;
 
     @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate warrantyExpiryDate;
 
     @Enumerated(EnumType.STRING)
@@ -46,6 +49,14 @@ public class InventoryItem {
     @JoinColumn(name = "lab_id")
     @JsonIgnoreProperties("inventoryItems")
     private Lab lab;
+
+    public Lab getLab() {
+        return lab;
+    }
+
+    public void setLab(Lab lab) {
+        this.lab = lab;
+    }
 
     @OneToMany(mappedBy = "inventoryItem", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("inventoryItem")
@@ -125,13 +136,6 @@ public class InventoryItem {
         this.category = category;
     }
 
-    public Lab getRoom() {
-        return lab;
-    }
-
-    public void setRoom(Lab lab) {
-        this.lab = lab;
-    }
 
     public Set<InventoryItemDetail> getDetails() {
         return details;
