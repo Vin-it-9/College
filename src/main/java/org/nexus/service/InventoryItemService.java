@@ -1,6 +1,11 @@
 package org.nexus.service;
 
 import org.nexus.entity.*;
+import org.nexus.entity.transferDTO.TransferResult;
+import org.nexus.entity.transferDTO.TransferValidationResult;
+import org.nexus.exception.ItemNotFoundException;
+import org.nexus.exception.LabNotFoundException;
+import org.nexus.exception.TransferValidationException;
 import org.nexus.repository.InventoryCategoryRepository;
 import org.nexus.repository.InventoryItemDetailRepository;
 import org.nexus.repository.InventoryItemRepository;
@@ -287,18 +292,31 @@ public class InventoryItemService {
         }
     }
 
+    public List<InventoryItem> findItemsByLabId(Integer labId) {
+        return inventoryItemRepository.findByLabId(labId);
+    }
+
+    // New method to find all available items
+    public List<InventoryItem> findAllAvailableItems() {
+        return inventoryItemRepository.findByStatus(InventoryStatus.AVAILABLE);
+    }
+
     @Transactional
-    public void transferItems(Integer fromRoomId, Integer toRoomId, List<Integer> itemIds) {
+    public TransferResult transferItems(Integer fromRoomId, Integer toRoomId, List<Integer> itemIds) {
         if (itemIds == null || itemIds.isEmpty()) {
             throw new IllegalArgumentException("No items specified for transfer");
         }
 
+        // Get source and destination labs
+        Lab fromLab = roomRepository.findById(fromRoomId)
+                .orElseThrow(() -> new LabNotFoundException("Source room not found with id: " + fromRoomId));
+
         Lab toLab = roomRepository.findById(toRoomId)
-                .orElseThrow(() -> new IllegalArgumentException("Destination room not found with id: " + toRoomId));
+                .orElseThrow(() -> new LabNotFoundException("Destination room not found with id: " + toRoomId));
 
         List<InventoryItem> items = inventoryItemRepository.findAllById(itemIds);
         if (items.size() != itemIds.size()) {
-            throw new IllegalArgumentException("One or more items not found");
+            throw new ItemNotFoundException("One or more items not found");
         }
 
         // Check if all items are from the same room
@@ -308,8 +326,10 @@ public class InventoryItemService {
                 .collect(Collectors.toSet());
 
         if (!uniqueRoomIds.isEmpty() && (uniqueRoomIds.size() > 1 || !uniqueRoomIds.contains(fromRoomId))) {
-            throw new IllegalArgumentException("Items must all be from the source room");
+            throw new TransferValidationException("Items must all be from the source room");
         }
+
+        List<String> warnings = new ArrayList<>();
 
         // Transfer items
         for (InventoryItem item : items) {
@@ -317,9 +337,56 @@ public class InventoryItemService {
         }
 
         inventoryItemRepository.saveAll(items);
+
+        return new TransferResult(
+                items.size(),
+                fromLab.getLabName(),
+                toLab.getLabName(),
+                warnings
+        );
+
     }
 
-    // Helper method to validate inventory item
+    // New method to validate transfer
+    public TransferValidationResult validateTransfer(Integer fromLabId, Integer toLabId, List<Integer> itemIds) {
+        List<String> messages = new ArrayList<>();
+        boolean isValid = true;
+
+        try {
+            // Check if labs exist
+            Lab fromLab = roomRepository.findById(fromLabId)
+                    .orElseThrow(() -> new LabNotFoundException("Source lab not found"));
+            Lab toLab = roomRepository.findById(toLabId)
+                    .orElseThrow(() -> new LabNotFoundException("Destination lab not found"));
+
+            // Check if items exist and are in the source lab
+            List<InventoryItem> items = inventoryItemRepository.findAllById(itemIds);
+
+            if (items.size() != itemIds.size()) {
+                isValid = false;
+                messages.add("One or more items not found");
+            }
+
+            // Validate items are in source lab
+            List<InventoryItem> invalidItems = items.stream()
+                    .filter(item -> !fromLabId.equals(item.getLab().getId()))
+                    .collect(Collectors.toList());
+
+            if (!invalidItems.isEmpty()) {
+                isValid = false;
+                messages.add("Some items are not in the source lab");
+            }
+
+            return new TransferValidationResult(isValid, messages, items);
+
+        } catch (Exception e) {
+            return new TransferValidationResult(false,
+                    Collections.singletonList(e.getMessage()),
+                    Collections.emptyList());
+        }
+
+    }
+
     private void validateItem(InventoryItem item) {
         if (item == null) {
             throw new IllegalArgumentException("Inventory item cannot be null");
@@ -359,4 +426,5 @@ public class InventoryItemService {
             }
         }
     }
+
 }

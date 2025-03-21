@@ -5,10 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="inventory with Frontend">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/search-results.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/transferDTO/TransferResult.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/transferDTO/TransferValidationResult.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/exception/ItemNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/exception/LabNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/exception/TransferValidationException.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/transfer-form.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/repository/InventoryItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/InventoryItemRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryItemController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/service/InventoryItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/InventoryItemService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" afterDir="false" />
     </list>
@@ -23,8 +27,9 @@
         <option value="Enum" />
         <option value="Record" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="HTML File" />
+        <option value="Exception" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -130,7 +135,7 @@
       <workItem from="1742454221231" duration="741000" />
       <workItem from="1742456068488" duration="157000" />
       <workItem from="1742488164639" duration="6665000" />
-      <workItem from="1742540054311" duration="2994000" />
+      <workItem from="1742540054311" duration="5356000" />
     </task>
     <task id="LOCAL-00001" summary="commit inventory">
       <option name="closed" value="true" />
@@ -236,7 +241,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742541189022</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="inventory with Frontend">
+      <option name="closed" value="true" />
+      <created>1742543103514</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1742543103515</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

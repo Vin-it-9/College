@@ -1,11 +1,13 @@
 package org.nexus.controller;
 
 import org.nexus.entity.*;
-import org.nexus.service.InventoryItemService;
-import org.nexus.service.LabService;
-import org.nexus.service.InventoryCategoryService;
+import org.nexus.entity.transferDTO.TransferResult;
+import org.nexus.entity.transferDTO.TransferValidationResult;
+import org.nexus.exception.*;
+import org.nexus.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,11 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
+import java.util.*;
 
 @Controller
 @RequestMapping("/inventory/items")
@@ -70,9 +71,7 @@ public class InventoryItemController {
     public String showCreateForm(Model model) {
 
         List<Lab> labs = labService.findAllLabs();
-
         List<InventoryCategory> categories = categoryService.findAllCategories();
-
         model.addAttribute("item", new InventoryItem());
         model.addAttribute("labs", labs);
         model.addAttribute("categories", categories);
@@ -93,7 +92,6 @@ public class InventoryItemController {
         }
 
         try {
-            // Remove non-detail parameters from the map
             details.remove("_csrf");
             List<String> fieldsToRemove = List.of("name", "serialNumber", "quantity",
                     "unitCost", "purchaseDate", "warrantyExpiryDate", "status", "categoryId", "roomId");
@@ -106,27 +104,28 @@ public class InventoryItemController {
             result.rejectValue("serialNumber", "error.item", e.getMessage());
             return "inventory/create-form";
         }
+
     }
 
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Integer id, Model model) {
+
         Optional<InventoryItem> item = inventoryItemService.findItemById(id);
+
         if (item.isPresent()) {
+
             InventoryItem inventoryItem = item.get();
 
-            // Format dates if they exist
             if (inventoryItem.getPurchaseDate() != null) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 model.addAttribute("formattedPurchaseDate",
                         inventoryItem.getPurchaseDate().format(formatter));
             }
-
             if (inventoryItem.getWarrantyExpiryDate() != null) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 model.addAttribute("formattedWarrantyDate",
                         inventoryItem.getWarrantyExpiryDate().format(formatter));
             }
-
             List<Lab> labs = labService.findAllLabs();
             List<InventoryCategory> categories = categoryService.findAllCategories();
 
@@ -136,8 +135,11 @@ public class InventoryItemController {
             model.addAttribute("statuses", InventoryStatus.values());
 
             return "inventory/edit-form";
+
         }
+
         return "redirect:/inventory/items";
+
     }
 
     @PostMapping("/{id}")
@@ -151,7 +153,6 @@ public class InventoryItemController {
         }
 
         try {
-            // Remove non-detail parameters from the map
             details.remove("_csrf");
             List<String> fieldsToRemove = List.of("name", "serialNumber", "quantity",
                     "unitCost", "purchaseDate", "warrantyExpiryDate", "status", "categoryId", "roomId");
@@ -185,27 +186,115 @@ public class InventoryItemController {
         return "inventory/search-results";
     }
 
+
     @GetMapping("/transfer")
     public String showTransferForm(Model model) {
-        List<Lab> labs = labService.findAllLabs();
-        model.addAttribute("labs", labs);
-        return "inventory/transfer-form";
+        try {
+            // Get all labs
+            List<Lab> labs = labService.findAllLabs();
+            if (labs.isEmpty()) {
+                model.addAttribute("error", "No labs available for transfer");
+                return "inventory/transfer-form";
+            }
+
+            // Get all available items
+            List<InventoryItem> availableItems = inventoryItemService.findAllAvailableItems();
+
+            model.addAttribute("labs", labs);
+            model.addAttribute("availableItems", availableItems);
+            model.addAttribute("currentDate", LocalDateTime.now());
+
+            // Add any existing flash attributes
+            return "inventory/transfer-form";
+        } catch (Exception e) {
+            model.addAttribute("error", "Error loading transfer form: " + e.getMessage());
+            return "inventory/transfer-form";
+        }
+    }
+
+    @GetMapping("/transfer/items")
+    @ResponseBody
+    public ResponseEntity<?> getItemsByLab(@RequestParam Integer labId) {
+        try {
+            List<InventoryItem> items = inventoryItemService.findItemsByLabId(labId);
+            return ResponseEntity.ok(items);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", "Error fetching items: " + e.getMessage()));
+        }
     }
 
     @PostMapping("/transfer")
-    public String transferItems(@RequestParam Integer fromRoomId,
-                                @RequestParam Integer toRoomId,
-                                @RequestParam List<Integer> itemIds,
-                                RedirectAttributes redirectAttributes) {
+    public String transferItems(
+            @RequestParam Integer fromLabId,
+            @RequestParam Integer toLabId,
+            @RequestParam(required = false) List<Integer> itemIds,
+            RedirectAttributes redirectAttributes) {
+
+        // Validation
+        if (fromLabId.equals(toLabId)) {
+            redirectAttributes.addFlashAttribute("error", "Source and destination labs cannot be the same");
+            return "redirect:/inventory/items/transfer";
+        }
+
+        if (itemIds == null || itemIds.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "No items selected for transfer");
+            return "redirect:/inventory/items/transfer";
+        }
+
         try {
-            inventoryItemService.transferItems(fromRoomId, toRoomId, itemIds);
-            redirectAttributes.addFlashAttribute("success", "Items transferred successfully!");
+            // Create transfer record
+            TransferResult result = inventoryItemService.transferItems(fromLabId, toLabId, itemIds);
+
+            // Add success message with details
+            redirectAttributes.addFlashAttribute("success",
+                    String.format("Successfully transferred %d items from %s to %s",
+                            result.getTransferredCount(),
+                            result.getFromLabName(),
+                            result.getToLabName()));
+
+            // Add any warnings if partial transfer
+            if (result.hasWarnings()) {
+                redirectAttributes.addFlashAttribute("warnings", result.getWarnings());
+            }
+
             return "redirect:/inventory/items";
-        } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
+
+        } catch (LabNotFoundException e) {
+            redirectAttributes.addFlashAttribute("error", "Lab not found: " + e.getMessage());
+            return "redirect:/inventory/items/transfer";
+        } catch (ItemNotFoundException e) {
+            redirectAttributes.addFlashAttribute("error", "Item not found: " + e.getMessage());
+            return "redirect:/inventory/items/transfer";
+        } catch (TransferValidationException e) {
+            redirectAttributes.addFlashAttribute("error", "Transfer validation failed: " + e.getMessage());
+            return "redirect:/inventory/items/transfer";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "An unexpected error occurred: " + e.getMessage());
             return "redirect:/inventory/items/transfer";
         }
     }
+
+    // Add a method to validate transfer before submission
+    @PostMapping("/transfer/validate")
+    @ResponseBody
+    public ResponseEntity<?> validateTransfer(
+            @RequestParam Integer fromLabId,
+            @RequestParam Integer toLabId,
+            @RequestParam List<Integer> itemIds) {
+
+        try {
+
+            TransferValidationResult validationResult =  inventoryItemService.validateTransfer(fromLabId, toLabId, itemIds);
+
+            return ResponseEntity.ok(validationResult);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+
 
     @GetMapping("/warranty-expiring")
     public String getItemsWithWarrantyExpiring(
