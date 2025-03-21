@@ -12,9 +12,10 @@ public class CollegeInventoryApplication {
 
 		SpringApplication.run(CollegeInventoryApplication.class, args);
 
-		System.out.println("CollegeInventoryApplication started");
+		System.out.println("Application started");
 		System.out.println("http://localhost:8080/NexkartAdmin");
 
+		
 	}
 
 }

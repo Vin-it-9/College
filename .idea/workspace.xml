@@ -4,25 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="inventory RestAPI created">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/create-form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/detail.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/edit-form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/paged-list.html" afterDir="false" />
+    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="inventory with Frontend">
       <change afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/search-results.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/status-list.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/transfer-form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/warranty-expiring.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryCategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryCategoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryCategory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/repository/InventoryCategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/InventoryCategoryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/service/InventoryCategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/InventoryCategoryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/service/InventoryItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/InventoryItemService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/CollegeInventoryApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/CollegeInventoryApplication.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +128,8 @@
       <workItem from="1742403136845" duration="10424000" />
       <workItem from="1742454221231" duration="741000" />
       <workItem from="1742456068488" duration="157000" />
-      <workItem from="1742488164639" duration="6225000" />
+      <workItem from="1742488164639" duration="6665000" />
+      <workItem from="1742540054311" duration="1093000" />
     </task>
     <task id="LOCAL-00001" summary="commit inventory">
       <option name="closed" value="true" />
@@ -231,7 +219,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742413592590</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="inventory with Frontend">
+      <option name="closed" value="true" />
+      <created>1742494645852</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1742494645852</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -255,6 +251,7 @@
     <MESSAGE value="lab code done" />
     <MESSAGE value="lab authentication work done" />
     <MESSAGE value="inventory RestAPI created" />
-    <option name="LAST_COMMIT_MESSAGE" value="inventory RestAPI created" />
+    <MESSAGE value="inventory with Frontend" />
+    <option name="LAST_COMMIT_MESSAGE" value="inventory with Frontend" />
   </component>
 </project>

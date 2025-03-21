@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warranty Expiring Items</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body class="bg-gray-50">
+<div class="container mx-auto px-4 py-8">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+        <div class="flex items-center space-x-4 mb-4 md:mb-0">
+            <h1 class="text-3xl font-bold text-gray-900">
+                <i class="fas fa-clock text-yellow-500 mr-2"></i>
+                Warranty Expiring Items
+            </h1>
+            <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold">
+                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                    <span th:text="${#lists.size(items)} + ' items'"></span>
+                </span>
+        </div>
+
+        <a href="/inventory/items"
+           class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+            <i class="fas fa-arrow-left mr-2"></i> Back to List
+        </a>
+    </div>
+
+    <!-- Date Range Filter -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <form th:action="@{/inventory/items/warranty-expiring}" method="get" class="flex flex-col md:flex-row md:items-end space-y-4 md:space-y-0 md:space-x-4">
+            <div class="flex-1">
+                <label for="startDate" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                <input type="date" id="startDate" name="startDate"
+                       th:value="${#temporals.format(startDate, 'yyyy-MM-dd')}"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="flex-1">
+                <label for="endDate" class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                <input type="date" id="endDate" name="endDate"
+                       th:value="${#temporals.format(endDate, 'yyyy-MM-dd')}"
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="flex space-x-2">
+                <button type="submit"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                    <i class="fas fa-filter mr-2"></i> Filter
+                </button>
+                <a th:href="@{/inventory/items/warranty-expiring}"
+                   class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+                    <i class="fas fa-sync-alt mr-2"></i> Reset
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Quick Filter Buttons -->
+    <div class="flex flex-wrap gap-2 mb-6">
+        <a th:href="@{/inventory/items/warranty-expiring(startDate=${#temporals.format(T(java.time.LocalDate).now(), 'yyyy-MM-dd')},endDate=${#temporals.format(T(java.time.LocalDate).now().plusDays(30), 'yyyy-MM-dd')})}"
+           class="bg-red-100 text-red-800 hover:bg-red-200 px-4 py-2 rounded-full text-sm font-semibold">
+            Next 30 Days
+        </a>
+        <a th:href="@{/inventory/items/warranty-expiring(startDate=${#temporals.format(T(java.time.LocalDate).now(), 'yyyy-MM-dd')},endDate=${#temporals.format(T(java.time.LocalDate).now().plusMonths(3), 'yyyy-MM-dd')})}"
+           class="bg-yellow-100 text-yellow-800 hover:bg-yellow-200 px-4 py-2 rounded-full text-sm font-semibold">
+            Next 3 Months
+        </a>
+        <a th:href="@{/inventory/items/warranty-expiring(startDate=${#temporals.format(T(java.time.LocalDate).now(), 'yyyy-MM-dd')},endDate=${#temporals.format(T(java.time.LocalDate).now().plusMonths(6), 'yyyy-MM-dd')})}"
+           class="bg-green-100 text-green-800 hover:bg-green-200 px-4 py-2 rounded-full text-sm font-semibold">
+            Next 6 Months
+        </a>
+    </div>
+
+    <!-- Items Table -->
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item Name</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Serial Number</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Warranty Expiry</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days Left</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                <tr th:if="${#lists.isEmpty(items)}">
+                    <td colspan="7" class="px-6 py-8 text-center text-gray-500">
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-check-circle text-4xl mb-2 text-green-500"></i>
+                            <p class="text-lg">No items with warranty expiring in the selected date range</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:each="item : ${items}" class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900" th:text="${item.name}">-</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900" th:text="${item.serialNumber ?: '-'}">-</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900" th:text="${item.category?.name ?: '-'}">-</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900" th:text="${item.lab?.labName ?: '-'}">-</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm"
+                             th:text="${#temporals.format(item.warrantyExpiryDate, 'MMM dd, yyyy')}"
+                             th:classappend="${item.warrantyExpiryDate.isBefore(T(java.time.LocalDate).now()) ? 'text-red-600 font-semibold' : 'text-gray-900'}">
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div th:with="daysLeft=${T(java.time.temporal.ChronoUnit).DAYS.between(T(java.time.LocalDate).now(), item.warrantyExpiryDate)}"
+                             th:class="${daysLeft <= 30 ? 'text-red-600' : (daysLeft <= 90 ? 'text-yellow-600' : 'text-green-600')}"
+                             class="text-sm font-semibold">
+                            <span th:if="${daysLeft < 0}" th:text="'Expired ' + (-daysLeft) + ' days ago'"></span>
+                            <span th:if="${daysLeft >= 0}" th:text="${daysLeft} + ' days left'"></span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div class="flex space-x-2">
+                            <a th:href="@{/inventory/items/{id}(id=${item.id})}"
+                               class="text-blue-600 hover:text-blue-900">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a th:href="@{/inventory/items/{id}/edit(id=${item.id})}"
+                               class="text-green-600 hover:text-green-900">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-red-50 p-4 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-red-700">Expired</h3>
+            <p class="text-2xl font-bold text-red-800"
+               th:text="${#lists.size(items.?[warrantyExpiryDate.isBefore(T(java.time.LocalDate).now())])}">0</p>
+        </div>
+        <div class="bg-yellow-50 p-4 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-yellow-700">Expiring in 30 Days</h3>
+            <p class="text-2xl font-bold text-yellow-800"
+               th:text="${#lists.size(items.?[warrantyExpiryDate.isBefore(T(java.time.LocalDate).now().plusDays(30))])}">0</p>
+        </div>
+        <div class="bg-blue-50 p-4 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-blue-700">Expiring in 90 Days</h3>
+            <p class="text-2xl font-bold text-blue-800"
+               th:text="${#lists.size(items.?[warrantyExpiryDate.isBefore(T(java.time.LocalDate).now().plusDays(90))])}">0</p>
+        </div>
+        <div class="bg-green-50 p-4 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-green-700">Total Items</h3>
+            <p class="text-2xl font-bold text-green-800" th:text="${#lists.size(items)}">0</p>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    // Initialize date pickers
+    flatpickr("#startDate", {
+        dateFormat: "Y-m-d",
+        defaultDate: document.getElementById('startDate').value,
+        onChange: function(selectedDates, dateStr) {
+            const endDatePicker = document.getElementById('endDate')._flatpickr;
+            endDatePicker.set('minDate', dateStr);
+        }
+    });
+
+    flatpickr("#endDate", {
+        dateFormat: "Y-m-d",
+        defaultDate: document.getElementById('endDate').value,
+        onChange: function(selectedDates, dateStr) {
+            const startDatePicker = document.getElementById('startDate')._flatpickr;
+            startDatePicker.set('maxDate', dateStr);
+        }
+    });
+</script>
+</body>
+</html>
