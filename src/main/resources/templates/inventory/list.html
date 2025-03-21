@@ -11,7 +11,7 @@
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold text-gray-900">Inventory Items</h1>
         <a href="/inventory/items/new"
-           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
+           class="bg-blue-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
             Add New Item
         </a>
     </div>
@@ -37,6 +37,7 @@
     </div>
 
     <!-- Filters -->
+    <div class="flex justify-start items-center ">
     <div class="mb-6 flex gap-4">
         <select onchange="window.location.href=this.value"
                 class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -46,6 +47,14 @@
                     th:text="${status.name()}">
             </option>
         </select>
+    </div>
+
+    <div class="mb-6 flex gap-4 ml-5">
+        <a href="/inventory/items/warranty-expiring"
+           class="bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
+            Check for Warranty
+        </a>
+    </div>
     </div>
 
     <!-- Items Table -->

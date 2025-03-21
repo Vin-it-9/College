@@ -2,6 +2,7 @@ package org.nexus.repository;
 
 import org.nexus.entity.*;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -16,6 +17,16 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, In
     List<InventoryItem> findByStatus(InventoryStatus status);
 
     Optional<InventoryItem> findBySerialNumber(String serialNumber);
+
+
+    @Query("SELECT DISTINCT i FROM InventoryItem i " +
+            "LEFT JOIN i.category c " +
+            "LEFT JOIN i.lab r " +
+            "WHERE LOWER(i.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+            "OR LOWER(i.serialNumber) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+            "OR LOWER(c.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+            "OR LOWER(r.labName) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
+    List<InventoryItem> searchItemsByAnyField(@Param("searchTerm") String searchTerm);
 
     List<InventoryItem> findByNameContainingIgnoreCase(String name);
 
@@ -39,10 +50,6 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, In
 
     @Query("SELECT i FROM InventoryItem i WHERE EXISTS (SELECT d FROM InventoryItemDetail d WHERE d.inventoryItem = i AND d.keyName = :key AND d.value = :value)")
     List<InventoryItem> findByItemDetailKeyAndValue(String key, String value);
-
-    @Query("SELECT DISTINCT i.lab FROM InventoryItem i WHERE i.category.id = :categoryId")
-    List<Object[]> findRoomsByCategory(Integer categoryId);
-
 
     List<InventoryItem> lab(Lab lab);
 

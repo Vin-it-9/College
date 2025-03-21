@@ -66,8 +66,11 @@ public class InventoryItemService {
         return inventoryItemRepository.findByBuildingId(buildingId);
     }
 
-    public List<InventoryItem> findItemsByName(String name) {
-        return inventoryItemRepository.findByNameContainingIgnoreCase(name);
+    public List<InventoryItem> findItemsByName(String searchTerm) {
+        if (searchTerm == null || searchTerm.trim().isEmpty()) {
+            return new ArrayList<>();
+        }
+        return inventoryItemRepository.searchItemsByAnyField(searchTerm.trim());
     }
 
     public Optional<InventoryItem> findItemBySerialNumber(String serialNumber) {
