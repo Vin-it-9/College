@@ -17,9 +17,8 @@
     </div>
 
     <!-- Error Messages -->
-    <div th:if="${error}" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
-        <p th:text="${error}"></p>
-    </div>
+    <div th:replace="~{fragments/messages :: alertMessages}"></div>
+
 
     <div class="bg-white shadow-md rounded-lg p-6">
         <form th:action="@{/inventory/items/{id}(id=${item.id})}" th:object="${item}" method="post" class="space-y-6">

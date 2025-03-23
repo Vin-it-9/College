@@ -48,12 +48,7 @@
     </div>
 
     <!-- Alert Messages -->
-    <div th:if="${success}" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
-        <p th:text="${success}"></p>
-    </div>
-    <div th:if="${error}" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
-        <p th:text="${error}"></p>
-    </div>
+    <div th:replace="~{fragments/messages :: alertMessages}"></div>
 
     <!-- Items Table -->
     <div class="bg-white shadow-md rounded-lg overflow-hidden">

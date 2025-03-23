@@ -50,6 +50,7 @@ public class Lab {
 
     @OneToMany(mappedBy = "lab", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("lab")
+    @JsonManagedReference
     private Set<InventoryItem> inventoryItems = new HashSet<>();
 
     @Column(nullable = true , length = 200)

@@ -1,5 +1,6 @@
 package org.nexus.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -47,6 +48,7 @@ public class InventoryItem {
 
     @ManyToOne
     @JoinColumn(name = "lab_id")
+    @JsonBackReference
     @JsonIgnoreProperties("inventoryItems")
     private Lab lab;
 

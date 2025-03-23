@@ -5,16 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="inventory with Frontend">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/transferDTO/TransferResult.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/transferDTO/TransferValidationResult.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/exception/ItemNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/exception/LabNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/exception/TransferValidationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/messages.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/transfer-form.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/service/InventoryItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/InventoryItemService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Lab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Lab.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/buildings/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/buildings/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/buildings/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/buildings/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/departments/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/departments/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/create-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/create-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/edit-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/edit-form.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/status-list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/status-list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/create-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/create-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/edit-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/edit-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,9 +34,9 @@
         <option value="Enum" />
         <option value="Record" />
         <option value="Interface" />
-        <option value="HTML File" />
         <option value="Exception" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -135,7 +142,11 @@
       <workItem from="1742454221231" duration="741000" />
       <workItem from="1742456068488" duration="157000" />
       <workItem from="1742488164639" duration="6665000" />
-      <workItem from="1742540054311" duration="5356000" />
+      <workItem from="1742540054311" duration="6649000" />
+      <workItem from="1742587560864" duration="481000" />
+      <workItem from="1742591996491" duration="204000" />
+      <workItem from="1742592293330" duration="98000" />
+      <workItem from="1742709963351" duration="758000" />
     </task>
     <task id="LOCAL-00001" summary="commit inventory">
       <option name="closed" value="true" />
@@ -249,7 +260,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742543103515</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="inventory with Frontend">
+      <option name="closed" value="true" />
+      <created>1742545480020</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1742545480020</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
