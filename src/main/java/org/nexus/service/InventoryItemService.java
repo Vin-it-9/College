@@ -3,13 +3,8 @@ package org.nexus.service;
 import org.nexus.entity.*;
 import org.nexus.entity.transferDTO.TransferResult;
 import org.nexus.entity.transferDTO.TransferValidationResult;
-import org.nexus.exception.ItemNotFoundException;
-import org.nexus.exception.LabNotFoundException;
-import org.nexus.exception.TransferValidationException;
-import org.nexus.repository.InventoryCategoryRepository;
-import org.nexus.repository.InventoryItemDetailRepository;
-import org.nexus.repository.InventoryItemRepository;
-import org.nexus.repository.LabRepository;
+import org.nexus.exception.*;
+import org.nexus.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,16 +22,18 @@ public class InventoryItemService {
     private final InventoryItemDetailRepository inventoryItemDetailRepository;
     private final InventoryCategoryRepository inventoryCategoryRepository;
     private final LabRepository roomRepository;
+    private final DepartmentRepository departmentRepository;
 
     @Autowired
     public InventoryItemService(InventoryItemRepository inventoryItemRepository,
                                 InventoryItemDetailRepository inventoryItemDetailRepository,
                                 InventoryCategoryRepository inventoryCategoryRepository,
-                                LabRepository roomRepository) {
+                                LabRepository roomRepository, DepartmentRepository departmentRepository) {
         this.inventoryItemRepository = inventoryItemRepository;
         this.inventoryItemDetailRepository = inventoryItemDetailRepository;
         this.inventoryCategoryRepository = inventoryCategoryRepository;
         this.roomRepository = roomRepository;
+        this.departmentRepository = departmentRepository;
     }
 
     public List<InventoryItem> findAllItems() {
@@ -426,5 +423,53 @@ public class InventoryItemService {
             }
         }
     }
+
+    public List<InventoryItem> getAllUnapprovedItems() {
+        return inventoryItemRepository.findByApprovedFalse();
+    }
+
+    public InventoryItem approveItem(Integer id) {
+        InventoryItem item = inventoryItemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Item with id " + id + " not found"));
+        item.setApproved(true);
+        return inventoryItemRepository.save(item);
+    }
+    public List<InventoryItem> getAllUnapprovedItemsForHod(User user) {
+        Department department = departmentRepository.findByHod(user)
+                .orElseThrow(() -> new AccessDeniedException("User is not an HOD of any department"));
+
+        return inventoryItemRepository.findByApprovedFalseAndLabDepartmentId(department.getId());
+    }
+
+
+    public boolean isHod(User user) {
+        if (user == null || user.getRoles() == null) {
+            return false;
+        }
+
+        return user.getRoles().stream()
+                .anyMatch(role -> "HOD".equals(role.getName()));
+    }
+
+    public InventoryItem approveItem(Integer id, User user) {
+        if (!isHod(user)) {
+            throw new AccessDeniedException("Only HODs can approve inventory items");
+        }
+        Department hodDepartment = departmentRepository.findByHod(user)
+                .orElseThrow(() -> new AccessDeniedException("User is not an HOD of any department"));
+
+        InventoryItem item = inventoryItemRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Item with id " + id + " not found"));
+
+        if (item.getLab() == null ||
+                item.getLab().getDepartment() == null ||
+                !item.getLab().getDepartment().getId().equals(hodDepartment.getId())) {
+            throw new AccessDeniedException("You can only approve items from labs in your department");
+        }
+
+        item.setApproved(true);
+        return inventoryItemRepository.save(item);
+    }
+
 
 }

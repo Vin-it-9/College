@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, In
 
     Optional<InventoryItem> findBySerialNumber(String serialNumber);
 
+    List<InventoryItem> findByApprovedFalse();
 
     @Query("SELECT DISTINCT i FROM InventoryItem i " +
             "LEFT JOIN i.category c " +
@@ -55,6 +57,11 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, In
 
     @Query("SELECT i FROM InventoryItem i WHERE i.lab.id = :labId")
     List<InventoryItem> findByLabId(Integer labId);
+    
+    @Query("SELECT i FROM InventoryItem i WHERE i.approved = false AND i.lab.id IN :labIds")
+    List<InventoryItem> findByApprovedFalseAndLabIdIn(Collection<Integer> labIds);
 
+    @Query("SELECT i FROM InventoryItem i WHERE i.approved = false AND i.lab.department.id = :departmentId")
+    List<InventoryItem> findByApprovedFalseAndLabDepartmentId(Integer departmentId);
 
 }

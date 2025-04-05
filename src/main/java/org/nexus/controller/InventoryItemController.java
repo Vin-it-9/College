@@ -4,6 +4,7 @@ import org.nexus.entity.*;
 import org.nexus.entity.transferDTO.TransferResult;
 import org.nexus.entity.transferDTO.TransferValidationResult;
 import org.nexus.exception.*;
+import org.nexus.repository.UserRepository;
 import org.nexus.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,14 +30,18 @@ public class InventoryItemController {
     private final InventoryItemService inventoryItemService;
     private final LabService labService;
     private final InventoryCategoryService categoryService;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
     public InventoryItemController(InventoryItemService inventoryItemService,
                                    LabService labService,
-                                   InventoryCategoryService categoryService) {
+                                   InventoryCategoryService categoryService, UserService userService, UserRepository userRepository) {
         this.inventoryItemService = inventoryItemService;
         this.labService = labService;
         this.categoryService = categoryService;
+        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -190,21 +196,19 @@ public class InventoryItemController {
     @GetMapping("/transfer")
     public String showTransferForm(Model model) {
         try {
-            // Get all labs
+
             List<Lab> labs = labService.findAllLabs();
             if (labs.isEmpty()) {
                 model.addAttribute("error", "No labs available for transfer");
                 return "inventory/transfer-form";
             }
 
-            // Get all available items
             List<InventoryItem> availableItems = inventoryItemService.findAllAvailableItems();
 
             model.addAttribute("labs", labs);
             model.addAttribute("availableItems", availableItems);
             model.addAttribute("currentDate", LocalDateTime.now());
 
-            // Add any existing flash attributes
             return "inventory/transfer-form";
         } catch (Exception e) {
             model.addAttribute("error", "Error loading transfer form: " + e.getMessage());
@@ -243,17 +247,14 @@ public class InventoryItemController {
         }
 
         try {
-            // Create transfer record
             TransferResult result = inventoryItemService.transferItems(fromLabId, toLabId, itemIds);
 
-            // Add success message with details
             redirectAttributes.addFlashAttribute("success",
                     String.format("Successfully transferred %d items from %s to %s",
                             result.getTransferredCount(),
                             result.getFromLabName(),
                             result.getToLabName()));
 
-            // Add any warnings if partial transfer
             if (result.hasWarnings()) {
                 redirectAttributes.addFlashAttribute("warnings", result.getWarnings());
             }
@@ -275,7 +276,6 @@ public class InventoryItemController {
         }
     }
 
-    // Add a method to validate transfer before submission
     @PostMapping("/transfer/validate")
     @ResponseBody
     public ResponseEntity<?> validateTransfer(
@@ -327,5 +327,49 @@ public class InventoryItemController {
         model.addAttribute("allStatuses", InventoryStatus.values());
         return "inventory/status-list";
     }
+
+    @GetMapping("/access-denied")
+    public String accessDenied(Model model) {
+        model.addAttribute("errorMessage", "You do not have permission to access this page.");
+        return "inventory/access-denied";
+    }
+
+    @GetMapping("/pending-approvals")
+    public String showPendingApprovals(Model model, Principal principal) {
+        User currentUser = userRepository.getUserByEmail(principal.getName());
+        if (!inventoryItemService.isHod(currentUser)) {
+            return "redirect:access-denied";
+        }
+
+        try {
+            List<InventoryItem> unapprovedItems = inventoryItemService.getAllUnapprovedItemsForHod(currentUser);
+            model.addAttribute("items", unapprovedItems);
+            model.addAttribute("currentTimestamp", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            model.addAttribute("currentUser", currentUser);
+            return "inventory/pending-approvals";
+        } catch (AccessDeniedException e) {
+            return "redirect:access-denied";
+        }
+    }
+
+    @PostMapping("/approve/{id}")
+    public String approveInventoryItem(@PathVariable Integer id, RedirectAttributes redirectAttributes, Principal principal) {
+
+        User currentUser = userRepository.getUserByEmail(principal.getName());
+
+        try {
+            inventoryItemService.approveItem(id, currentUser);
+            redirectAttributes.addFlashAttribute("successMessage", "Item approved successfully");
+        } catch (AccessDeniedException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Access denied: " + e.getMessage());
+        } catch (ResourceNotFoundException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Item not found: " + e.getMessage());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error: " + e.getMessage());
+        }
+
+        return "redirect:/inventory/items/pending-approvals";
+    }
+
 
 }

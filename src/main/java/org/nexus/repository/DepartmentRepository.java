@@ -1,6 +1,7 @@
 package org.nexus.repository;
 
 import org.nexus.entity.Department;
+import org.nexus.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +16,8 @@ public interface DepartmentRepository extends JpaRepository<Department, Integer>
     boolean existsByDepartmentCode(String departmentCode);
 
     List<Department> findByDepartmentNameContainingIgnoreCase(String name);
+
+    Optional<Department> findByHod(User hod);
+
 
 }

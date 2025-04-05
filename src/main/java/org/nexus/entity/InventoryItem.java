@@ -52,6 +52,16 @@ public class InventoryItem {
     @JsonIgnoreProperties("inventoryItems")
     private Lab lab;
 
+    private boolean approved;
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
     public Lab getLab() {
         return lab;
     }
@@ -62,7 +72,6 @@ public class InventoryItem {
 
     @OneToMany(mappedBy = "inventoryItem", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("inventoryItem")
-
     private Set<InventoryItemDetail> details = new HashSet<>();
 
     // Getters and Setters
@@ -147,7 +156,6 @@ public class InventoryItem {
         this.details = details;
     }
 
-    // Helper method to add a detail
     public void addDetail(String key, String value) {
         InventoryItemDetail detail = new InventoryItemDetail();
         detail.setKeyName(key);
