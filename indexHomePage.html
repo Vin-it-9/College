@@ -4,145 +4,415 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>College Inventory Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="stylesheetHomePage.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0162b1',
+                        secondary: '#E63946',
+                        light: '#F1FAEE',
+                        accent: '#457B9D',
+                        dark: '#1D3557',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
+<body class="bg-gray-50 font-sans">
 
-<header>
-    <div id="headerdiv">
-        <input type="text" id="inputtextfield" placeholder="Enhanced By GOOGLE">
-        <div id="searchicondiv"></div>
-        <a href="" id="link" class="HeaderAnchorTags">Useful Links</a>
-        <a href="" id="feedback" class="HeaderAnchorTags">Feedbacks</a>
-        <a href="" id="login" class="HeaderAnchorTags">LOGIN</a>
-    </div>
-    <div id="institutenamediv">
-            <div id="collegelogo"></div>
-            <div id="collegetitlediv">
-                <h3 style="color: #E63946">Society for Computer Technology and Research's</h3>
-                <h1 style="color: #2A5F8A">PUNE INSTITUTE OF COMPUTER TECHNOLOGY</h1>
-                <br>
-                <h1 style="color: #E63946">College Inventory Management System</h1>
+
+
+<header class="bg-white shadow-md">
+    <div class="container mx-auto px-4 py-6">
+        <div class="flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center space-x-4 mb-4 md:mb-0">
+            <div class="w-20 h-20 rounded-full flex items-center justify-center">
+                <img src="https://pict.edu/images/pic.jpg" alt="PICT Logo" class="w-full h-full object-cover rounded-full">
             </div>
+                <div class="text-center md:text-left">
+                    <h3 class="text-secondary text-sm md:text-base">Society for Computer Technology and Research's</h3>
+                    <h1 class="text-primary text-xl md:text-2xl font-bold">PUNE INSTITUTE OF COMPUTER TECHNOLOGY</h1>
+                    <h2 class="text-secondary text-lg md:text-xl font-semibold mt-1">College Inventory Management System</h2>
+                </div>
+            </div>
+        </div>
     </div>
 </header>
-<body>
-    <div id="menubardiv">
-        <a href="">DASHBOARD</a>
-        <a href="">DEPARTMENTS</a>
-        <a href="">RESEARCH</a>
-        <a href="">SURVEY</a>
-        <a href="">BUDGET</a>
-    </div>
 
-    <div id="departmentdiv">
-        <table id="departmenttable">
-            <thead>
-                <tr>
-                    <th>Department ID</th>
-                    <th>Department Name</th>
-                    <th>Total Inventory</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td>400501</td>
-                    <td>CSE</td>
-                    <td>446</td>
-                </tr>
-                <tr>
-                    <td>400502</td>
-                    <td>IT</td>
-                    <td>254</td>
-                </tr>
-                <tr>
-                    <td>400503</td>
-                    <td>E&TE</td>
-                    <td>512</td>
-                </tr>
-                <tr>
-                    <td>400504</td>
-                    <td>AIDS</td>
-                    <td>162</td>
-                </tr>
-                <tr>
-                    <td>400505</td>
-                    <td>E&CE</td>
-                    <td>250</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table id="inventorytable">
-            <thead>
-                <tr>
-                    <th>Item ID</th>
-                    <th>Item Name</th>
-                    <th>Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>4005A</td>
-                    <td>Computer</td>
-                    <td>1000</td>
-                </tr>
-                <tr>
-                    <td>4005B</td>
-                    <td>Projector</td>
-                    <td>90</td>
-                </tr>
-                <tr>
-                    <td>4005C</td>
-                    <td>DSO</td>
-                    <td>30</td>
-                </tr>
-                <tr>
-                    <td>4005D</td>
-                    <td>Connecting Wires</td>
-                    <td>1000</td>
-                </tr>
-                <tr>
-                    <td>4005E</td>
-                    <td>LED Screens</td>
-                    <td>10</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-   
-    <div class="Wrapper">
-        <div class="calendar-container">
-            <iframe src="https://calendar.google.com/calendar/u/0/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia/Kolkata&src=cGljdC5lZHVfOHNuaW1ncXFlNWkxcGVsZzh0Y2VsbjkxMXNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%234285F4&pli=1">
-            </iframe>
+<nav class="bg-primary text-white sticky top-0 z-50 shadow-md">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between">
+            <div class="flex">
+                <a href="#" class="flex items-center px-6 py-4 text-white hover:bg-accent transition duration-200 font-medium">
+                    <span>DASHBOARD</span>
+                </a>
+                <a href="#" class="flex items-center px-6 py-4 text-white hover:bg-accent transition duration-200 font-medium">
+                    <span>DEPARTMENTS</span>
+                </a>
+                <a href="#" class="flex items-center px-6 py-4 text-white hover:bg-accent transition duration-200 font-medium">
+                    <span>BUDGET</span>
+                </a>
+            </div>
+            <div class="flex items-center md:hidden">
+                <button class="px-4 py-4 text-white hover:bg-accent">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
         </div>
     </div>
-</body>
+</nav>
 
-<footer>
-    <div class="Footer">
-        <div class="Subfooter">
-            <h3>Address</h3>
-            <br>
-            <h5>Survey No. 27, Near Trimurti Chowk</h5>
-            <h5>Dhankwadi, Pune - 411043</h5>
-            <h5><a href="https://www.google.com/maps/dir//SCTR'S+Pune+Institute+of+Computer+Technology+Survey+No.+27+Near,+Trimurti+Chowk,+Bharati+Vidyapeeth+Campus,+Dhankawadi+Pune,+Maharashtra+411043/@18.4575421,73.8508336,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3bc2eac85230ba47:0x871eddd0a8a0a108!2m2!1d73.8508336!2d18.4575421">Google maps link</a></h5>
+
+<main class="container mx-auto px-4 py-8">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-md p-6 ">
+            <div class="flex items-center">
+                <div class="rounded-full bg-primary/10 p-3 mr-4">
+                    <i class="fas fa-laptop text-primary text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-gray-500 text-sm">Total Inventory</h3>
+                    <p class="text-2xl font-bold text-gray-800">1,624</p>
+                </div>
+            </div>
         </div>
-
-        <div class="Subfooter">
-            <h3>Contact</h3>
-            <br>
-            <h5>+91 20 24371101</h5>
-            <h5>Fax: +91 20 24364741</h5>
-            
+        <div class="bg-white rounded-lg shadow-md p-6 ">
+            <div class="flex items-center">
+                <div class="rounded-full bg-secondary/10 p-3 mr-4">
+                    <i class="fas fa-building text-secondary text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-gray-500 text-sm">Departments</h3>
+                    <p class="text-2xl font-bold text-gray-800">5</p>
+                </div>
+            </div>
         </div>
-
-        <div class="Subfooter">
-            <h3>Email Address</h3>
-            <br>
-            <h5>registrar@pict.edu</h5>
+        <div class="bg-white rounded-lg shadow-md p-6 ">
+            <div class="flex items-center">
+                <div class="rounded-full bg-green-500/10 p-3 mr-4">
+                    <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-gray-500 text-sm">Available Items</h3>
+                    <p class="text-2xl font-bold text-gray-800">1,287</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="rounded-full bg-yellow-500/10 p-3 mr-4">
+                    <i class="fas fa-bell text-yellow-500 text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-gray-500 text-sm">Pending Approvals</h3>
+                    <p class="text-2xl font-bold text-gray-800">23</p>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-primary text-white px-6 py-4 flex justify-between items-center">
+                <h2 class="font-bold text-lg">Department Overview</h2>
+                <a href="#" class="text-white hover:text-secondary transition duration-200">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department ID</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department Name</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Inventory</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">400501</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Computer Science Engineering</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">446</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <a href="#" class="text-primary hover:text-blue-800 mr-3">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">400502</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Information Technology</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">254</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <a href="#" class="text-primary hover:text-blue-800 mr-3">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">400503</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Electronics & Telecom</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">512</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <a href="#" class="text-primary hover:text-blue-800 mr-3">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">400504</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">AI & Data Science</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">162</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <a href="#" class="text-primary hover:text-blue-800 mr-3">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">400505</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Electronics & Communication</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">250</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <a href="#" class="text-primary hover:text-blue-800 mr-3">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-primary text-white px-6 py-4 flex justify-between items-center">
+                <h2 class="font-bold text-lg">Top Inventory Items</h2>
+                <a href="#" class="text-white hover:opacity-75 transition duration-200">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item ID</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item Name</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4005A</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Computer</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">1000</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Available</span>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4005B</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Projector</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">90</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Available</span>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4005C</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">DSO</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">30</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Low Stock</span>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4005D</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Connecting Wires</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">1000</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Available</span>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4005E</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">LED Screens</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">10</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Critical</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-accent text-white px-6 py-4">
+                <h2 class="font-bold text-lg">College Events Calendar</h2>
+            </div>
+            <div class="p-4 h-96">
+                <iframe src="https://calendar.google.com/calendar/u/0/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia/Kolkata&src=cGljdC5lZHVfOHNuaW1ncXFlNWkxcGVsZzh0Y2VsbjkxMXNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%234285F4&pli=1"
+                        class="w-full h-full border-0" frameborder="0" scrolling="no"></iframe>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-dark text-white px-6 py-4">
+                <h2 class="font-bold text-lg">Quick Actions</h2>
+            </div>
+            <div class="p-6 space-y-4">
+                <a href="#" class="flex items-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-200">
+                    <div class="rounded-full bg-primary/10 p-3 mr-4">
+                        <i class="fas fa-plus text-primary"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-800">Add New Item</h3>
+                        <p class="text-sm text-gray-500">Register new inventory</p>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-200">
+                    <div class="rounded-full bg-secondary/10 p-3 mr-4">
+                        <i class="fas fa-clipboard-check text-secondary"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-800">Review Requests</h3>
+                        <p class="text-sm text-gray-500">Approve pending items</p>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-200">
+                    <div class="rounded-full bg-green-500/10 p-3 mr-4">
+                        <i class="fas fa-file-export text-green-500"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-800">Generate Report</h3>
+                        <p class="text-sm text-gray-500">Export inventory data</p>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-200">
+                    <div class="rounded-full bg-yellow-500/10 p-3 mr-4">
+                        <i class="fas fa-cog text-yellow-500"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-800">System Settings</h3>
+                        <p class="text-sm text-gray-500">Configure preferences</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<footer id="about" class="bg-gray-900 text-white">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:py-16 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center mb-4">
+            <span class="text-xl font-bold text-white flex items-center">
+                <img src="https://pict.edu/images/pic.jpg" alt="PICT Logo" class="w-20 h-20 mr-2">
+            </span>
+                </div>
+            <p class="text-gray-400 mb-4 max-w-md">
+            Pune Institute of Computer Technology (PICT) is a premier engineering college in Pune, known for its excellence in education and research. It offers undergraduate and postgraduate programs in various engineering disciplines, fostering innovation and technical expertise.
+            </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-[#E63946] transition-colors duration-300">
+                        <span class="sr-only">GitHub</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-[#E63946] transition-colors duration-300">
+                        <span class="sr-only">Website</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-[#E63946] transition-colors duration-300">
+                        <span class="sr-only">LinkedIn</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M6.5 21.5h-5v-13h5v13zM4 6.5C2.5 6.5 1.5 5.3 1.5 4s1-2.4 2.5-2.4c1.6 0 2.5 1 2.6 2.5 0 1.4-1 2.5-2.6 2.5zm11.5 6c-1 0-2 1-2 2v7h-5v-13h5V10s1.6-1.5 4-1.5c3 0 5 2.2 5 6.3v6.7h-5v-7c0-1-1-2-2-2z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-sm font-semibold text-gray-300 tracking-wider uppercase">
+                    Quick Links
+                </h3>
+                <ul class="mt-4 space-y-2">
+                    <li>
+                        <a href="#dashboard" class="text-gray-400 hover:text-[#A8DADC] transition-colors duration-300">
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#departments" class="text-gray-400 hover:text-[#A8DADC] transition-colors duration-300">
+                            Departments
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#inventory" class="text-gray-400 hover:text-[#A8DADC] transition-colors duration-300">
+                            Inventory
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#reports" class="text-gray-400 hover:text-[#A8DADC] transition-colors duration-300">
+                            Reports
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-sm font-semibold text-gray-300 tracking-wider uppercase">
+                    Contact
+                </h3>
+                <ul class="mt-4 space-y-2">
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 text-gray-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-400">Dhankwadi, Pune - 411043</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 text-gray-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
+                        </svg>
+                        <span class="text-gray-400">+91 20 24371101</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 text-gray-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                        </svg>
+                        <span class="text-gray-400">registrar@pict.edu</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-12 border-t border-gray-800 pt-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">
+                    &copy; 2025 Pune Institute of Computer Technology.
+                </p>
+            </div>
+        </div>
+    </div>
+
 </footer>
+
+</body>
 </html>

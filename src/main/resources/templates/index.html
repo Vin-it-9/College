@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" >
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Home Admin</title>
     <link rel="icon" type="image/x-icon" th:href="@{/favicon-32x32.png}"/>
-
-
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link th:href="@{https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="nav.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/animation.css}">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0162b1',
+                        secondary: '#E63946',
+                        light: '#F1FAEE',
+                        accent: '#457B9D',
+                        dark: '#1D3557',
+                    }
+                }
+            }
+        }
+    </script>
 
 </head>
 
@@ -24,11 +37,271 @@
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
 
-<div  class="main p-14 " >
-    Welcome
-    <a th:href="@{/account}" class="text-blue-500 font-semibold" sec:authentication = "principal.fullname"></a>
-    <span sec:authentication = "principal.authorities"  ></span>
-</div>
+<header class="bg-white ">
+    <div class="container mx-auto px-4 py-6">
+        <div class="flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                <div class="w-24 h-24 rounded-full flex items-center justify-center">
+                    <img src="https://pict.edu/images/pic.jpg" alt="PICT Logo" class="w-full h-full object-cover rounded-full">
+                </div>
+                <div class="text-center md:text-left">
+                    <h3 class="text-secondary text-sm md:text-base">Society for Computer Technology and Research's</h3>
+                    <h1 class="text-primary text-xl md:text-2xl font-bold">PUNE INSTITUTE OF COMPUTER TECHNOLOGY</h1>
+                    <h2 class="text-secondary text-lg md:text-xl font-semibold mt-1">College Inventory Management System</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container mx-auto px-4 py-8">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-md p-6 ">
+            <div class="flex items-center">
+                <div class="rounded-full bg-primary/10 p-3 mr-4">
+                    <i class="fas fa-laptop text-primary text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-gray-500 text-sm">Total Inventory</h3>
+                    <p class="text-2xl font-bold text-gray-800">1,624</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6 ">
+            <div class="flex items-center">
+                <div class="rounded-full bg-secondary/10 p-3 mr-4">
+                    <i class="fas fa-building text-secondary text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-gray-500 text-sm">Departments</h3>
+                    <p class="text-2xl font-bold text-gray-800">5</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6 ">
+            <div class="flex items-center">
+                <div class="rounded-full bg-green-500/10 p-3 mr-4">
+                    <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-gray-500 text-sm">Available Items</h3>
+                    <p class="text-2xl font-bold text-gray-800">1,287</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center">
+                <div class="rounded-full bg-yellow-500/10 p-3 mr-4">
+                    <i class="fas fa-bell text-yellow-500 text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-gray-500 text-sm">Pending Approvals</h3>
+                    <p class="text-2xl font-bold text-gray-800">23</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-primary text-white px-6 py-4 flex justify-between items-center">
+                <h2 class="font-bold text-lg">Department Overview</h2>
+                <a href="#" class="text-white hover:text-secondary transition duration-200">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department ID</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department Name</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Inventory</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">400501</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Computer Science Engineering</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">446</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <a href="#" class="text-primary hover:text-blue-800 mr-3">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">400502</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Information Technology</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">254</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <a href="#" class="text-primary hover:text-blue-800 mr-3">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">400503</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Electronics & Telecom</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">512</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <a href="#" class="text-primary hover:text-blue-800 mr-3">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">400504</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">AI & Data Science</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">162</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <a href="#" class="text-primary hover:text-blue-800 mr-3">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">400505</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Electronics & Communication</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">250</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <a href="#" class="text-primary hover:text-blue-800 mr-3">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-primary text-white px-6 py-4 flex justify-between items-center">
+                <h2 class="font-bold text-lg">Top Inventory Items</h2>
+                <a href="#" class="text-white hover:opacity-75 transition duration-200">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item ID</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item Name</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4005A</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Computer</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">1000</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Available</span>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4005B</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Projector</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">90</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Available</span>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4005C</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">DSO</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">30</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Low Stock</span>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4005D</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Connecting Wires</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">1000</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Available</span>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4005E</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">LED Screens</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">10</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Critical</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-accent text-white px-6 py-4">
+                <h2 class="font-bold text-lg">College Events Calendar</h2>
+            </div>
+            <div class="p-4 h-96">
+                <iframe src="https://calendar.google.com/calendar/u/0/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia/Kolkata&src=cGljdC5lZHVfOHNuaW1ncXFlNWkxcGVsZzh0Y2VsbjkxMXNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%234285F4&pli=1"
+                        class="w-full h-full border-0" frameborder="0" scrolling="no"></iframe>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-dark text-white px-6 py-4">
+                <h2 class="font-bold text-lg">Quick Actions</h2>
+            </div>
+            <div class="p-6 space-y-4">
+                <a href="#" class="flex items-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-200">
+                    <div class="rounded-full bg-primary/10 p-3 mr-4">
+                        <i class="fas fa-plus text-primary"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-800">Add New Item</h3>
+                        <p class="text-sm text-gray-500">Register new inventory</p>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-200">
+                    <div class="rounded-full bg-secondary/10 p-3 mr-4">
+                        <i class="fas fa-clipboard-check text-secondary"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-800">Review Requests</h3>
+                        <p class="text-sm text-gray-500">Approve pending items</p>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-200">
+                    <div class="rounded-full bg-green-500/10 p-3 mr-4">
+                        <i class="fas fa-file-export text-green-500"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-800">Generate Report</h3>
+                        <p class="text-sm text-gray-500">Export inventory data</p>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-200">
+                    <div class="rounded-full bg-yellow-500/10 p-3 mr-4">
+                        <i class="fas fa-cog text-yellow-500"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-800">System Settings</h3>
+                        <p class="text-sm text-gray-500">Configure preferences</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 
 </body>

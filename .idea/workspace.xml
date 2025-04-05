@@ -5,23 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="inventory with Frontend">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/messages.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/transfer-form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/footer.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Lab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Lab.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/buildings/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/buildings/create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/buildings/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/buildings/edit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/departments/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/departments/list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/create-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/create-form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/edit-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/edit-form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/status-list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/status-list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/create-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/create-form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/edit-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/edit-form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/indexHomePage.html" beforeDir="false" afterPath="$PROJECT_DIR$/indexHomePage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -293,6 +281,7 @@
     <MESSAGE value="lab authentication work done" />
     <MESSAGE value="inventory RestAPI created" />
     <MESSAGE value="inventory with Frontend" />
-    <option name="LAST_COMMIT_MESSAGE" value="inventory with Frontend" />
+    <MESSAGE value="Approve feature from HOD" />
+    <option name="LAST_COMMIT_MESSAGE" value="Approve feature from HOD" />
   </component>
 </project>
