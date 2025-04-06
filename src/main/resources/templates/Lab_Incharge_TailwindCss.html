@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Lab Inventory System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: 'rgb(31, 81, 255)',
+                        primaryDark: 'rgb(25, 70, 230)',
+                        primaryDarker: 'rgb(20, 60, 210)',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#f0f4f8] p-5 font-['Segoe_UI',_Tahoma,_Geneva,_Verdana,_sans-serif]">
+    <!-- Header -->
+    <div class="bg-gradient-to-br from-primary to-[rgb(20,62,220)] text-white py-[22px] text-center rounded-lg mb-6 shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+        <h1 class="m-0 font-semibold text-2xl tracking-[0.5px]">College Laboratory Inventory System</h1>
+    </div>
+
+    <!-- Lab Info Card -->
+    <div class="bg-white p-4 rounded-lg mb-5 shadow-[0_2px_4px_rgba(0,0,0,0.05)] border-l-4 border-primary flex items-center justify-center">
+        <div class="flex items-baseline gap-5 flex-wrap justify-center">
+            <h2 class="m-0 text-[#333] text-xl font-semibold">Electronics Lab A-101</h2>
+            <span class="text-[#555] text-sm">Lab Incharge: <strong class="text-primary font-medium">Gangarde sir</strong></span>
+        </div>
+    </div>
+
+    <!-- Inventory Table -->
+    <div class="rounded-xl overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.08)] bg-white">
+        <table class="w-full border-collapse">
+            <thead>
+                <tr>
+                    <th class="bg-gradient-to-b from-primary to-primaryDark text-white font-semibold px-4 py-3 text-sm uppercase tracking-[0.5px] text-left">ID</th>
+                    <th class="bg-gradient-to-b from-primary to-primaryDark text-white font-semibold px-4 py-3 text-sm uppercase tracking-[0.5px] text-left">Equipment</th>
+                    <th class="bg-gradient-to-b from-primary to-primaryDark text-white font-semibold px-4 py-3 text-sm uppercase tracking-[0.5px] text-left">Category</th>
+                    <th class="bg-gradient-to-b from-primary to-primaryDark text-white font-semibold px-4 py-3 text-sm uppercase tracking-[0.5px] text-left">Qty</th>
+                    <th class="bg-gradient-to-b from-primary to-primaryDark text-white font-semibold px-4 py-3 text-sm uppercase tracking-[0.5px] text-left">Condition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-l-4 border-[#4CAF50] hover:bg-[rgba(31,81,255,0.05)] hover:shadow-[0_2px_8px_rgba(31,81,255,0.1)] even:bg-[#f8fafc]">
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed] font-semibold text-primary">COMP-101</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">Computer</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">Electronics</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">25</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed] text-[#4CAF50]">Good</td>
+                </tr>
+                <tr class="border-l-4 border-[#2196F3] hover:bg-[rgba(31,81,255,0.05)] hover:shadow-[0_2px_8px_rgba(31,81,255,0.1)] even:bg-[#f8fafc]">
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed] font-semibold text-primary">FURN-205</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">Lab Chair</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">Furniture</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">40</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed] text-[#FF9800]">Fair</td>
+                </tr>
+                <tr class="border-l-4 border-[#9C27B0] hover:bg-[rgba(31,81,255,0.05)] hover:shadow-[0_2px_8px_rgba(31,81,255,0.1)] even:bg-[#f8fafc]">
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed] font-semibold text-primary">MEAS-112</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">Digital Storage Oscilloscope (DSO)</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">Measurement</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">8</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed] text-[#4CAF50]">Good</td>
+                </tr>
+                <tr class="border-l-4 border-[#9C27B0] hover:bg-[rgba(31,81,255,0.05)] hover:shadow-[0_2px_8px_rgba(31,81,255,0.1)] even:bg-[#f8fafc]">
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed] font-semibold text-primary">MEAS-113</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">Test Probes Set</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">Measurement</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">15</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed] text-[#FF9800]">Fair</td>
+                </tr>
+                <tr class="border-l-4 border-[#FF9800] hover:bg-[rgba(31,81,255,0.05)] hover:shadow-[0_2px_8px_rgba(31,81,255,0.1)] even:bg-[#f8fafc]">
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed] font-semibold text-primary">PRES-301</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">HD Projector</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">Presentation</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">4</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed] text-[#4CAF50]">Good</td>
+                </tr>
+                <tr class="border-l-4 border-[#2196F3] hover:bg-[rgba(31,81,255,0.05)] hover:shadow-[0_2px_8px_rgba(31,81,255,0.1)] even:bg-[#f8fafc]">
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed] font-semibold text-primary">FURN-206</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">Whiteboard</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">Furniture</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed]">6</td>
+                    <td class="px-4 py-3 text-left border border-[#e0e7ed] text-[#4CAF50]">Good</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-center gap-5 my-4">
+        <button type="submit" class="bg-gradient-to-b from-primary to-primaryDark text-white px-7 py-3 rounded-lg shadow-[0_3px_6px_rgba(31,81,255,0.2)] uppercase font-semibold tracking-[0.7px] relative overflow-hidden inline-flex items-center justify-center transition-all duration-250 hover:bg-gradient-to-b hover:from-primaryDark hover:to-primaryDarker hover:translate-y-[-2px] hover:shadow-[0_5px_12px_rgba(31,81,255,0.3)] active:translate-y-0 active:shadow-[0_2px_4px_rgba(31,81,255,0.2)] focus-visible:outline-none focus-visible:shadow-[0_0_0_3px_rgba(31,81,255,0.4),0_3px_6px_rgba(31,81,255,0.2)]">
+            📋 Requests
+        </button>
+        <button class="bg-gradient-to-b from-primary to-primaryDark text-white px-7 py-3 rounded-lg shadow-[0_3px_6px_rgba(31,81,255,0.2)] uppercase font-semibold tracking-[0.7px] relative overflow-hidden inline-flex items-center justify-center transition-all duration-250 hover:bg-gradient-to-b hover:from-primaryDark hover:to-primaryDarker hover:translate-y-[-2px] hover:shadow-[0_5px_12px_rgba(31,81,255,0.3)] active:translate-y-0 active:shadow-[0_2px_4px_rgba(31,81,255,0.2)] focus-visible:outline-none focus-visible:shadow-[0_0_0_3px_rgba(31,81,255,0.4),0_3px_6px_rgba(31,81,255,0.2)]">
+            Back
+        </button>
+    </div>
+
+    <!-- Mobile Responsive Styles -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add mobile responsive behavior
+            const mediaQuery = window.matchMedia('(max-width: 768px)');
+            
+            function handleMobileChange(e) {
+                if (e.matches) {
+                    // Mobile styles would be applied automatically through Tailwind's responsive prefixes
+                }
+            }
+            
+            mediaQuery.addListener(handleMobileChange);
+            handleMobileChange(mediaQuery);
+        });
+    </script>
+</body>
+</html>
