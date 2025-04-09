@@ -4,8 +4,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="index page updated">
+    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="navbar update">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/CollegeInventoryApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/CollegeInventoryApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Building.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/Users.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/Users.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/buildings/count.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/buildings/count.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/buildings/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/buildings/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/buildings/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/buildings/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/buildings/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/buildings/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/buildings/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/buildings/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/departments/count.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/departments/count.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/departments/create-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/departments/create-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/departments/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/departments/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/departments/edit-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/departments/edit-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/departments/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/departments/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/departments/search-results.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/departments/search-results.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/create-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/create-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/edit-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/edit-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/pending-approvals.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/pending-approvals.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/search-results.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/search-results.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/status-list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/status-list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/transfer-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/transfer-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/warranty-expiring.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/warranty-expiring.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/create-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/create-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/edit-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/edit-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,6 +164,9 @@
       <workItem from="1742591996491" duration="204000" />
       <workItem from="1742592293330" duration="98000" />
       <workItem from="1742709963351" duration="758000" />
+      <workItem from="1743857300737" duration="1060000" />
+      <workItem from="1743858422006" duration="216000" />
+      <workItem from="1744216811862" duration="8421000" />
     </task>
     <task id="LOCAL-00001" summary="commit inventory">
       <option name="closed" value="true" />
@@ -260,7 +296,23 @@
       <option name="project" value="LOCAL" />
       <updated>1743853764841</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="heroku push">
+      <option name="closed" value="true" />
+      <created>1743854687368</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1743854687368</updated>
+    </task>
+    <task id="LOCAL-00018" summary="navbar update">
+      <option name="closed" value="true" />
+      <created>1743857417432</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1743857417432</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -287,6 +339,8 @@
     <MESSAGE value="inventory with Frontend" />
     <MESSAGE value="Approve feature from HOD" />
     <MESSAGE value="index page updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="index page updated" />
+    <MESSAGE value="heroku push" />
+    <MESSAGE value="navbar update" />
+    <option name="LAST_COMMIT_MESSAGE" value="navbar update" />
   </component>
 </project>

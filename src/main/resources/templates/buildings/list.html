@@ -6,41 +6,102 @@
     <title>Buildings List</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 text-gray-900">
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Buildings List</h1>
+<body class="bg-gray-50">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <div class="flex justify-end mb-4">
-        <a href="/buildings/new" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Create New</a>
+<div class="container mx-auto px-4 py-8">
+
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">Buildings List</h1>
     </div>
 
-    <div class="overflow-x-auto">
-        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-            <thead class="bg-gray-800 text-white">
+    <!-- Success/Error Messages -->
+    <div th:if="${message}" class="mb-6">
+        <div th:if="${message.type == 'success'}" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
+            <p th:text="${message.content}"></p>
+        </div>
+        <div th:if="${message.type == 'error'}" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+            <p th:text="${message.content}"></p>
+        </div>
+    </div>
+
+    <!-- Filters and Action Buttons -->
+    <div class="flex justify-end mb-6">
+        <div class="mb-6 flex gap-4">
+            <a href="/buildings/new"
+               class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
+                Create New Building
+            </a>
+        </div>
+    </div>
+
+    <!-- Buildings Table -->
+    <div class="overflow-x-auto bg-white rounded-lg shadow overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
             <tr>
-                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Code</th>
-                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Name</th>
-                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Department Name</th>
-                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Floors</th>
-                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Actions</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Floors</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
             </thead>
-            <tbody class="text-gray-700">
-            <tr th:each="building : ${buildings}" class="border-b">
-                <td class="py-3 px-4" th:text="${building.buildingCode}"></td>
-                <td class="py-3 px-4" th:text="${building.buildingName}"></td>
-                <td class="py-3 px-4" th:text="${building.department.getDepartmentName()}"></td>
-                <td class="py-3 px-4" th:text="${building.getNumberOfFloors()}"></td>
-                <td class="py-3 px-4">
-                    <a th:href="@{/buildings/{id}(id=${building.id})}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded mr-2">View</a>
-                    <a th:href="@{/buildings/{id}/edit(id=${building.id})}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded mr-2">Edit</a>
-                    <form th:action="@{/buildings/{id}/delete(id=${building.id})}" method="post" class="inline">
-                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">Delete</button>
-                    </form>
+            <tbody class="bg-white divide-y divide-gray-200">
+            <tr th:each="building : ${buildings}" class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900" th:text="${building.buildingCode}"></div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900" th:text="${building.buildingName}"></div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900" th:text="${building.department.getDepartmentName()}"></div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900" th:text="${building.getNumberOfFloors()}"></div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div class="flex space-x-2">
+                        <a th:href="@{/buildings/{id}(id=${building.id})}"
+                           class="text-green-600 hover:text-green-900 bg-green-100 hover:bg-green-200 px-2 py-1 rounded">
+                            View
+                        </a>
+                        <a th:href="@{/buildings/{id}/edit(id=${building.id})}"
+                           class="text-blue-600 hover:text-blue-900 bg-blue-100 hover:bg-blue-200 px-2 py-1 rounded">
+                            Edit
+                        </a>
+                        <form th:action="@{/buildings/{id}/delete(id=${building.id})}"
+                              method="post"
+                              class="inline"
+                              onsubmit="return confirm('Are you sure you want to delete this building?');">
+                            <button type="submit"
+                                    class="text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 px-2 py-1 rounded">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <!-- Empty State -->
+            <tr th:if="${#lists.isEmpty(buildings)}">
+                <td colspan="5" class="px-6 py-8 text-center">
+                    <div class="text-gray-500">
+                        <p class="text-xl font-semibold mb-2">No buildings found</p>
+                        <p class="text-sm">Get started by creating your first building.</p>
+                    </div>
                 </td>
             </tr>
             </tbody>
         </table>
+    </div>
+
+    <!-- Summary Section -->
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-gray-700">Total Buildings</h3>
+            <p class="text-2xl font-bold text-gray-900" th:text="${#lists.size(buildings)}">0</p>
+        </div>
     </div>
 
 </div>

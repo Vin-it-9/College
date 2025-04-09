@@ -6,37 +6,45 @@
     <title>Edit Lab</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 text-gray-900">
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Edit Lab</h1>
+<body class="bg-gray-50">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
+<div class="container mx-auto px-4 py-8">
+
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">Edit Lab</h1>
+    </div>
+
+    <!-- Alert Messages -->
     <div th:replace="~{fragments/messages :: alertMessages}"></div>
 
-
-    <div class="bg-white shadow-md rounded-lg p-6">
-        <form th:action="@{/labs/{id}(id=${lab.id})}" th:object="${lab}" method="post">
+    <!-- Form Card -->
+    <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
+        <form th:action="@{/labs/{id}(id=${lab.id})}" th:object="${lab}" method="post" class="p-6">
             <input type="hidden" name="_method" value="PUT"/>
 
             <!-- Basic Information Section -->
-            <div class="mb-6">
-                <h2 class="text-xl font-semibold mb-3">Basic Information</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Basic Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="labNumber" class="block text-sm font-medium text-gray-700 mb-1">Lab Number <span class="text-red-500">*</span></label>
+                        <label for="labNumber" class="block text-sm font-medium text-gray-700 mb-2">Lab Number <span class="text-red-500">*</span></label>
                         <input type="text" th:field="*{labNumber}" id="labNumber" required
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <div th:if="${#fields.hasErrors('labNumber')}" class="text-red-500 text-sm mt-1" th:errors="*{labNumber}"></div>
+                               class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="Enter lab number">
+                        <div th:if="${#fields.hasErrors('labNumber')}" class="text-red-600 text-xs mt-1" th:errors="*{labNumber}"></div>
                     </div>
                     <div>
-                        <label for="labName" class="block text-sm font-medium text-gray-700 mb-1">Lab Name <span class="text-red-500">*</span></label>
+                        <label for="labName" class="block text-sm font-medium text-gray-700 mb-2">Lab Name <span class="text-red-500">*</span></label>
                         <input type="text" th:field="*{labName}" id="labName" required
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <div th:if="${#fields.hasErrors('labName')}" class="text-red-500 text-sm mt-1" th:errors="*{labName}"></div>
+                               class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="Enter lab name">
+                        <div th:if="${#fields.hasErrors('labName')}" class="text-red-600 text-xs mt-1" th:errors="*{labName}"></div>
                     </div>
                     <div>
-                        <label for="department" class="block text-sm font-medium text-gray-700 mb-1">Department <span class="text-red-500">*</span></label>
+                        <label for="department" class="block text-sm font-medium text-gray-700 mb-2">Department <span class="text-red-500">*</span></label>
                         <select th:field="*{department}" id="department" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">-- Select Department --</option>
                             <option th:each="dept : ${departments}"
                                     th:value="${dept.id}"
@@ -44,12 +52,12 @@
                                     th:selected="${dept.id == lab.department.id}">
                             </option>
                         </select>
-                        <div th:if="${#fields.hasErrors('department')}" class="text-red-500 text-sm mt-1" th:errors="*{department}"></div>
+                        <div th:if="${#fields.hasErrors('department')}" class="text-red-600 text-xs mt-1" th:errors="*{department}"></div>
                     </div>
                     <div>
-                        <label for="floor" class="block text-sm font-medium text-gray-700 mb-1">Floor <span class="text-red-500">*</span></label>
+                        <label for="floor" class="block text-sm font-medium text-gray-700 mb-2">Floor <span class="text-red-500">*</span></label>
                         <select th:field="*{floor}" id="floor" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">-- Select Floor --</option>
                             <option th:each="fl : ${floors}"
                                     th:value="${fl.id}"
@@ -57,19 +65,19 @@
                                     th:selected="${fl.id == lab.floor.id}">
                             </option>
                         </select>
-                        <div th:if="${#fields.hasErrors('floor')}" class="text-red-500 text-sm mt-1" th:errors="*{floor}"></div>
+                        <div th:if="${#fields.hasErrors('floor')}" class="text-red-600 text-xs mt-1" th:errors="*{floor}"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Staff Information Section -->
-            <div class="mb-6">
-                <h2 class="text-xl font-semibold mb-3">Staff Information</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Staff Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="labAssistant" class="block text-sm font-medium text-gray-700 mb-1">Lab Assistant</label>
+                        <label for="labAssistant" class="block text-sm font-medium text-gray-700 mb-2">Lab Assistant</label>
                         <select th:field="*{labAssistant}" id="labAssistant"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">-- Select Lab Assistant --</option>
                             <option th:each="assistant : ${assistants}"
                                     th:value="${assistant.id}"
@@ -79,9 +87,9 @@
                         </select>
                     </div>
                     <div>
-                        <label for="labTeacher" class="block text-sm font-medium text-gray-700 mb-1">Lab Teacher</label>
+                        <label for="labTeacher" class="block text-sm font-medium text-gray-700 mb-2">Lab Teacher</label>
                         <select th:field="*{labTeacher}" id="labTeacher"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">-- Select Lab Teacher --</option>
                             <option th:each="teacher : ${teachers}"
                                     th:value="${teacher.id}"
@@ -94,64 +102,79 @@
             </div>
 
             <!-- Physical Details Section -->
-            <div class="mb-6">
-                <h2 class="text-xl font-semibold mb-3">Physical Details</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Physical Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
-                        <label for="capacity" class="block text-sm font-medium text-gray-700 mb-1">Capacity</label>
+                        <label for="capacity" class="block text-sm font-medium text-gray-700 mb-2">Capacity</label>
                         <input type="number" th:field="*{capacity}" id="capacity" min="1"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <div th:if="${#fields.hasErrors('capacity')}" class="text-red-500 text-sm mt-1" th:errors="*{capacity}"></div>
+                               class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="Enter capacity">
+                        <div th:if="${#fields.hasErrors('capacity')}" class="text-red-600 text-xs mt-1" th:errors="*{capacity}"></div>
                     </div>
                     <div>
-                        <label for="area" class="block text-sm font-medium text-gray-700 mb-1">Area (sq.m)</label>
+                        <label for="area" class="block text-sm font-medium text-gray-700 mb-2">Area (sq.m)</label>
                         <input type="number" th:field="*{area}" id="area" step="0.01" min="0"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <div th:if="${#fields.hasErrors('area')}" class="text-red-500 text-sm mt-1" th:errors="*{area}"></div>
+                               class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="Enter area">
+                        <div th:if="${#fields.hasErrors('area')}" class="text-red-600 text-xs mt-1" th:errors="*{area}"></div>
                     </div>
                     <div>
-                        <label for="cost" class="block text-sm font-medium text-gray-700 mb-1">Cost ($)</label>
+                        <label for="cost" class="block text-sm font-medium text-gray-700 mb-2">Cost ($)</label>
                         <input type="number" th:field="*{cost}" id="cost" step="0.01" min="0"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <div th:if="${#fields.hasErrors('cost')}" class="text-red-500 text-sm mt-1" th:errors="*{cost}"></div>
+                               class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="Enter cost">
+                        <div th:if="${#fields.hasErrors('cost')}" class="text-red-600 text-xs mt-1" th:errors="*{cost}"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Additional Information Section -->
-            <div class="mb-6">
-                <h2 class="text-xl font-semibold mb-3">Additional Information</h2>
-                <div class="space-y-4">
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Additional Information</h2>
+                <div class="space-y-6">
                     <div>
-                        <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Description</label>
                         <textarea th:field="*{description}" id="description" rows="4"
-                                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                        <div th:if="${#fields.hasErrors('description')}" class="text-red-500 text-sm mt-1" th:errors="*{description}"></div>
+                                  class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                  placeholder="Enter lab description"></textarea>
+                        <div th:if="${#fields.hasErrors('description')}" class="text-red-600 text-xs mt-1" th:errors="*{description}"></div>
                     </div>
                     <div>
-                        <label for="additionalFacility" class="block text-sm font-medium text-gray-700 mb-1">Additional Facilities</label>
+                        <label for="additionalFacility" class="block text-sm font-medium text-gray-700 mb-2">Additional Facilities</label>
                         <textarea th:field="*{additionalFacility}" id="additionalFacility" rows="3" maxlength="200"
-                                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                        <div th:if="${#fields.hasErrors('additionalFacility')}" class="text-red-500 text-sm mt-1" th:errors="*{additionalFacility}"></div>
+                                  class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                  placeholder="Enter additional facilities"></textarea>
+                        <div th:if="${#fields.hasErrors('additionalFacility')}" class="text-red-600 text-xs mt-1" th:errors="*{additionalFacility}"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Status Section -->
-            <div class="mb-6">
+            <div class="mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
                 <div class="flex items-center">
-                    <input type="checkbox" th:field="*{isActive}" id="isActive" class="h-4 w-4 text-blue-600 border-gray-300 rounded">
-                    <label for="isActive" class="ml-2 block text-sm text-gray-700">Active</label>
+                    <input type="checkbox" th:field="*{isActive}" id="isActive"
+                           class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                    <label for="isActive" class="ml-3 block text-sm font-medium text-gray-700">
+                        Lab is currently active and available for use
+                    </label>
                 </div>
             </div>
 
             <!-- Form Actions -->
-            <div class="flex items-center justify-end space-x-3">
-                <a th:href="@{/labs}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancel</a>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update Lab</button>
+            <div class="flex justify-end gap-4 mt-8">
+                <a th:href="@{/labs}"
+                   class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded shadow-lg transition duration-200">
+                    Cancel
+                </a>
+                <button type="submit"
+                        class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-6 rounded shadow-lg transition duration-200">
+                    Update Lab
+                </button>
             </div>
         </form>
     </div>
+
 </div>
 </body>
 </html>

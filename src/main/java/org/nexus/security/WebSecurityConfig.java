@@ -45,7 +45,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/departments/**").permitAll()
                         .requestMatchers("/buildings/**").permitAll()
                         .requestMatchers("/inventory/**").permitAll()
-                        .requestMatchers("/labs/**").permitAll() // Allow all requests to /api/**
+                        .requestMatchers("/api/inventory/**").permitAll()
+                        .requestMatchers("/labs/**").permitAll()
                         .requestMatchers("/Users/**").hasAuthority("Admin")
                         .requestMatchers("/images/**", "/js/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()

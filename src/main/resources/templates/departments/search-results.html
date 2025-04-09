@@ -6,40 +6,83 @@
     <title>Search Results</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 text-gray-900">
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Search Results for "<span th:text="${searchTerm}"></span>"</h1>
+<body class="bg-gray-50">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <div th:if="${not #lists.isEmpty(departments)}" class="overflow-x-auto">
-        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-            <thead class="bg-gray-800 text-white">
+<div class="container mx-auto px-4 py-8">
+
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">Search Results for "<span th:text="${searchTerm}"></span>"</h1>
+    </div>
+
+    <!-- Search Results Table -->
+    <div th:if="${not #lists.isEmpty(departments)}" class="overflow-x-auto bg-white rounded-lg shadow overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
             <tr>
-                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">ID</th>
-                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Code</th>
-                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Name</th>
-                <th class="w-1/4 py-3 px-4 uppercase font-semibold text-sm text-left">Actions</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
             </thead>
-            <tbody class="text-gray-700">
-            <tr th:each="dept : ${departments}" class="border-b">
-                <td class="py-3 px-4" th:text="${dept.id}"></td>
-                <td class="py-3 px-4" th:text="${dept.departmentCode}"></td>
-                <td class="py-3 px-4" th:text="${dept.departmentName}"></td>
-                <td class="py-3 px-4">
-                    <a th:href="@{/departments/{id}(id=${dept.id})}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded mr-2">View</a>
-                    <a th:href="@{/departments/{id}/edit(id=${dept.id})}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded mr-2">Edit</a>
-                    <form th:action="@{/departments/{id}/delete(id=${dept.id})}" method="post" class="inline">
-                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">Delete</button>
-                    </form>
+            <tbody class="bg-white divide-y divide-gray-200">
+            <tr th:each="dept : ${departments}" class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900" th:text="${dept.id}"></div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900" th:text="${dept.departmentCode}"></div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900" th:text="${dept.departmentName}"></div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div class="flex space-x-2">
+                        <a th:href="@{/departments/{id}(id=${dept.id})}"
+                           class="text-green-600 hover:text-green-900 bg-green-100 hover:bg-green-200 px-2 py-1 rounded">
+                            View
+                        </a>
+                        <a th:href="@{/departments/{id}/edit(id=${dept.id})}"
+                           class="text-blue-600 hover:text-blue-900 bg-blue-100 hover:bg-blue-200 px-2 py-1 rounded">
+                            Edit
+                        </a>
+                        <form th:action="@{/departments/{id}/delete(id=${dept.id})}"
+                              method="post"
+                              class="inline"
+                              onsubmit="return confirm('Are you sure you want to delete this department?');">
+                            <button type="submit"
+                                    class="text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 px-2 py-1 rounded">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
 
-    <div th:if="${#lists.isEmpty(departments)}" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
-        <p>No departments found matching your search</p>
+    <!-- No Results Message -->
+    <div th:if="${#lists.isEmpty(departments)}" class="bg-white p-8 rounded-lg shadow text-center">
+        <div class="text-gray-500">
+            <svg class="mx-auto h-12 w-12 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <p class="text-xl font-semibold mt-3 mb-2">No departments found</p>
+            <p class="text-sm">No departments match your search for "<span th:text="${searchTerm}"></span>".</p>
+            <a href="/departments" class="mt-4 inline-block bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
+                Return to All Departments
+            </a>
+        </div>
     </div>
+
+    <!-- Results Summary -->
+    <div th:if="${not #lists.isEmpty(departments)}" class="mt-6 bg-white p-4 rounded-lg shadow">
+        <h3 class="text-lg font-semibold text-gray-700">Found Results</h3>
+        <p class="text-2xl font-bold text-gray-900" th:text="${#lists.size(departments)}">0</p>
+    </div>
+
 </div>
 </body>
 </html>
