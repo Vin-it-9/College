@@ -1,0 +1,224 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+#headerdiv
+{
+    display: flex;
+    flex-direction: row;
+    background-color: blue;
+    height: 60px;
+}
+
+.HeaderAnchorTags{
+    color: white;
+    text-decoration: none;
+    margin-right: 40px;
+    font-size: large;
+    font-weight: 800;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+#inputtextfield
+{
+    text-align: left;
+    margin-left: 60px;
+    margin-right: 5px;
+    margin-top: 15px;
+    height: 35px;
+    width: 200px;
+}
+
+#searchicondiv
+{
+    height: 25px;
+    width: 25px;
+    background-color: yellow;
+    margin-right: 530px;
+    margin-top: 25px;
+    background-image: url(https://tse3.mm.bing.net/th?id=OIP.t1NpyhaiL4gouIOOsF6z0AHaHa&w=474&h=474&c=7);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#institutenamediv
+{
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    height: 130px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#collegelogo
+{
+    width: 130px;
+    height: 120px;
+    display: flex;
+    
+    justify-content: center;
+    margin-top: 10px;
+    margin-right: 10px;
+    border-radius: 50%;
+    
+    background-color: black;
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwuy6pDzwEKU_LzwyumGntBC-iljLNsC_aaQ&s);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#collegetitlediv
+{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#menubardiv
+{
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    
+    background-color: #2A5F8A;
+}
+
+a{
+    color: #F1FAEE;
+    text-decoration: none;
+    margin-right: 40px;
+    font-size: larger;
+    font-weight: 800;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+#departmentdiv
+{
+    display: flex;
+    flex-direction: row;
+    padding: 12px;
+}
+
+#departmenttable,#inventorytable
+{
+    width: 600px;
+    height: 250px;
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-top: 10px;
+    text-align: left;
+    border: 1px solid black;
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+th,td
+{
+    padding: 8px;
+    border: 1px solid black;
+}
+
+th 
+{
+    background-color: #5c67f2;
+    color: #ffffff;
+}
+  
+tr:nth-child(even) 
+{
+    background-color: #f2f2f2;
+}
+  
+tr:hover
+{
+    background-color: #e0e0e0;
+}
+
+
+.calendar-container 
+{
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    width: 500px; 
+    height: 300px;
+    padding: 12px;
+}
+  
+iframe
+{
+    width: 500px;
+    height: 300px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+}
+
+.Wrapper
+{
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+
+footer 
+{
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    padding: 36px;
+    margin-top: 36px;
+    background-color: #2A5F8A;
+}
+
+.Footer 
+{
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    width: 90%;
+    max-width: 1200px;
+    border-radius: 16px;
+    padding: 32px;
+    background-color: #1c1c1e;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3); 
+}
+
+.Subfooter 
+{
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: center; 
+    min-width: 200px;
+}
+
+.Subfooter h3 
+{
+    font-size: 20px;
+    color: #ffffff;
+    margin-bottom: 12px;
+    display: inline-block;
+    padding-bottom: 4px;
+}
+
+.Subfooter h5 
+{
+    font-size: 16px;
+    font-weight: 400;
+    color: #d1d1d1;
+    margin-bottom: 6px;
+}
