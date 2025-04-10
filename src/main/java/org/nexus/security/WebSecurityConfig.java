@@ -47,6 +47,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/inventory/**").permitAll()
                         .requestMatchers("/api/inventory/**").permitAll()
                         .requestMatchers("/labs/**").permitAll()
+                        .requestMatchers("/").permitAll()
                         .requestMatchers("/Users/**").hasAuthority("Admin")
                         .requestMatchers("/images/**", "/js/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()
