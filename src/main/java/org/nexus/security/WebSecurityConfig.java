@@ -44,12 +44,11 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/departments/**").permitAll()
                         .requestMatchers("/buildings/**").permitAll()
+                        .requestMatchers("/labs/**").permitAll()
                         .requestMatchers("/inventory/**").permitAll()
                         .requestMatchers("/api/inventory/**").permitAll()
-                        .requestMatchers("/labs/**").permitAll()
                         .requestMatchers("/").permitAll()
-                        .requestMatchers("/Users/**").hasAuthority("Admin")
-                        .requestMatchers("/images/**", "/js/**", "/webjars/**").permitAll()
+                        .requestMatchers("/Users/**").hasAnyAuthority("Admin", "Principal", "Director")                        .requestMatchers("/images/**", "/js/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

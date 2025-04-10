@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    public static final int USERS_PER_PAGE = 4;
+    public static final int USERS_PER_PAGE = 10;
 
     @Autowired
     private UserRepository userRepo;
