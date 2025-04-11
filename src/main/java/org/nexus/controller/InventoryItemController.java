@@ -30,18 +30,18 @@ public class InventoryItemController {
     private final InventoryItemService inventoryItemService;
     private final LabService labService;
     private final InventoryCategoryService categoryService;
-    private final UserService userService;
     private final UserRepository userRepository;
+    private final InventoryItemDetailService inventoryItemDetailService;
 
     @Autowired
     public InventoryItemController(InventoryItemService inventoryItemService,
                                    LabService labService,
-                                   InventoryCategoryService categoryService, UserService userService, UserRepository userRepository) {
+                                   InventoryCategoryService categoryService, UserService userService, UserRepository userRepository, InventoryItemDetailService inventoryItemDetailService) {
         this.inventoryItemService = inventoryItemService;
         this.labService = labService;
         this.categoryService = categoryService;
-        this.userService = userService;
         this.userRepository = userRepository;
+        this.inventoryItemDetailService = inventoryItemDetailService;
     }
 
     @GetMapping
@@ -89,7 +89,8 @@ public class InventoryItemController {
 
     @PostMapping
     public String createItem(@Valid @ModelAttribute InventoryItem item,
-                             @RequestParam Map<String, String> details,
+                             @RequestParam(value = "detailKeys[]", required = false) String[] detailKeys,
+                             @RequestParam(value = "detailValues[]", required = false) String[] detailValues,
                              BindingResult result,
                              RedirectAttributes redirectAttributes) {
 
@@ -98,28 +99,33 @@ public class InventoryItemController {
         }
 
         try {
-            details.remove("_csrf");
-            List<String> fieldsToRemove = List.of("name", "serialNumber", "quantity",
-                    "unitCost", "purchaseDate", "warrantyExpiryDate", "status", "categoryId", "roomId");
-            fieldsToRemove.forEach(details::remove);
+            Map<String, String> detailsMap = new HashMap<>();
 
-            InventoryItem createdItem = inventoryItemService.createItem(item, details);
+            if (detailKeys != null && detailValues != null) {
+                int minLength = Math.min(detailKeys.length, detailValues.length);
+
+                for (int i = 0; i < minLength; i++) {
+                    if (detailKeys[i] != null && !detailKeys[i].trim().isEmpty()) {
+                        detailsMap.put(detailKeys[i], detailValues[i]);
+                    }
+                }
+            }
+
+            InventoryItem createdItem = inventoryItemService.createItem(item, detailsMap);
+
             redirectAttributes.addFlashAttribute("success", "Inventory item created successfully!");
             return "redirect:/inventory/items/" + createdItem.getId();
         } catch (IllegalArgumentException e) {
             result.rejectValue("serialNumber", "error.item", e.getMessage());
             return "inventory/create-form";
         }
-
     }
 
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Integer id, Model model) {
-
         Optional<InventoryItem> item = inventoryItemService.findItemById(id);
 
         if (item.isPresent()) {
-
             InventoryItem inventoryItem = item.get();
 
             if (inventoryItem.getPurchaseDate() != null) {
@@ -132,26 +138,29 @@ public class InventoryItemController {
                 model.addAttribute("formattedWarrantyDate",
                         inventoryItem.getWarrantyExpiryDate().format(formatter));
             }
+
+            List<InventoryItemDetail> itemDetails = inventoryItemDetailService.findDetailsByItemId(id);
+
             List<Lab> labs = labService.findAllLabs();
             List<InventoryCategory> categories = categoryService.findAllCategories();
 
             model.addAttribute("item", inventoryItem);
+            model.addAttribute("itemDetails", itemDetails);
             model.addAttribute("labs", labs);
             model.addAttribute("categories", categories);
             model.addAttribute("statuses", InventoryStatus.values());
 
             return "inventory/edit-form";
-
         }
 
         return "redirect:/inventory/items";
-
     }
 
     @PostMapping("/{id}")
     public String updateItem(@PathVariable Integer id,
                              @Valid @ModelAttribute InventoryItem itemDetails,
-                             @RequestParam Map<String, String> details,
+                             @RequestParam(value = "detailKeys[]", required = false) String[] detailKeys,
+                             @RequestParam(value = "detailValues[]", required = false) String[] detailValues,
                              BindingResult result,
                              RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
@@ -159,12 +168,19 @@ public class InventoryItemController {
         }
 
         try {
-            details.remove("_csrf");
-            List<String> fieldsToRemove = List.of("name", "serialNumber", "quantity",
-                    "unitCost", "purchaseDate", "warrantyExpiryDate", "status", "categoryId", "roomId");
-            fieldsToRemove.forEach(details::remove);
+            Map<String, String> detailsMap = new HashMap<>();
 
-            InventoryItem updatedItem = inventoryItemService.updateItem(id, itemDetails, details);
+            if (detailKeys != null && detailValues != null) {
+                int minLength = Math.min(detailKeys.length, detailValues.length);
+
+                for (int i = 0; i < minLength; i++) {
+                    if (detailKeys[i] != null && !detailKeys[i].trim().isEmpty()) {
+                        detailsMap.put(detailKeys[i], detailValues[i]);
+                    }
+                }
+            }
+
+            InventoryItem updatedItem = inventoryItemService.updateItem(id, itemDetails, detailsMap);
             redirectAttributes.addFlashAttribute("success", "Inventory item updated successfully!");
             return "redirect:/inventory/items/" + updatedItem.getId();
         } catch (RuntimeException e) {

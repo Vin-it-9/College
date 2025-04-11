@@ -161,11 +161,11 @@
                 <div id="detailsContainer" class="space-y-4">
                     <div class="flex items-center gap-4">
                         <div class="flex-1">
-                            <input type="text" name="details[0].key" placeholder="Key"
+                            <input type="text" name="detailKeys[]" placeholder="Key"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
                         <div class="flex-1">
-                            <input type="text" name="details[0].value" placeholder="Value"
+                            <input type="text" name="detailValues[]" placeholder="Value"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
                         <button type="button" onclick="removeDetail(this)"
@@ -206,19 +206,17 @@
     });
 
     // Dynamic details fields
-    let detailIndex = 1;
-
     function addDetail() {
         const container = document.getElementById('detailsContainer');
         const newDetail = document.createElement('div');
         newDetail.className = 'flex items-center gap-4';
         newDetail.innerHTML = `
                 <div class="flex-1">
-                    <input type="text" name="details[${detailIndex}].key" placeholder="Key"
+                    <input type="text" name="detailKeys[]" placeholder="Key"
                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 <div class="flex-1">
-                    <input type="text" name="details[${detailIndex}].value" placeholder="Value"
+                    <input type="text" name="detailValues[]" placeholder="Value"
                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 <button type="button" onclick="removeDetail(this)"
@@ -227,7 +225,6 @@
                 </button>
             `;
         container.appendChild(newDetail);
-        detailIndex++;
     }
 
     function removeDetail(button) {
