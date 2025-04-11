@@ -4,20 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="Visibility Restrict">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/Dashboardcontroller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/security/CustomAuthenticationSuccessHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard/director.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard/hod.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard/principle.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" afterDir="false" />
+    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="dashboard created for D,P">
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/pending-approvals.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/pending-approvals.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,7 +189,7 @@
       <workItem from="1744227571412" duration="623000" />
       <workItem from="1744280670093" duration="2938000" />
       <workItem from="1744298398279" duration="970000" />
-      <workItem from="1744367166782" duration="3276000" />
+      <workItem from="1744367166782" duration="3602000" />
     </task>
     <task id="LOCAL-00001" summary="commit inventory">
       <option name="closed" value="true" />
@@ -387,7 +375,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744283548109</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="dashboard created for D,P">
+      <option name="closed" value="true" />
+      <created>1744370623039</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1744370623039</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -421,6 +417,7 @@
     <MESSAGE value="PermitAll for /" />
     <MESSAGE value="commit" />
     <MESSAGE value="Visibility Restrict" />
-    <option name="LAST_COMMIT_MESSAGE" value="Visibility Restrict" />
+    <MESSAGE value="dashboard created for D,P" />
+    <option name="LAST_COMMIT_MESSAGE" value="dashboard created for D,P" />
   </component>
 </project>
