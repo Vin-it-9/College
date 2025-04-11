@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +14,7 @@
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold text-gray-900">Building Details</h1>
 
-        <div th:if="${building}" class="flex space-x-2">
+        <div th:if="${building}" class="flex space-x-2" sec:authorize="hasAnyAuthority('Admin', 'Director', 'Principal')">
             <a th:href="@{/buildings/{id}/edit(id=${building.id})}"
                class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
                 Edit Building

@@ -14,4 +14,7 @@ public interface LabRepository extends JpaRepository<Lab, Integer> {
     List<Lab> findByLabNameContainingIgnoreCase(String labName);
     boolean existsByLabNumber(String labNumber);
 
+    List<Lab> findByDepartmentId(int departmentId);
+
+
 }

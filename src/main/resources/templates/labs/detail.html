@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,20 +16,26 @@
         <h1 class="text-3xl font-bold text-gray-900">Lab Details</h1>
 
         <div class="flex space-x-2">
-            <a th:href="@{/labs/{id}/edit(id=${lab.id})}"
+
+            <a sec:authorize="hasAnyAuthority('Admin', 'Principal', 'Director', 'HOD')"
+               th:href="@{/labs/{id}/edit(id=${lab.id})}"
+               class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
+                Edit Lab
+            </a>
+
+            <a sec:authorize="hasAuthority('LabAssistant')"
+               th:if="${lab.labAssistant != null and lab.labAssistant.email == #authentication.name}"
+               th:href="@{/labs/{id}/edit(id=${lab.id})}"
                class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
                 Edit Lab
             </a>
         </div>
     </div>
 
-    <!-- Alert Messages -->
     <div th:replace="~{fragments/messages :: alertMessages}"></div>
 
-    <!-- Lab Details Card -->
     <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
         <div class="p-6">
-            <!-- Status Badge -->
             <div class="mb-6 flex justify-end">
                 <span th:if="${lab.isActive}"
                       class="px-3 py-1 inline-flex text-sm font-semibold rounded-full bg-green-100 text-green-800">
@@ -56,10 +63,6 @@
                         <div>
                             <h3 class="text-sm font-medium text-gray-500 mb-1">Department</h3>
                             <p class="text-lg font-semibold text-gray-900" th:text="${lab.department != null ? lab.department.departmentName : 'Not Assigned'}"></p>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-medium text-gray-500 mb-1">Floor</h3>
-                            <p class="text-lg font-semibold text-gray-900" th:text="${lab.floor != null ? lab.floor.getFloorNumber() : 'Not specified'}"></p>
                         </div>
                     </div>
                 </div>
@@ -138,7 +141,6 @@
         </div>
     </div>
 
-    <!-- Action Buttons -->
     <div class="flex justify-between mt-6">
         <a th:href="@{/labs}"
            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded shadow-lg transition duration-200">
@@ -146,17 +148,35 @@
         </a>
 
         <div class="flex space-x-3">
-            <a th:href="@{/labs/{id}/edit(id=${lab.id})}"
-               class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
-                Edit
-            </a>
-            <form th:action="@{/labs/{id}/delete(id=${lab.id})}" method="post" class="inline">
-                <button type="submit"
-                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200"
-                        onclick="return confirm('Are you sure you want to delete this lab?');">
-                    Delete
-                </button>
-            </form>
+            <div sec:authorize="hasAnyAuthority('Admin', 'Principal', 'Director', 'HOD')" class="flex space-x-3">
+                <a th:href="@{/labs/{id}/edit(id=${lab.id})}"
+                   class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
+                    Edit
+                </a>
+                <form th:action="@{/labs/{id}/delete(id=${lab.id})}" method="post" class="inline">
+                    <button type="submit"
+                            class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200"
+                            onclick="return confirm('Are you sure you want to delete this lab?');">
+                        Delete
+                    </button>
+                </form>
+            </div>
+
+            <div sec:authorize="hasAuthority('LabAssistant')"
+                 th:if="${lab.labAssistant != null and lab.labAssistant.email == #authentication.name}"
+                 class="flex space-x-3">
+                <a th:href="@{/labs/{id}/edit(id=${lab.id})}"
+                   class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
+                    Edit
+                </a>
+                <form th:action="@{/labs/{id}/delete(id=${lab.id})}" method="post" class="inline">
+                    <button type="submit"
+                            class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200"
+                            onclick="return confirm('Are you sure you want to delete this lab?');">
+                        Delete
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 

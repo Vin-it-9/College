@@ -9,6 +9,8 @@ import org.nexus.repository.DepartmentRepository;
 import org.nexus.repository.FloorRepository;
 import org.nexus.service.LabService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,7 @@ public class LabController {
     private final DepartmentRepository departmentRepository;
     private final FloorRepository floorRepository;
 
+
     @Autowired
     public LabController(LabService labService, UserRepository userRepository,
                          DepartmentRepository departmentRepository, FloorRepository floorRepository) {
@@ -38,8 +42,32 @@ public class LabController {
     }
 
     @GetMapping
-    public String getAllLabs(Model model) {
-        List<Lab> labs = labService.findAllLabs();
+    public String listLabs(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        boolean isHOD = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("HOD"));
+
+        List<Lab> labs;
+
+        if (isHOD) {
+            User hod = userRepository.getUserByEmail(email);
+            if (hod != null) {
+                List<Department> departments = departmentRepository.findByHodId(hod.getId());
+                if (!departments.isEmpty()) {
+                    Department department = departments.get(0);
+                    labs = labService.findLabsByDepartmentId(department.getId());
+                } else {
+                    labs = new ArrayList<>();
+                }
+            } else {
+                labs = new ArrayList<>();
+            }
+        } else {
+            labs = labService.findAllLabs();
+        }
+
         model.addAttribute("labs", labs);
         return "labs/list";
     }

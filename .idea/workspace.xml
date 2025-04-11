@@ -4,8 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="dashboard created for D,P">
+    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="team">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/LabController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/LabController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Lab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Lab.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/repository/DepartmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/DepartmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/repository/LabRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/LabRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/service/LabService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/LabService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/buildings/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/buildings/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/departments/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/departments/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/create-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/create-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/edit-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/edit-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/labs/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/labs/list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +201,7 @@
       <workItem from="1744227571412" duration="623000" />
       <workItem from="1744280670093" duration="2938000" />
       <workItem from="1744298398279" duration="970000" />
-      <workItem from="1744367166782" duration="3602000" />
+      <workItem from="1744367166782" duration="6234000" />
     </task>
     <task id="LOCAL-00001" summary="commit inventory">
       <option name="closed" value="true" />
@@ -383,7 +395,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744370623039</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="team">
+      <option name="closed" value="true" />
+      <created>1744371087416</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1744371087417</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -418,6 +438,7 @@
     <MESSAGE value="commit" />
     <MESSAGE value="Visibility Restrict" />
     <MESSAGE value="dashboard created for D,P" />
-    <option name="LAST_COMMIT_MESSAGE" value="dashboard created for D,P" />
+    <MESSAGE value="team" />
+    <option name="LAST_COMMIT_MESSAGE" value="team" />
   </component>
 </project>

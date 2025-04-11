@@ -134,10 +134,6 @@
             <h3 class="text-lg font-semibold text-gray-700">Total Labs</h3>
             <p class="text-2xl font-bold text-gray-900" th:text="${#lists.size(labs)}">0</p>
         </div>
-        <div class="bg-white p-4 rounded-lg shadow">
-            <h3 class="text-lg font-semibold text-gray-700">Active Labs</h3>
-            <p class="text-2xl font-bold text-green-600" th:text="${#lists.size(labs.?[isActive == true])}">0</p>
-        </div>
     </div>
 
 </div>

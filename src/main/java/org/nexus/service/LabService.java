@@ -35,6 +35,10 @@ public class LabService {
         return labRepository.findByLabNameContainingIgnoreCase(labName);
     }
 
+    public List<Lab> findLabsByDepartmentId(int departmentId) {
+        return labRepository.findByDepartmentId(departmentId);
+    }
+
     @Transactional
     public Lab createLab(Lab lab) {
         // Additional validation logic can go here

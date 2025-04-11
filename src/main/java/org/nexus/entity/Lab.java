@@ -57,7 +57,7 @@ public class Lab {
     private String additionalFacility;
 
     @ManyToOne
-    @JoinColumn(name = "floor_id", nullable = false)
+    @JoinColumn(name = "floor_id", nullable = true)
     @JsonBackReference(value = "floor-room")
     private Floor floor;
 

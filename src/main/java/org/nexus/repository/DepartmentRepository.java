@@ -19,5 +19,7 @@ public interface DepartmentRepository extends JpaRepository<Department, Integer>
 
     Optional<Department> findByHod(User hod);
 
+    List<Department> findByHodId(Integer hodId);
+
 
 }

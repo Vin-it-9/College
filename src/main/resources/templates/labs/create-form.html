@@ -48,15 +48,7 @@
                         </select>
                         <div th:if="${#fields.hasErrors('department')}" class="text-red-600 text-xs mt-1" th:errors="*{department}"></div>
                     </div>
-                    <div>
-                        <label for="floor" class="block text-sm font-medium text-gray-700 mb-2">Floor <span class="text-red-500">*</span></label>
-                        <select th:field="*{floor}" id="floor" required
-                                class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="">-- Select Floor --</option>
-                            <option th:each="fl : ${floors}" th:value="${fl.id}" th:text="${fl.getFloorNumber()}"></option>
-                        </select>
-                        <div th:if="${#fields.hasErrors('floor')}" class="text-red-600 text-xs mt-1" th:errors="*{floor}"></div>
-                    </div>
+
                 </div>
             </div>
 
