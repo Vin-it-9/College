@@ -1,0 +1,235 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f2f8ff;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+    color: #333;
+  }
+  
+  /* Header */
+  #headerdiv {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #003366;
+    padding: 12px 30px;
+    flex-wrap: wrap;
+  }
+  
+  .search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  #inputtextfield {
+    height: 35px;
+    width: 240px;
+    padding: 5px 12px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+  }
+  
+  #searchicondiv {
+    height: 30px;
+    width: 30px;
+    background-image: url('https://img.icons8.com/?size=100&id=112468&format=png&color=228BE6');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: invert(100%);
+  }
+  
+  nav {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .HeaderAnchorTags {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+  }
+  
+  .HeaderAnchorTags:hover {
+    background-color: #004080;
+  }
+  
+  .logout {
+    background-color: crimson;
+    font-weight: bold;
+  }
+  
+  .logout:hover {
+    background-color: darkred;
+  }
+  
+  /* Institute Title */
+  #institutenamediv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+    flex-wrap: wrap;
+  }
+  
+  #collegelogo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwuy6pDzwEKU_LzwyumGntBC-iljLNsC_aaQ&s);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+  #collegetitlediv h1 {
+    color: #003366;
+    font-size: 24px;
+  }
+  
+  #collegetitlediv h2 {
+    color: #cc0000;
+    font-size: 20px;
+    margin-top: 5px;
+  }
+  
+  #collegetitlediv h3 {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 50, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #003366;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #003366;
+  font-weight: 600;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccddee;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button {
+  background-color: #0077cc;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #005fa3;
+}
+
+#message {
+  text-align: center;
+  color: green;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+footer 
+  {
+      display: flex;
+      justify-content: center; 
+      align-items: center; 
+      padding: 36px;
+      margin-top: 36px;
+      background-color: #2A5F8A;
+  }
+  
+  .Footer 
+  {
+      display: flex;
+      flex-direction: row;
+      height: 125px;
+      width: 90%;
+      max-width: 1200px;
+      border-radius: 16px;
+      padding: 20px;
+      background-color: #1c1c1e;
+      justify-content: space-evenly;
+      align-items: flex-start;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3); 
+  }
+  
+  .Subfooter 
+  {
+      color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 15px;
+      line-height: 1;
+      text-align: center; 
+      min-width: 150px;
+  }
+  
+  .Subfooter h3 
+  {
+      font-size: 17px;
+      color: #ffffff;
+      margin-bottom: 9px;
+      display: inline-block;
+      padding-bottom: 3px;
+  }
+  
+  .Subfooter h5 
+  {
+      font-size: 12px;
+      font-weight: 200;
+      color: #d1d1d1;
+      margin-bottom: 5px;
+  }
