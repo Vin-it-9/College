@@ -33,6 +33,12 @@
         </form>
 
         <ul class="hidden lg:flex items-center space-x-1">
+            <li sec:authorize="hasAnyAuthority('Admin', 'Director', 'Principal')">
+                <a th:href="|/dashboard/${#authentication.authorities[0].authority.toLowerCase()}|"
+                   class="px-3 py-2 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded transition duration-150">
+                    Dashboard
+                </a>
+            </li>
             <li sec:authorize="hasAuthority('Admin')" >
                 <a th:href="@{/users}"
                    class="px-3 py-2 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded transition duration-150">
@@ -51,19 +57,18 @@
                     Buildings
                 </a>
             </li>
-            <li>
+            <li sec:authorize="hasAnyAuthority('Admin','Teacher','LabAssistant')" >
                 <a th:href="@{/labs}"
                    class="px-3 py-2 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded transition duration-150">
                     Labs
                 </a>
             </li>
-            <li>
+            <li sec:authorize="hasAnyAuthority('Admin','Teacher','LabAssistant')" >
                 <a th:href="@{/inventory/items}"
                    class="px-3 py-2 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded transition duration-150">
                     Inventory
                 </a>
             </li>
-
             <li sec:authorize="isAuthenticated()" class="relative ml-2">
                 <div class="relative inline-block text-left">
                     <button type="button" id="userMenuButton"

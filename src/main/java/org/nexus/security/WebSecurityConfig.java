@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -42,24 +43,33 @@ public class WebSecurityConfig {
         http.authenticationProvider(authenticationProvider());
         http.csrf().disable()
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/").permitAll()
                         .requestMatchers("/departments/**").permitAll()
                         .requestMatchers("/buildings/**").permitAll()
                         .requestMatchers("/labs/**").permitAll()
                         .requestMatchers("/inventory/**").permitAll()
                         .requestMatchers("/api/inventory/**").permitAll()
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/Users/**").hasAnyAuthority("Admin", "Principal", "Director")                        .requestMatchers("/images/**", "/js/**", "/webjars/**").permitAll()
+                        .requestMatchers("/dashboard/director/**").hasAnyAuthority("Director")
+                        .requestMatchers("/dashboard/principal/**").hasAnyAuthority("Principal")
+                        .requestMatchers("/dashboard/principal/**").hasAnyAuthority("HOD")
+                        .requestMatchers("/Users/**").hasAnyAuthority("Admin", "Principal", "Director")
+                        .requestMatchers("/images/**", "/js/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
+                        .successHandler(customAuthenticationSuccessHandler())
                         .usernameParameter("email")
                         .permitAll()
                 )
                 .logout(logout -> logout.permitAll());
 
         return http.build();
+    }
+
+    @Bean
+    AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
     }
 
 
