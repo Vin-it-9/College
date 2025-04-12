@@ -441,6 +441,9 @@ public class InventoryItemService {
         return inventoryItemRepository.findByApprovedFalseAndLabDepartmentId(department.getId());
     }
 
+    public List<InventoryItem> findInventoryByDepartmentId(Integer departmentId) {
+        return inventoryItemRepository.findByLabDepartmentId(departmentId);
+    }
 
     public boolean isHod(User user) {
         if (user == null || user.getRoles() == null) {

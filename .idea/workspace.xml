@@ -4,11 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="inventory updated">
+    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="commit">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/HodController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/RequestController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Request.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/RequestRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/HodService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/RequestService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/requests/list-requests.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/requests/new-request.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/requests/pending-approvals.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/requests/view-request.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Role.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/Dashboardcontroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/Dashboardcontroller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/repository/InventoryItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/InventoryItemRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/service/InventoryItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/InventoryItemService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/dashboard/hod.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard/hod.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +32,8 @@
       <list>
         <option value="Enum" />
         <option value="Record" />
-        <option value="Interface" />
         <option value="Exception" />
+        <option value="Interface" />
         <option value="Class" />
         <option value="HTML File" />
       </list>
@@ -194,6 +206,7 @@
       <workItem from="1744298398279" duration="970000" />
       <workItem from="1744367166782" duration="8788000" />
       <workItem from="1744448082296" duration="732000" />
+      <workItem from="1744480281938" duration="10142000" />
     </task>
     <task id="LOCAL-00001" summary="commit inventory">
       <option name="closed" value="true" />
@@ -411,7 +424,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744376103133</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="commit">
+      <option name="closed" value="true" />
+      <created>1744480336683</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1744480336683</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -443,12 +464,12 @@
     <MESSAGE value="UI updated" />
     <MESSAGE value="team update" />
     <MESSAGE value="PermitAll for /" />
-    <MESSAGE value="commit" />
     <MESSAGE value="Visibility Restrict" />
     <MESSAGE value="dashboard created for D,P" />
     <MESSAGE value="team" />
     <MESSAGE value="Security updated" />
     <MESSAGE value="inventory updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="inventory updated" />
+    <MESSAGE value="commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit" />
   </component>
 </project>

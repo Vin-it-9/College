@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requests</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+<div class="min-h-screen flex flex-col">
+
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Request Management</h1>
+                    <p class="mt-1 text-sm text-gray-600" th:if="${isHod}" th:text="${departmentName + ' Department'}">
+                        Department Requests
+                    </p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-600">Current Date & Time (UTC)</p>
+                    <p class="text-base font-medium" th:text="${currentDateTime}"></p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+            <nav class="mb-6">
+                <ol class="flex text-sm">
+                    <li class="text-gray-500">Requests</li>
+                </ol>
+            </nav>
+
+            <div th:if="${message}" class="mb-6 bg-green-50 border-l-4 border-green-500 p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-green-700" th:text="${message}">
+                            Request has been submitted successfully!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between mb-6">
+                <h2 class="text-xl font-medium text-gray-900" th:text="${isHod ? 'Department Requests' : 'Your Requests'}">
+                    Your Requests
+                </h2>
+                <div class="flex space-x-3">
+            <a sec:authorize="hasAnyRole('ADMIN','PRINCIPAL', 'DIRECTOR')" th:href="@{/requests/pending-approvals}"
+             class="bg-amber-500 hover:bg-amber-600 text-white font-medium py-2 px-4 rounded-md shadow transition duration-200 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                  Pending Approvals
+            </a>
+                    <a th:href="@{/requests/new}"
+                       class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow transition duration-200 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Create New Request
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Subject
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Created At
+                            </th>
+                            <th th:if="${isHod}" scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Requester
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tr th:each="req : ${requests}" class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900" th:text="${req.subject}">
+                                    Request for new computer
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                        <span th:if="${req.status.name() == 'PENDING'}"
+                                              class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                            Pending
+                                        </span>
+                                <span th:if="${req.status.name() == 'APPROVED'}"
+                                      class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Approved
+                                        </span>
+                                <span th:if="${req.status.name() == 'REJECTED'}"
+                                      class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            Rejected
+                                        </span>
+                                <span th:if="${req.status.name() == 'COMPLETED'}"
+                                      class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                            Completed
+                                        </span>
+                                <span th:if="${req.status.name() == 'CANCELLED'}"
+                                      class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                            Cancelled
+                                        </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-500" th:text="${#temporals.format(req.createdAt, 'yyyy-MM-dd HH:mm')}">
+                                    2025-04-10 14:23
+                                </div>
+                            </td>
+                            <td th:if="${isHod}" class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900" th:text="${req.user.firstName + ' ' + req.user.lastName}">
+                                    John Doe
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a th:href="@{/requests/{id}(id=${req.id})}" class="text-blue-600 hover:text-blue-900 mr-3">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(requests)}">
+                            <td th:colspan="${isHod ? 5 : 4}" class="px-6 py-10 text-center">
+                                <div class="flex flex-col items-center">
+                                    <svg class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <p class="mt-2 text-gray-500 text-lg">No requests found.</p>
+                                    <p class="text-gray-400 text-sm mt-1">Click "Create New Request" to get started.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+    </main>
+
+
+</div>
+</body>
+</html>

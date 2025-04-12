@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Request</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+<div class="min-h-screen flex flex-col">
+
+  <header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">Request Details</h1>
+        </div>
+        <div class="text-right">
+          <p class="text-sm text-gray-600">Current Date & Time (UTC)</p>
+          <p class="text-base font-medium" th:text="${currentDateTime}"></p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <nav class="mb-6">
+        <ol class="flex text-sm">
+          <li class="flex items-center">
+            <a th:href="@{/requests}" class="text-blue-600 hover:text-blue-800">Requests</a>
+            <svg class="h-4 w-4 mx-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+            </svg>
+          </li>
+          <li class="text-gray-500" th:text="${'Request #' + request.id}">Request #123</li>
+        </ol>
+      </nav>
+
+      <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <div class="flex justify-between items-center">
+            <h2 class="text-lg font-medium text-gray-900" th:text="${request.subject}">
+              Request for new laboratory equipment
+            </h2>
+
+            <div>
+                                <span th:if="${request.status.name() == 'PENDING'}"
+                                      class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Pending
+                                </span>
+              <span th:if="${request.status.name() == 'APPROVED'}"
+                    class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Approved
+                                </span>
+              <span th:if="${request.status.name() == 'REJECTED'}"
+                    class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    Rejected
+                                </span>
+              <span th:if="${request.status.name() == 'COMPLETED'}"
+                    class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    Completed
+                                </span>
+              <span th:if="${request.status.name() == 'CANCELLED'}"
+                    class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                    Cancelled
+                                </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6">
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+              <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Requester</h3>
+              <p class="text-sm text-gray-900" th:text="${request.user.firstName + ' ' + request.user.lastName}">
+                John Doe
+              </p>
+              <p class="text-sm text-gray-500" th:text="${request.user.email}">
+                john.doe@example.com
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Request Information</h3>
+              <p class="text-sm text-gray-900">
+                <span class="font-medium">Created:</span>
+                <span th:text="${#temporals.format(request.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
+              </p>
+              <p class="text-sm text-gray-900" th:if="${request.approvedAt != null}">
+                <span class="font-medium">Processed:</span>
+                <span th:text="${#temporals.format(request.approvedAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
+              </p>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Request Message</h3>
+            <div class="bg-gray-50 p-4 rounded-md">
+              <p class="text-sm text-gray-900 whitespace-pre-line" th:text="${request.message}">
+                The detailed request message would appear here.
+              </p>
+            </div>
+          </div>
+
+          <div th:if="${isHod && request.status.name() == 'PENDING'}" sec:authorize="hasAnyRole('ADMIN','PRINCIPAL', 'DIRECTOR')"  class="border-t border-gray-200 pt-6">
+            <h3 class="text-sm font-medium text-gray-900 mb-4">Process this request</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              <div class="bg-green-50 p-4 rounded-md">
+                <h4 class="text-sm font-medium text-green-800 mb-2">Approve Request</h4>
+                <form th:action="@{/requests/{id}/approve(id=${request.id})}" method="post">
+                  <button type="submit"
+                          class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md shadow transition duration-200 text-sm">
+                    Approve Request
+                  </button>
+                </form>
+              </div>
+
+              <div class="bg-red-50 p-4 rounded-md">
+                <h4 class="text-sm font-medium text-red-800 mb-2">Reject Request</h4>
+                <form th:action="@{/requests/{id}/reject(id=${request.id})}" method="post">
+                  <button type="submit"
+                          class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md shadow transition duration-200 text-sm">
+                    Reject Request
+                  </button>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-between">
+        <a th:href="@{/requests}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-md transition duration-200">
+          Back to Requests
+        </a>
+
+        <div th:if="${!isHod && request.status.name() == 'REJECTED'}" class="flex space-x-3">
+          <a th:href="@{/requests/new}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow transition duration-200">
+            Submit New Request
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</div>
+</body>
+</html>

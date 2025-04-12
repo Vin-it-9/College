@@ -1,12 +1,244 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${departmentName} + ' Department Dashboard'">HOD Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
 
-<h2>hello HOD</h2>
+<body class="bg-gray-100 font-sans">
+<div class="flex h-screen">
 
+    <aside class="w-64 bg-slate-800 text-white shadow-xl flex flex-col">
+
+        <div class="p-6 border-b border-slate-700">
+            <h2 class="text-2xl font-bold text-center">HOD Interface</h2>
+        </div>
+
+        <div class="px-4 py-5 flex items-center border-b border-slate-700">
+            <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center text-xl font-bold mr-3">
+                <span th:text="${#authentication.principal.Fullname?.substring(0,1)}"></span>
+            </div>
+            <div>
+                <h3 class="font-medium" th:text="${#authentication.principal.Fullname}"></h3>
+                <p class="text-xs text-slate-400">HOD, <span th:text="${departmentName}"></span> Department</p>
+            </div>
+        </div>
+
+        <nav class="flex-1 py-6 space-y-1">
+            <a href="#" class="flex items-center px-6 py-3 text-slate-200 hover:bg-slate-700 hover:text-white border-l-4 border-red-600">
+                <img src="https://img.icons8.com/?size=100&id=EWiNJQyqQJOT&format=png&color=FFFFFF" alt="" class="h-5 w-5 mr-3">
+                <span>Dashboard</span>
+            </a>
+            <a th:href="@{/inventory/items}" class="flex items-center px-6 py-3 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-l-4 hover:border-red-600">
+                <img src="https://img.icons8.com/?size=100&id=boRU6gYY2kDO&format=png&color=FFFFFF" alt="" class="h-5 w-5 mr-3">
+                <span>Inventory</span>
+            </a>
+            <a th:href="@{/inventory/items/pending-approvals}" class="flex items-center px-6 py-3 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-l-4 hover:border-red-600">
+                <img src="https://img.icons8.com/?size=100&id=56387&format=png&color=FFFFFF" alt="" class="h-5 w-5 mr-3">
+                <span>Requests</span>
+            </a>
+            <a th:href="@{/requests}" class="flex items-center px-6 py-3 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-l-4 hover:border-red-600">
+                <img src="https://img.icons8.com/?size=100&id=LFC9fivf2q5C&format=png&color=FFFFFF" alt="" class="h-5 w-5 mr-3">
+                <span>Approvals</span>
+            </a>
+            <a th:href="@{/profile}" class="flex items-center px-6 py-3 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-l-4 hover:border-red-600">
+                <img src="https://img.icons8.com/?size=100&id=ywULFSPkh4kI&format=png&color=FFFFFF" alt="" class="h-5 w-5 mr-3">
+                <span>Profile</span>
+            </a>
+        </nav>
+    </aside>
+
+    <div class="flex-1 overflow-y-auto">
+
+        <header class="bg-white shadow-sm">
+            <div class="flex justify-between items-center px-8 py-6">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900" th:text="${departmentName} + ' Department Dashboard'">Department Dashboard</h1>
+                    <p class="text-sm text-gray-600">Inventory Management System</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-600">Current Date & Time</p>
+                    <p class="text-base font-medium" id="current-datetime" th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">Loading...</p>
+                    <script>
+                        function updateDateTime() {
+                            const now = new Date();
+                            const formattedDate = now.getFullYear() + '-' +
+                                String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                                String(now.getDate()).padStart(2, '0') + ' ' +
+                                String(now.getHours()).padStart(2, '0') + ':' +
+                                String(now.getMinutes()).padStart(2, '0') + ':' +
+                                String(now.getSeconds()).padStart(2, '0');
+                            document.getElementById('current-datetime').textContent = formattedDate;
+                        }
+                        updateDateTime();
+                        setInterval(updateDateTime, 1000);
+                    </script>
+                </div>
+            </div>
+        </header>
+
+        <div class="bg-gradient-to-r from-slate-800 to-slate-700 text-white px-8 py-6 shadow-md">
+            <h2 class="text-3xl font-semibold">Welcome, <span th:text="${#authentication.principal.Fullname}"></span></h2>
+            <p class="mt-1 text-slate-300">Head of Department, <span th:text="${departmentName}"></span></p>
+        </div>
+
+        <div class="p-8">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Total Inventory</p>
+                            <h3 class="text-3xl font-bold text-slate-800" th:text="${totalInventory}">750</h3>
+                        </div>
+                        <div class="bg-blue-100 p-3 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="px-6 py-3 bg-gray-50">
+                        <a th:href="@{/inventory/items}" class="text-sm font-medium text-blue-600 hover:text-red-600 inline-flex items-center">
+                            View details
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500" th:text="${departmentName} + ' Laboratories'">Laboratories</p>
+                            <h3 class="text-3xl font-bold text-slate-800" th:text="${totalLabs}">8</h3>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <img src="https://img.icons8.com/?size=100&id=97037&format=png&color=1A1A1A" alt="Labs" class="h-6 w-6">
+                        </div>
+                    </div>
+                    <div class="px-6 py-3 bg-gray-50">
+                        <a th:href="@{/labs}" class="text-sm font-medium text-blue-600 hover:text-red-600 inline-flex items-center">
+                            View labs
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Classrooms</p>
+                            <h3 class="text-3xl font-bold text-slate-800">12</h3>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-full">
+                            <img src="https://img.icons8.com/?size=100&id=3653&format=png&color=000000" alt="Classrooms" class="h-6 w-6">
+                        </div>
+                    </div>
+                    <div class="px-6 py-3 bg-gray-50">
+                        <a th:href="@{/classrooms}" class="text-sm font-medium text-blue-600 hover:text-red-600 inline-flex items-center">
+                            View classrooms
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500" th:text="${departmentName} + ' Seminar Hall'">Seminar Hall</p>
+                            <h3 class="text-3xl font-bold text-slate-800">2</h3>
+                        </div>
+                        <div class="bg-amber-100 p-3 rounded-full">
+                            <img src="https://img.icons8.com/?size=100&id=87771&format=png&color=1A1A1A" alt="Seminar Hall" class="h-6 w-6">
+                        </div>
+                    </div>
+                    <div class="px-6 py-3 bg-gray-50">
+                        <a th:href="@{/seminar-halls}" class="text-sm font-medium text-blue-600 hover:text-red-600 inline-flex items-center">
+                            View details
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Pending Requests</p>
+                            <h3 class="text-3xl font-bold text-slate-800" th:text="${pendingRequests}">15</h3>
+                        </div>
+                        <div class="bg-red-100 p-3 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="px-6 py-3 bg-gray-50">
+                        <a th:href="@{/inventory/items/pending-approvals}" class="text-sm font-medium text-blue-600 hover:text-red-600 inline-flex items-center">
+                            Review requests
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Annual Budget</p>
+                            <h3 class="text-3xl font-bold text-slate-800">₹ 25L</h3>
+                        </div>
+                        <div class="bg-emerald-100 p-3 rounded-full">
+                            <img src="https://img.icons8.com/?size=100&id=OS06UppbaUP1&format=png&color=000000" alt="Budget" class="h-6 w-6">
+                        </div>
+                    </div>
+                    <div class="px-6 py-3 bg-gray-50">
+                        <a th:href="@{/budget}" class="text-sm font-medium text-blue-600 hover:text-red-600 inline-flex items-center">
+                            View budget details
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-span-1 md:col-span-2 bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="px-6 py-5 border-b border-gray-100">
+                        <h3 class="font-semibold text-lg text-gray-900">Quick Actions</h3>
+                    </div>
+                    <div class="p-6 grid grid-cols-2 gap-4">
+                        <a th:href="@{/requests/new}" class="inline-flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-2 px-4 rounded-md transition-colors duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            New Request
+                        </a>
+                        <a th:href="@{/reports/generate}" class="inline-flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-2 px-4 rounded-md transition-colors duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            Generate Report
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 </body>
 </html>

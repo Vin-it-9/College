@@ -64,4 +64,6 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, In
     @Query("SELECT i FROM InventoryItem i WHERE i.approved = false AND i.lab.department.id = :departmentId")
     List<InventoryItem> findByApprovedFalseAndLabDepartmentId(Integer departmentId);
 
+    List<InventoryItem> findByLabDepartmentId(Integer departmentId);
+
 }

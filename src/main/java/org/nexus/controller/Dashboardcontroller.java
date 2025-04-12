@@ -18,10 +18,7 @@ public class Dashboardcontroller {
         return "dashboard/principle";
     }
 
-    @GetMapping("/hod")
-    public String hod() {
-        return "dashboard/hod";
-    }
+
 
 //    @GetMapping("/lab-assistant")
 //    public String labassistant() {

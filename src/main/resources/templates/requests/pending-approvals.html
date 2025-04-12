@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Approvals</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+<div class="min-h-screen flex flex-col">
+
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Pending Approvals</h1>
+                    <p class="mt-1 text-sm text-gray-600" th:text="${departmentName + ' Department'}">
+                        Electronics & Telecommunication Department
+                    </p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-600">Current Date & Time (UTC)</p>
+                    <p class="text-base font-medium" th:text="${currentDateTime}">2025-04-12 19:59:45</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+            <nav class="mb-6">
+                <ol class="flex text-sm">
+                    <li class="flex items-center">
+                        <a th:href="@{/requests}" class="text-blue-600 hover:text-blue-800">Requests</a>
+                        <svg class="h-4 w-4 mx-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </li>
+                    <li class="text-gray-500">Pending Approvals</li>
+                </ol>
+            </nav>
+
+            <div th:if="${message}" class="mb-6 bg-green-50 border-l-4 border-green-500 p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-green-700" th:text="${message}">
+                            Request has been approved successfully!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-medium text-gray-900">Requests Awaiting Your Approval</h2>
+                    <p class="mt-1 text-sm text-gray-500">Review and process pending requests from your department.</p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Requester
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Subject
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Submitted On
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tr th:each="req : ${pendingRequests}" class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <span class="text-blue-800 font-medium" th:text="${req.user.firstName.substring(0,1) + req.user.lastName.substring(0,1)}">JD</span>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900" th:text="${req.user.firstName + ' ' + req.user.lastName}">
+                                            John Doe
+                                        </div>
+                                        <div class="text-sm text-gray-500" th:text="${req.user.email}">
+                                            john.doe@example.com
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900" th:text="${req.subject}">
+                                    Request for new laboratory equipment
+                                </div>
+                                <div class="text-xs text-gray-500 mt-1 truncate max-w-xs" th:text="${#strings.abbreviate(req.message, 80)}">
+                                    I would like to request new equipment for the...
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-500" th:text="${#temporals.format(req.createdAt, 'yyyy-MM-dd HH:mm')}">
+                                    2025-04-10 14:23
+                                </div>
+                                <div class="text-xs text-gray-400" th:text="${#temporals.format(req.createdAt, 'EEEE')}">
+                                    Thursday
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a th:href="@{/requests/{id}(id=${req.id})}" class="text-blue-600 hover:text-blue-900 block mb-1">
+                                    Review
+                                </a>
+                                <button type="button"
+                                        class="text-green-600 hover:text-green-900 block mb-1 text-left w-full"
+                                        th:data-request-id="${req.id}"
+                                        onclick="showModal('approve', this.getAttribute('data-request-id'))">
+                                    Approve
+                                </button>
+                                <button type="button"
+                                        class="text-red-600 hover:text-red-900 block text-left w-full"
+                                        th:data-request-id="${req.id}"
+                                        onclick="showModal('reject', this.getAttribute('data-request-id'))">
+                                    Reject
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(pendingRequests)}">
+                            <td colspan="4" class="px-6 py-10 text-center">
+                                <div class="flex flex-col items-center">
+                                    <svg class="h-12 w-12 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <p class="mt-2 text-gray-500 text-lg">All caught up!</p>
+                                    <p class="text-gray-400 text-sm mt-1">There are no pending requests requiring your approval.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <a th:href="@{/requests}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-md transition duration-200">
+                    Back to All Requests
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <div id="approveModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">Approve Request</h3>
+            </div>
+            <form id="approveForm" method="post">
+                <div class="p-6">
+                    <p class="text-sm text-gray-600 mb-4">
+                        Are you sure you want to approve this request? You can add optional comments below.
+                    </p>
+                    <div class="mb-4">
+                        <label for="approveComments" class="block text-sm font-medium text-gray-700 mb-1">Comments (Optional)</label>
+                        <textarea id="approveComments" name="comments" rows="3"
+                                  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></textarea>
+                    </div>
+                </div>
+                <div class="px-6 py-4 bg-gray-50 flex justify-end space-x-3 rounded-b-lg">
+                    <button type="button" onclick="hideModal('approve')"
+                            class="bg-white border border-gray-300 rounded-md py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="bg-green-600 border border-transparent rounded-md py-2 px-4 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                        Approve
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="rejectModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">Reject Request</h3>
+            </div>
+            <form id="rejectForm" method="post">
+                <div class="p-6">
+                    <p class="text-sm text-gray-600 mb-4">
+                        Please provide a reason for rejecting this request.
+                    </p>
+                    <div class="mb-4">
+                        <label for="rejectComments" class="block text-sm font-medium text-gray-700 mb-1">Rejection Reason <span class="text-red-500">*</span></label>
+                        <textarea id="rejectComments" name="comments" rows="3" required
+                                  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50"></textarea>
+                    </div>
+                </div>
+                <div class="px-6 py-4 bg-gray-50 flex justify-end space-x-3 rounded-b-lg">
+                    <button type="button" onclick="hideModal('reject')"
+                            class="bg-white border border-gray-300 rounded-md py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="bg-red-600 border border-transparent rounded-md py-2 px-4 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Reject
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal and Form JS -->
+    <script>
+        function showModal(type, requestId) {
+            const form = document.getElementById(type + 'Form');
+            form.action = `/requests/${requestId}/${type}`;
+            document.getElementById(type + 'Modal').classList.remove('hidden');
+        }
+
+        function hideModal(type) {
+            document.getElementById(type + 'Modal').classList.add('hidden');
+        }
+
+        document.addEventListener('click', function(event) {
+            const approveModal = document.getElementById('approveModal');
+            const rejectModal = document.getElementById('rejectModal');
+
+            if (!approveModal.classList.contains('hidden') &&
+                !event.target.closest('.bg-white') &&
+                event.target.closest('#approveModal')) {
+                hideModal('approve');
+            }
+
+            if (!rejectModal.classList.contains('hidden') &&
+                !event.target.closest('.bg-white') &&
+                event.target.closest('#rejectModal')) {
+                hideModal('reject');
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                hideModal('approve');
+                hideModal('reject');
+            }
+        });
+    </script>
+</div>
+</body>
+</html>
