@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Table(name = "roles")
+@Table(name = "college_roles")
 @Entity
 public class Role {
     @Id

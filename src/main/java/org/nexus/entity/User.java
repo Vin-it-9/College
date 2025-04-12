@@ -8,7 +8,7 @@ import java.util.Set;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "college_users")
 public class User {
 
     @Id
@@ -37,7 +37,7 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "users_roles",
+            name = "college_users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
