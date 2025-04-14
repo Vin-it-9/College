@@ -1,14 +1,17 @@
 package org.nexus.controller;
 
+import org.nexus.entity.transferDTO.DepartmentInventorySummary;
 import org.nexus.repository.*;
 import org.nexus.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,15 +21,42 @@ public class Maincontroller {
 
 
     @Autowired
+    private InventoryItemRepository inventoryItemRepository;
+
+    @Autowired
+    private DepartmentRepository departmentRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private RoleRepository roleRepository;
 
     @GetMapping("")
-    public String viewHomePage() {
+    public String viewHomePage(Model model) {
+
+        long totalInventory = inventoryItemRepository.count();
+
+        long totalDepartments = departmentRepository.count();
+
+        List<DepartmentInventorySummary> departmentInventories = departmentRepository.getDepartmentsWithInventoryCounts();
+
+        List<InventoryItem> topItems = inventoryItemRepository.findTopItemsByQuantity(
+                PageRequest.of(0, 5)
+        );
+
+        model.addAttribute("totalInventory", totalInventory);
+        model.addAttribute("totalDepartments", totalDepartments);
+        model.addAttribute("departmentInventories", departmentInventories);
+        model.addAttribute("topInventoryItems", topItems);
+
+
+
         return "index" ;
     }
+
+
+
 
 
     @GetMapping("/login")

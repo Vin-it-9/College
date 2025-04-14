@@ -1,11 +1,12 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: common-header}"></head>
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title th:text="${departmentName} + ' Department Dashboard'">HOD Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100 font-sans">
@@ -48,6 +49,10 @@
                 <img src="https://img.icons8.com/?size=100&id=ywULFSPkh4kI&format=png&color=FFFFFF" alt="" class="h-5 w-5 mr-3">
                 <span>Profile</span>
             </a>
+            <a th:href="@{/logout}" class="flex items-center px-6 py-3 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-l-4 hover:border-red-600">
+                <img src="https://img.icons8.com/?size=100&id=ywULFSPkh4kI&format=png&color=FFFFFF" alt="" class="h-5 w-5 mr-3">
+                <span>Logout</span>
+            </a>
         </nav>
     </aside>
 
@@ -80,7 +85,7 @@
             </div>
         </header>
 
-        <div class="bg-gradient-to-r from-slate-800 to-slate-700 text-white px-8 py-6 shadow-md">
+        <div class="bg-slate-800 text-white px-8 py-6 shadow-md">
             <h2 class="text-3xl font-semibold">Welcome, <span th:text="${#authentication.principal.Fullname}"></span></h2>
             <p class="mt-1 text-slate-300">Head of Department, <span th:text="${departmentName}"></span></p>
         </div>

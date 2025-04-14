@@ -17,6 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -62,6 +65,58 @@ public class UserController {
         return "Users" ;
     }
 
+    @GetMapping("/profile")
+    public String viewProfile(Model model) {
+
+        List<Role> listRoles = service.listRoles();
+
+        User user = service.getCurrentUser();
+        if (user == null) {
+            return "redirect:/login";
+        }
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = now.format(formatter);
+
+        model.addAttribute("user", user);
+        model.addAttribute("pageTitle", "Edit Profile: " + user.getFirstName() + " " + user.getLastName());
+        model.addAttribute("currentDateTime", formattedDateTime);
+        model.addAttribute("currentUserLogin", user.getEmail());
+        model.addAttribute("listRoles", listRoles);
+
+
+        return "profile";
+    }
+
+
+//    @PostMapping("/users/save")
+//    public String saveUserProfile(User user,
+//                           RedirectAttributes redirectAttributes,
+//                           @RequestParam("fileImage") MultipartFile multipartFile) throws IOException {
+//
+//        if (!multipartFile.isEmpty()) {
+//            String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+//            user.setPhotos(filename);
+//            User savedUser = service.save(user);
+//            String uploadDir = "user-photos/" + savedUser.getId();
+//
+//            AmazonS3Util.removeFolder(uploadDir);
+//            AmazonS3Util.uploadFile(uploadDir, filename, multipartFile.getInputStream());
+//        } else {
+//            if (user.getPhotos().isEmpty()) {
+//                user.setPhotos(null);
+//            }
+//            service.save(user);
+//        }
+//
+//        redirectAttributes.addFlashAttribute("message", "User saved successfully");
+//
+//
+//
+//        return "redirect:/users";
+//    }
+
+
     @GetMapping("/users/new")
     public String newUser(Model model) {
         List<Role> listRoles = service.listRoles();
@@ -102,9 +157,17 @@ public class UserController {
             service.save(user);
         }
         //        service.save(user);
+
+        User currentUser = service.getCurrentUser();
+        if (currentUser != null && user.getId() != null && user.getId().equals(currentUser.getId())) {
+            return "redirect:/profile";
+        }
+
         redirectAttributes.addFlashAttribute("message" , "User added successfully ");
         return "redirect:/users";
     }
+
+
 
 
     @GetMapping("/users/edit/{id}")

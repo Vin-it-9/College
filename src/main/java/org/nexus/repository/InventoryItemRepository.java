@@ -1,6 +1,7 @@
 package org.nexus.repository;
 
 import org.nexus.entity.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,9 @@ import java.util.Optional;
 
 @Repository
 public interface InventoryItemRepository extends JpaRepository<InventoryItem, Integer> {
+
+    @Query("SELECT i FROM InventoryItem i ORDER BY i.quantity DESC")
+    List<InventoryItem> findTopItemsByQuantity(Pageable pageable);
 
     List<InventoryItem> findByCategoryId(Integer categoryId);
 

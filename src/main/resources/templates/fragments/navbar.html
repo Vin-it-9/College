@@ -33,7 +33,7 @@
         </form>
 
         <ul class="hidden lg:flex items-center space-x-1">
-            <li sec:authorize="hasAnyAuthority('Admin', 'Director', 'Principal')">
+            <li sec:authorize="hasAnyAuthority('Director', 'Principal','HOD')">
                 <a th:href="|/dashboard/${#authentication.authorities[0].authority.toLowerCase()}|"
                    class="px-3 py-2 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded transition duration-150">
                     Dashboard

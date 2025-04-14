@@ -1,7 +1,10 @@
 package org.nexus.service;
 
 
+import java.io.IOException;
 import java.util.*;
+
+import org.nexus.FileUploadUtil;
 import org.nexus.repository.*;
 import org.nexus.entity.*;
 import org.nexus.exception.UserNotFoundException;
@@ -9,9 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -47,6 +53,22 @@ public class UserService {
     public List<Role> listRoles() {
         return (List<Role>) roleRepo.findAll();
     }
+
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+
+        String email = authentication.getName();
+        return userRepo.getUserByEmail(email);
+    }
+
+    public Optional<User> getUserById(Integer id) {
+        return userRepo.findById(id);
+    }
+
+
 
     public User save(User user) {
 
