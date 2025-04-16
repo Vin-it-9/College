@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="en">
+<head th:replace="~{fragments/header :: common-header}"></head>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mx-auto px-4 py-8">
+
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">Classroom Details</h1>
+
+        <div class="flex space-x-2">
+            <a sec:authorize="hasAnyAuthority('Admin', 'Principal', 'Director', 'HOD')"
+               th:href="@{/classrooms/{id}/edit(id=${classroom.id})}"
+               class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
+                Edit Classroom
+            </a>
+
+            <a sec:authorize="hasAuthority('Teacher')"
+               th:if="${classroom.classroomTeacher != null and classroom.classroomTeacher.email == #authentication.name}"
+               th:href="@{/classrooms/{id}/edit(id=${classroom.id})}"
+               class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
+                Edit Classroom
+            </a>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/messages :: alertMessages}"></div>
+
+    <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
+        <div class="p-6">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Basic Information -->
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Basic Information</h2>
+                    <div class="space-y-3">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500 mb-1">Classroom Number</h3>
+                            <p class="text-lg font-semibold text-gray-900" th:text="${classroom.classroomNumber}"></p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500 mb-1">Classroom Name</h3>
+                            <p class="text-lg font-semibold text-gray-900" th:text="${classroom.classroomName}"></p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500 mb-1">Department</h3>
+                            <p class="text-lg font-semibold text-gray-900" th:text="${classroom.department != null ? classroom.department.departmentName : 'Not Assigned'}"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Staff Information -->
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Staff Information</h2>
+                    <div class="space-y-3">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500 mb-1">Classroom Teacher</h3>
+                            <p class="text-lg font-semibold text-gray-900" th:text="${classroom.classroomTeacher != null ? classroom.classroomTeacher.firstName + ' ' + classroom.classroomTeacher.lastName : 'Not Assigned'}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Physical Details -->
+            <div class="mt-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Physical Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">Capacity</h3>
+                        <p class="text-lg font-semibold text-gray-900" th:text="${classroom.capacity != null ? classroom.capacity + ' persons' : 'Not specified'}"></p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">Area</h3>
+                        <p class="text-lg font-semibold text-gray-900" th:text="${classroom.area != null ? classroom.area + ' sq.m' : 'Not specified'}"></p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">Cost</h3>
+                        <p class="text-lg font-semibold text-gray-900" th:text="${classroom.cost != null ? 'Rs' + #numbers.formatDecimal(classroom.cost, 1, 'COMMA', 2, 'POINT') : 'Not specified'}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mt-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Description</h2>
+                <p class="text-gray-900" th:text="${classroom.description != null ? classroom.description : 'No description available.'}"></p>
+            </div>
+
+            <!-- Inventory Items -->
+            <div class="mt-8" th:if="${!#lists.isEmpty(classroom.inventoryItems)}">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Inventory Items</h2>
+                <div class="overflow-x-auto bg-white rounded-lg border border-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tr th:each="item : ${classroom.inventoryItems}" class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900" th:text="${item.name}"></div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                <div class="text-sm text-gray-900" th:text="${item.quantity != null ? item.quantity : 1}"></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-between mt-6">
+        <a th:href="@{/classrooms}"
+           class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded shadow-lg transition duration-200">
+            Back to Classrooms List
+        </a>
+
+        <div class="flex space-x-3">
+            <div sec:authorize="hasAnyAuthority('Admin', 'Principal', 'Director', 'HOD')" class="flex space-x-3">
+                <a th:href="@{/classrooms/{id}/edit(id=${classroom.id})}"
+                   class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
+                    Edit
+                </a>
+                <form th:action="@{/classrooms/{id}/delete(id=${classroom.id})}" method="post" class="inline">
+                    <button type="submit"
+                            class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200"
+                            onclick="return confirm('Are you sure you want to delete this classroom?');">
+                        Delete
+                    </button>
+                </form>
+            </div>
+
+            <div sec:authorize="hasAuthority('Teacher')"
+                 th:if="${classroom.classroomTeacher != null and classroom.classroomTeacher.email == #authentication.name}"
+                 class="flex space-x-3">
+                <a th:href="@{/classrooms/{id}/edit(id=${classroom.id})}"
+                   class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
+                    Edit
+                </a>
+                <form th:action="@{/classrooms/{id}/delete(id=${classroom.id})}" method="post" class="inline">
+                    <button type="submit"
+                            class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200"
+                            onclick="return confirm('Are you sure you want to delete this classroom?');">
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

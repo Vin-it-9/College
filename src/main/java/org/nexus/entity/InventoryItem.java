@@ -3,6 +3,7 @@ package org.nexus.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.nexus.entity.classroom.Classroom;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -51,6 +52,20 @@ public class InventoryItem {
     @JsonBackReference
     @JsonIgnoreProperties("inventoryItems")
     private Lab lab;
+
+    @ManyToOne
+    @JoinColumn(name = "classroom_id")
+    @JsonBackReference
+    @JsonIgnoreProperties("inventoryItems")
+    private Classroom classroom;
+
+    public Classroom getClassroom() {
+        return classroom;
+    }
+
+    public void setClassroom(Classroom classroom) {
+        this.classroom = classroom;
+    }
 
     private boolean approved;
 
