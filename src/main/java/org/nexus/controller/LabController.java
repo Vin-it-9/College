@@ -103,8 +103,8 @@ public class LabController {
     @GetMapping("/new")
     public String showCreateForm(Model model) {
 
-        List<User> assistants = userRepository.findByRoles_Name("LABASSISTANT");
-        List<User> teachers = userRepository.findByRoles_Name("TEACHER");
+        List<User> assistants = userRepository.findByRoles_Name("LabAssistant");
+        List<User> teachers = userRepository.findByRoles_Name("Teacher");
 
         List<Department> departments = departmentRepository.findAll();
         List<Floor> floors = floorRepository.findAll();

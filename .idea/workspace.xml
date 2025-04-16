@@ -4,19 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="Project Completed">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/ClassroomController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/classroom/Classroom.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/ClassroomRepoistory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/ClassroomService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/classrooms/create-form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/classrooms/detail.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/classrooms/edit-form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/classrooms/list.html" afterDir="false" />
+    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="classroom added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/LabController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/LabController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/dashboard/director.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard/director.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/team/directorviewpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/team/directorviewpage.html" afterDir="false" />
     </list>
@@ -200,7 +191,9 @@
       <workItem from="1744615757338" duration="9044000" />
       <workItem from="1744739494050" duration="709000" />
       <workItem from="1744747603180" duration="3289000" />
-      <workItem from="1744788325361" duration="1691000" />
+      <workItem from="1744788325361" duration="1955000" />
+      <workItem from="1744812793919" duration="784000" />
+      <workItem from="1744824102582" duration="1750000" />
     </task>
     <task id="LOCAL-00001" summary="commit inventory">
       <option name="closed" value="true" />
@@ -442,7 +435,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744627457297</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="classroom added">
+      <option name="closed" value="true" />
+      <created>1744790168140</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1744790168140</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -482,7 +483,8 @@
     <MESSAGE value="commit" />
     <MESSAGE value="HOD dashboard completed" />
     <MESSAGE value="Project Completed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Project Completed" />
+    <MESSAGE value="classroom added" />
+    <option name="LAST_COMMIT_MESSAGE" value="classroom added" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
