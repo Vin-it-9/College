@@ -23,11 +23,11 @@ public interface DepartmentRepository extends JpaRepository<Department, Integer>
 
     List<Department> findByHodId(Integer hodId);
 
-    @Query("SELECT new org.nexus.entity.transferDTO.DepartmentInventorySummary(d.id, d.departmentName, COUNT(i)) " +
+    @Query("SELECT new org.nexus.entity.transferDTO.DepartmentInventorySummary(d.departmentCode, d.departmentName, COUNT(i)) " +
             "FROM Department d " +
             "LEFT JOIN d.labs l " +
             "LEFT JOIN l.inventoryItems i " +
-            "GROUP BY d.id, d.departmentName " +
+            "GROUP BY d.departmentCode, d.departmentName " +
             "ORDER BY d.departmentName")
     List<DepartmentInventorySummary> getDepartmentsWithInventoryCounts();
 

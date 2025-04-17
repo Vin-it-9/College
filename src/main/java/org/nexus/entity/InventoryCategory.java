@@ -1,5 +1,6 @@
 package org.nexus.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -22,7 +23,7 @@ public class InventoryCategory {
     private String description;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("category")
+    @JsonIgnore
     private Set<InventoryItem> items = new HashSet<>();
 
     // Getters and Setters

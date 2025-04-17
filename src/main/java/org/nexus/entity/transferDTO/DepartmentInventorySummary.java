@@ -2,18 +2,18 @@ package org.nexus.entity.transferDTO;
 
 public class DepartmentInventorySummary {
 
-    private Integer departmentId;
+    private String departmentCode;
     private String departmentName;
     private Long totalInventory;
 
-    public DepartmentInventorySummary(Integer departmentId, String departmentName, Long totalInventory) {
-        this.departmentId = departmentId;
+    public DepartmentInventorySummary(String departmentCode, String departmentName, Long totalInventory) {
         this.departmentName = departmentName;
+        this.departmentCode = departmentCode;
         this.totalInventory = totalInventory;
     }
 
-    public Integer getDepartmentId() {
-        return departmentId;
+    public String getDepartmentCode() {
+        return departmentCode;
     }
 
     public String getDepartmentName() {

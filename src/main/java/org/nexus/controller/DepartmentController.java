@@ -4,6 +4,7 @@ import org.nexus.entity.Department;
 import org.nexus.entity.User;
 import org.nexus.repository.UserRepository;
 import org.nexus.service.DepartmentService;
+import org.nexus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,11 +22,13 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
     private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public DepartmentController(DepartmentService departmentService,UserRepository userRepository) {
+    public DepartmentController(DepartmentService departmentService, UserRepository userRepository, UserService userService) {
         this.departmentService = departmentService;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     // Done
@@ -112,20 +115,25 @@ public class DepartmentController {
 
     // Done
     @PostMapping("/{id}")
-    public String updateDepartment(@PathVariable Integer id,
-                                   @Valid @ModelAttribute Department departmentDetails,
-                                   BindingResult result,
-                                   RedirectAttributes redirectAttributes) {
+    public String updateDepartment(
+            @PathVariable Integer id,
+            @Valid @ModelAttribute("department") Department departmentDetails,
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttrs
+    ) {
         if (result.hasErrors()) {
+            List<User> hodUsers = userRepository.findByRoles_Name("HOD");
+            model.addAttribute("hodUsers", hodUsers);
             return "departments/edit-form";
         }
 
         try {
-            Department updatedDepartment = departmentService.updateDepartment(id, departmentDetails);
-            redirectAttributes.addFlashAttribute("success", "Department updated successfully!");
-            return "redirect:/departments/" + updatedDepartment.getId();
-        } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            Department updated = departmentService.updateDepartment(id, departmentDetails);
+            redirectAttrs.addFlashAttribute("success", "Department updated successfully!");
+            return "redirect:/departments/" + updated.getId();
+        } catch (IllegalArgumentException ex) {
+            redirectAttrs.addFlashAttribute("error", ex.getMessage());
             return "redirect:/departments/" + id + "/edit";
         }
     }

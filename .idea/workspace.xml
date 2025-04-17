@@ -4,11 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="classroom added">
+    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="error for roles solved">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/DepartmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/DepartmentController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/LabController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/LabController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/Maincontroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/Maincontroller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/transferDTO/DepartmentInventorySummary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/transferDTO/DepartmentInventorySummary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/repository/DepartmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/DepartmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/service/DepartmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/DepartmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/dashboard/director.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard/director.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/departments/edit-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/departments/edit-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/team/directorviewpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/team/directorviewpage.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -194,6 +204,9 @@
       <workItem from="1744788325361" duration="1955000" />
       <workItem from="1744812793919" duration="784000" />
       <workItem from="1744824102582" duration="1750000" />
+      <workItem from="1744825895176" duration="420000" />
+      <workItem from="1744832245203" duration="646000" />
+      <workItem from="1744909228719" duration="2363000" />
     </task>
     <task id="LOCAL-00001" summary="commit inventory">
       <option name="closed" value="true" />
@@ -443,7 +456,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744790168140</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="error for roles solved">
+      <option name="closed" value="true" />
+      <created>1744825943558</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1744825943558</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -484,7 +505,8 @@
     <MESSAGE value="HOD dashboard completed" />
     <MESSAGE value="Project Completed" />
     <MESSAGE value="classroom added" />
-    <option name="LAST_COMMIT_MESSAGE" value="classroom added" />
+    <MESSAGE value="error for roles solved" />
+    <option name="LAST_COMMIT_MESSAGE" value="error for roles solved" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -141,8 +141,8 @@ public class LabController {
     public String showEditForm(@PathVariable Integer id, Model model) {
         Optional<Lab> lab = labService.findLabById(id);
         if (lab.isPresent()) {
-            List<User> assistants = userRepository.findByRoles_Name("LABASSISTANT");
-            List<User> teachers = userRepository.findByRoles_Name("TEACHER");
+            List<User> assistants = userRepository.findByRoles_Name("LabAssistant");
+            List<User> teachers = userRepository.findByRoles_Name("Teacher");
             String additionalFacility = lab.get().getAdditionalFacility();
             List<Department> departments = departmentRepository.findAll();
             List<Floor> floors = floorRepository.findAll();

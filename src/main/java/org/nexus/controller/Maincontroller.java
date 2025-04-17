@@ -57,8 +57,6 @@ public class Maincontroller {
 
 
 
-
-
     @GetMapping("/login")
     public String viewLoginPage() {
 
@@ -104,7 +102,7 @@ public class Maincontroller {
 
     @PostMapping("/logout")
     public String logout() {
-        return "redirect:/login";
+        return "redirect:/";
     }
 
 }

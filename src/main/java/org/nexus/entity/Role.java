@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 @Table(name = "college_roles")
 @Entity
 public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
