@@ -26,7 +26,7 @@
                 </span>
         </div>
 
-        <a href="/inventory/items"
+        <a th:href="@{/inventory/items}"
            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
             <i class="fas fa-arrow-left mr-2"></i> Back to List
         </a>
@@ -111,7 +111,11 @@
                         <div class="text-sm text-gray-900" th:text="${item.category?.name ?: '-'}">-</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900" th:text="${item.lab?.labName ?: '-'}">-</div>
+                        <div class="text-sm text-gray-900">
+                            <span th:if="${item.lab != null}" th:text="${item.lab.labName}">-</span>
+                            <span th:if="${item.classroom != null}" th:text="${item.classroom.classroomName}">-</span>
+                            <span th:if="${item.lab == null && item.classroom == null}">-</span>
+                        </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm"
@@ -155,12 +159,12 @@
         <div class="bg-yellow-50 p-4 rounded-lg shadow">
             <h3 class="text-lg font-semibold text-yellow-700">Expiring in 30 Days</h3>
             <p class="text-2xl font-bold text-yellow-800"
-               th:text="${#lists.size(items.?[warrantyExpiryDate.isBefore(T(java.time.LocalDate).now().plusDays(30))])}">0</p>
+               th:text="${#lists.size(items.?[warrantyExpiryDate.isAfter(T(java.time.LocalDate).now().minusDays(1)) && warrantyExpiryDate.isBefore(T(java.time.LocalDate).now().plusDays(30))])}">0</p>
         </div>
         <div class="bg-blue-50 p-4 rounded-lg shadow">
             <h3 class="text-lg font-semibold text-blue-700">Expiring in 90 Days</h3>
             <p class="text-2xl font-bold text-blue-800"
-               th:text="${#lists.size(items.?[warrantyExpiryDate.isBefore(T(java.time.LocalDate).now().plusDays(90))])}">0</p>
+               th:text="${#lists.size(items.?[warrantyExpiryDate.isAfter(T(java.time.LocalDate).now().minusDays(1)) && warrantyExpiryDate.isBefore(T(java.time.LocalDate).now().plusDays(90))])}">0</p>
         </div>
         <div class="bg-green-50 p-4 rounded-lg shadow">
             <h3 class="text-lg font-semibold text-green-700">Total Items</h3>
@@ -170,25 +174,31 @@
 </div>
 
 <!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script th:src="@{/webjars/flatpickr/dist/flatpickr.min.js}"></script>
 <script>
-    // Initialize date pickers
-    flatpickr("#startDate", {
-        dateFormat: "Y-m-d",
-        defaultDate: document.getElementById('startDate').value,
-        onChange: function(selectedDates, dateStr) {
-            const endDatePicker = document.getElementById('endDate')._flatpickr;
-            endDatePicker.set('minDate', dateStr);
-        }
-    });
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize date pickers
+        flatpickr("#startDate", {
+            dateFormat: "Y-m-d",
+            defaultDate: document.getElementById('startDate').value,
+            onChange: function(selectedDates, dateStr) {
+                const endDatePicker = document.getElementById('endDate')._flatpickr;
+                if (endDatePicker) {
+                    endDatePicker.set('minDate', dateStr);
+                }
+            }
+        });
 
-    flatpickr("#endDate", {
-        dateFormat: "Y-m-d",
-        defaultDate: document.getElementById('endDate').value,
-        onChange: function(selectedDates, dateStr) {
-            const startDatePicker = document.getElementById('startDate')._flatpickr;
-            startDatePicker.set('maxDate', dateStr);
-        }
+        flatpickr("#endDate", {
+            dateFormat: "Y-m-d",
+            defaultDate: document.getElementById('endDate').value,
+            onChange: function(selectedDates, dateStr) {
+                const startDatePicker = document.getElementById('startDate')._flatpickr;
+                if (startDatePicker) {
+                    startDatePicker.set('maxDate', dateStr);
+                }
+            }
+        });
     });
 </script>
 </body>

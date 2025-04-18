@@ -25,7 +25,9 @@
                         currentStatus.name() == 'AVAILABLE' ? 'bg-green-100 text-green-800' :
                         currentStatus.name() == 'IN_USE' ? 'bg-blue-100 text-blue-800' :
                         currentStatus.name() == 'UNDER_MAINTENANCE' ? 'bg-yellow-100 text-yellow-800' :
-                        currentStatus.name() == 'OUT_OF_SERVICE' ? 'bg-red-100 text-red-800' :
+                        currentStatus.name() == 'DAMAGED' ? 'bg-red-100 text-red-800' :
+                        currentStatus.name() == 'RETIRED' ? 'bg-gray-100 text-gray-800' :
+                        currentStatus.name() == 'LOST' ? 'bg-purple-100 text-purple-800' :
                         'bg-gray-100 text-gray-800'
                       }">
                     <i class="fas fa-circle text-xs mr-1"></i>
@@ -44,10 +46,16 @@
                         th:selected="${status == currentStatus}">
                 </option>
             </select>
-            <a href="/inventory/items/new"
-               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
-                <i class="fas fa-plus mr-2"></i> Add New Item
-            </a>
+            <div class="flex space-x-2">
+                <a href="/inventory/items/new"
+                   class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center transition-colors">
+                    <i class="fas fa-flask mr-2"></i> Add Lab Item
+                </a>
+                <a href="/inventory/items/new/classroom"
+                   class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center transition-colors">
+                    <i class="fas fa-chalkboard mr-2"></i> Add Classroom Item
+                </a>
+            </div>
         </div>
     </div>
 
@@ -64,21 +72,27 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Serial Number</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                 <tr th:if="${#lists.isEmpty(items)}">
-                    <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+                    <td colspan="7" class="px-6 py-8 text-center text-gray-500">
                         <div class="flex flex-col items-center">
                             <i class="fas fa-box-open text-4xl mb-2"></i>
                             <p class="text-lg font-semibold">No items found with status:
                                 <span th:text="${currentStatus}" class="font-bold"></span>
                             </p>
-                            <a href="/inventory/items/new" class="mt-2 text-blue-500 hover:text-blue-700">
-                                Add a new item
-                            </a>
+                            <div class="flex space-x-4 mt-2">
+                                <a href="/inventory/items/new" class="text-green-500 hover:text-green-700">
+                                    <i class="fas fa-flask mr-1"></i> Add lab item
+                                </a>
+                                <a href="/inventory/items/new/classroom" class="text-blue-500 hover:text-blue-700">
+                                    <i class="fas fa-chalkboard mr-1"></i> Add classroom item
+                                </a>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -86,6 +100,10 @@
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
                             <div class="text-sm font-medium text-gray-900" th:text="${item.name}">-</div>
+                            <span th:if="${item.warrantyExpiryDate != null && item.warrantyExpiryDate.isBefore(T(java.time.LocalDate).now())}"
+                                  class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
+                                <i class="fas fa-exclamation-triangle mr-1"></i> Warranty Expired
+                            </span>
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
@@ -95,19 +113,39 @@
                         <div class="text-sm text-gray-900" th:text="${item.category?.name ?: '-'}">-</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900" th:text="${item.lab?.labName ?: '-'}">-</div>
+                        <!-- Show lab or classroom location -->
+                        <div class="text-sm text-gray-900">
+                            <span th:if="${item.lab != null}" th:text="${item.lab.labName}">-</span>
+                            <span th:if="${item.classroom != null}" th:text="${item.classroom.classroomName}">-</span>
+                            <span th:if="${item.lab == null && item.classroom == null}">-</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <!-- Item type badge -->
+                        <span th:if="${item.lab != null}"
+                              class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            <i class="fas fa-flask mr-1"></i> Lab
+                        </span>
+                        <span th:if="${item.classroom != null}"
+                              class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                            <i class="fas fa-chalkboard mr-1"></i> Classroom
+                        </span>
+                        <span th:if="${item.lab == null && item.classroom == null}"
+                              class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                            <i class="fas fa-question-circle mr-1"></i> Unassigned
+                        </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900" th:text="${item.quantity}">-</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div class="flex space-x-2">
                             <a th:href="@{/inventory/items/{id}(id=${item.id})}"
-                               class="text-green-600 hover:text-green-900 bg-green-100 hover:bg-green-200 px-2 py-1 rounded">
+                               class="text-blue-600 hover:text-blue-900 bg-blue-100 hover:bg-blue-200 px-2 py-1 rounded transition-colors">
                                 <i class="fas fa-eye mr-1"></i> View
                             </a>
                             <a th:href="@{/inventory/items/{id}/edit(id=${item.id})}"
-                               class="text-blue-600 hover:text-blue-900 bg-blue-100 hover:bg-blue-200 px-2 py-1 rounded">
+                               class="text-green-600 hover:text-green-900 bg-green-100 hover:bg-green-200 px-2 py-1 rounded transition-colors">
                                 <i class="fas fa-edit mr-1"></i> Edit
                             </a>
                             <form th:action="@{/inventory/items/{id}/delete(id=${item.id})}"
@@ -115,7 +153,7 @@
                                   class="inline"
                                   onsubmit="return confirm('Are you sure you want to delete this item?');">
                                 <button type="submit"
-                                        class="text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 px-2 py-1 rounded">
+                                        class="text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 px-2 py-1 rounded transition-colors">
                                     <i class="fas fa-trash-alt mr-1"></i> Delete
                                 </button>
                             </form>
@@ -128,23 +166,168 @@
     </div>
 
     <!-- Summary Section -->
-    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="bg-white p-4 rounded-lg shadow">
-            <h3 class="text-lg font-semibold text-gray-700">Total Items</h3>
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+            <div class="flex items-center mb-1">
+                <i class="fas fa-boxes text-indigo-500 mr-2"></i>
+                <h3 class="text-lg font-semibold text-gray-700">Total Items</h3>
+            </div>
             <p class="text-2xl font-bold text-gray-900" th:text="${#lists.size(items)}">0</p>
         </div>
-        <div class="bg-white p-4 rounded-lg shadow">
-            <h3 class="text-lg font-semibold text-gray-700">Total Value</h3>
+
+        <div class="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+            <div class="flex items-center mb-1">
+                <i class="fas fa-rupee-sign text-emerald-500 mr-2"></i>
+                <h3 class="text-lg font-semibold text-gray-700">Total Value</h3>
+            </div>
             <p class="text-2xl font-bold text-gray-900">
-                $<span th:text="${#aggregates.sum(items.![quantity * (unitCost ?: 0)])}">0.00</span>
+                <!-- Safe calculation handling null values -->
+                ₹
+                <span th:with="total=${#aggregates.sum(items.![unitCost != null ? (quantity * unitCost) : 0]) ?: 0}"
+                       th:text="${#numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')}">0.00</span>
             </p>
         </div>
-        <div class="bg-white p-4 rounded-lg shadow">
-            <h3 class="text-lg font-semibold text-gray-700">Last Updated</h3>
-            <p class="text-2xl font-bold text-gray-900" th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy')}">-</p>
+
+        <!-- Location breakdown - Fixed calculation -->
+        <div class="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+            <div class="flex items-center mb-1">
+                <i class="fas fa-map-marker-alt text-rose-500 mr-2"></i>
+                <h3 class="text-lg font-semibold text-gray-700">Locations</h3>
+            </div>
+
+            <!-- Calculate totals separately -->
+            <p class="text-2xl font-bold text-gray-900">
+                <!-- Count labs -->
+                <span th:with="labItems=${new java.util.HashSet()},
+                              classroomItems=${new java.util.HashSet()}">
+                  <span th:each="item : ${items}" th:if="${item.lab != null}"
+                        th:with="dummy=${labItems.add(item.lab.id)}" th:remove="tag"></span>
+                  <span th:each="item : ${items}" th:if="${item.classroom != null}"
+                        th:with="dummy=${classroomItems.add(item.classroom.id)}" th:remove="tag"></span>
+                  <span th:text="${labItems.size()} + '/' + ${classroomItems.size()}">0/0</span>
+                </span>
+            </p>
+
+            <div class="mt-1 text-xs text-gray-500 flex justify-between">
+                <span>
+                    <i class="fas fa-flask text-green-600 mr-1"></i> Labs:
+                    <span th:with="labItems=${new java.util.HashSet()}">
+                      <span th:each="item : ${items}" th:if="${item.lab != null}"
+                            th:with="dummy=${labItems.add(item.lab.id)}" th:remove="tag"></span>
+                      <span th:text="${labItems.size()}">0</span>
+                    </span>
+                </span>
+                <span>
+                    <i class="fas fa-chalkboard text-blue-600 mr-1"></i> Classrooms:
+                    <span th:with="classroomItems=${new java.util.HashSet()}">
+                      <span th:each="item : ${items}" th:if="${item.classroom != null}"
+                            th:with="dummy=${classroomItems.add(item.classroom.id)}" th:remove="tag"></span>
+                      <span th:text="${classroomItems.size()}">0</span>
+                    </span>
+                </span>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Type Distribution Chart - Fixed calculations -->
+    <div class="mt-6">
+        <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Type Distribution</h3>
+
+            <!-- Count items by type with explicit sets -->
+            <div th:with="labItems=${new java.util.ArrayList()}">
+                <!-- Count lab items -->
+                <span th:each="item : ${items}" th:if="${item.lab != null}"
+                      th:with="dummy=${labItems.add(item)}" th:remove="tag"></span>
+
+                <!-- Count classroom items -->
+                <div th:with="classroomItems=${new java.util.ArrayList()}">
+                <span th:each="item : ${items}" th:if="${item.classroom != null}"
+                      th:with="dummy=${classroomItems.add(item)}" th:remove="tag"></span>
+
+                    <!-- Count unassigned items -->
+                    <div th:with="unassignedItems=${new java.util.ArrayList()}">
+                  <span th:each="item : ${items}" th:if="${item.lab == null && item.classroom == null}"
+                        th:with="dummy=${unassignedItems.add(item)}" th:remove="tag"></span>
+
+                        <div class="flex items-center justify-center space-x-8">
+                            <!-- Lab Items -->
+                            <div class="flex flex-col items-center">
+                                <div class="relative h-24 w-24 flex items-center justify-center">
+                                    <svg viewBox="0 0 36 36" class="h-full w-full">
+                                        <circle cx="18" cy="18" r="16" fill="none" class="stroke-current text-gray-200" stroke-width="2"></circle>
+                                        <circle th:with="total=${#lists.size(items)},
+                                                percentage=${total > 0 ? labItems.size() * 100 / total : 0},
+                                                dashArray=${percentage},
+                                                dashOffset=${100 - dashArray}"
+                                                cx="18" cy="18" r="16" fill="none" class="stroke-current text-green-500"
+                                                stroke-width="2"
+                                                stroke-dasharray="100" th:attr="stroke-dashoffset=${dashOffset}"></circle>
+                                    </svg>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <span class="text-xl font-bold text-green-700" th:text="${labItems.size()}">0</span>
+                                    </div>
+                                </div>
+                                <span class="mt-2 flex items-center text-sm font-medium text-green-700">
+                              <i class="fas fa-flask mr-1"></i> Lab Items
+                          </span>
+                            </div>
+
+                            <!-- Classroom Items -->
+                            <div class="flex flex-col items-center">
+                                <div class="relative h-24 w-24 flex items-center justify-center">
+                                    <svg viewBox="0 0 36 36" class="h-full w-full">
+                                        <circle cx="18" cy="18" r="16" fill="none" class="stroke-current text-gray-200" stroke-width="2"></circle>
+                                        <circle th:with="total=${#lists.size(items)},
+                                                percentage=${total > 0 ? classroomItems.size() * 100 / total : 0},
+                                                dashArray=${percentage},
+                                                dashOffset=${100 - dashArray}"
+                                                cx="18" cy="18" r="16" fill="none" class="stroke-current text-blue-500"
+                                                stroke-width="2"
+                                                stroke-dasharray="100" th:attr="stroke-dashoffset=${dashOffset}"></circle>
+                                    </svg>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <span class="text-xl font-bold text-blue-700" th:text="${classroomItems.size()}">0</span>
+                                    </div>
+                                </div>
+                                <span class="mt-2 flex items-center text-sm font-medium text-blue-700">
+                              <i class="fas fa-chalkboard mr-1"></i> Classroom Items
+                          </span>
+                            </div>
+
+                            <!-- Unassigned Items -->
+                            <div class="flex flex-col items-center">
+                                <div class="relative h-24 w-24 flex items-center justify-center">
+                                    <svg viewBox="0 0 36 36" class="h-full w-full">
+                                        <circle cx="18" cy="18" r="16" fill="none" class="stroke-current text-gray-200" stroke-width="2"></circle>
+                                        <circle th:with="total=${#lists.size(items)},
+                                                percentage=${total > 0 ? unassignedItems.size() * 100 / total : 0},
+                                                dashArray=${percentage},
+                                                dashOffset=${100 - dashArray}"
+                                                cx="18" cy="18" r="16" fill="none" class="stroke-current text-gray-500"
+                                                stroke-width="2"
+                                                stroke-dasharray="100" th:attr="stroke-dashoffset=${dashOffset}"></circle>
+                                    </svg>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <span class="text-xl font-bold text-gray-700" th:text="${unassignedItems.size()}">0</span>
+                                    </div>
+                                </div>
+                                <span class="mt-2 flex items-center text-sm font-medium text-gray-700">
+                              <i class="fas fa-question-circle mr-1"></i> Unassigned
+                          </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Static resources should be referenced with th:src when possible -->
+<script th:src="@{/js/scripts.js}"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -156,6 +339,13 @@
                     e.preventDefault();
                 }
             });
+        });
+
+        // Add hover effects to cards
+        const cards = document.querySelectorAll('.shadow');
+        cards.forEach(card => {
+            card.addEventListener('mouseover', () => card.classList.add('shadow-md'));
+            card.addEventListener('mouseout', () => card.classList.remove('shadow-md'));
         });
     });
 </script>

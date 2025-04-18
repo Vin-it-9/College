@@ -77,7 +77,7 @@ public class InventoryItemController {
         return "inventory/list";
     }
 
-    @GetMapping("/items/lab/{labId}")
+    @GetMapping("/lab/{labId}")
     public String getItemsForLab(@PathVariable Integer labId, Model model) {
         List<InventoryItem> labItems = inventoryItemService.findItemsByLabId(labId);
         model.addAttribute("items", labItems);
@@ -86,7 +86,7 @@ public class InventoryItemController {
         return "inventory/list";
     }
 
-    @GetMapping("/items/classroom/{classroomId}")
+    @GetMapping("/classroom/{classroomId}")
     public String getItemsForClassroom(@PathVariable Integer classroomId, Model model) {
         List<InventoryItem> classroomItems = inventoryItemService.findItemsByClassroomId(classroomId);
         model.addAttribute("items", classroomItems);
@@ -218,18 +218,22 @@ public class InventoryItemController {
         }
     }
 
+//    no need to update the above code
+
+    // Show edit form - detects whether item is associated with lab or classroom
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Integer id, Model model) {
-        Optional<InventoryItem> item = inventoryItemService.findItemById(id);
+        Optional<InventoryItem> itemOpt = inventoryItemService.findItemById(id);
 
-        if (item.isPresent()) {
-            InventoryItem inventoryItem = item.get();
+        if (itemOpt.isPresent()) {
+            InventoryItem inventoryItem = itemOpt.get();
 
             if (inventoryItem.getPurchaseDate() != null) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 model.addAttribute("formattedPurchaseDate",
                         inventoryItem.getPurchaseDate().format(formatter));
             }
+
             if (inventoryItem.getWarrantyExpiryDate() != null) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 model.addAttribute("formattedWarrantyDate",
@@ -237,15 +241,23 @@ public class InventoryItemController {
             }
 
             List<InventoryItemDetail> itemDetails = inventoryItemDetailService.findDetailsByItemId(id);
+            List<InventoryCategory> categories = categoryService.findAllCategories();
 
             List<Lab> labs = labService.findAllLabs();
-            List<InventoryCategory> categories = categoryService.findAllCategories();
+            List<Classroom> classrooms = classroomService.findAllClassrooms();
+
+            String itemType = "lab";
+            if (inventoryItem.getClassroom() != null) {
+                itemType = "classroom";
+            }
 
             model.addAttribute("item", inventoryItem);
             model.addAttribute("itemDetails", itemDetails);
             model.addAttribute("labs", labs);
+            model.addAttribute("classrooms", classrooms);
             model.addAttribute("categories", categories);
             model.addAttribute("statuses", InventoryStatus.values());
+            model.addAttribute("itemType", itemType);
 
             return "inventory/edit-form";
         }
@@ -255,21 +267,48 @@ public class InventoryItemController {
 
     @PostMapping("/{id}")
     public String updateItem(@PathVariable Integer id,
-                             @Valid @ModelAttribute InventoryItem itemDetails,
+                             @Valid @ModelAttribute InventoryItem item,
                              @RequestParam(value = "detailKeys[]", required = false) String[] detailKeys,
                              @RequestParam(value = "detailValues[]", required = false) String[] detailValues,
+                             @RequestParam(value = "itemType", required = false) String itemType,
+                             @RequestParam(value = "classroomId", required = false) Integer classroomId,
                              BindingResult result,
+                             Model model,
                              RedirectAttributes redirectAttributes) {
+
+        if ("classroom".equals(itemType) && classroomId == null) {
+            result.rejectValue("classroom", "error.classroom", "Classroom must be selected");
+        }
+
         if (result.hasErrors()) {
+            List<Lab> labs = labService.findAllLabs();
+            List<Classroom> classrooms = classroomService.findAllClassrooms();
+            List<InventoryCategory> categories = categoryService.findAllCategories();
+            List<InventoryItemDetail> itemDetails = inventoryItemDetailService.findDetailsByItemId(id);
+
+            model.addAttribute("item", item);
+            model.addAttribute("itemDetails", itemDetails);
+            model.addAttribute("labs", labs);
+            model.addAttribute("classrooms", classrooms);
+            model.addAttribute("categories", categories);
+            model.addAttribute("statuses", InventoryStatus.values());
+            model.addAttribute("itemType", itemType);
+
             return "inventory/edit-form";
         }
 
         try {
-            Map<String, String> detailsMap = new HashMap<>();
+            if ("classroom".equals(itemType) && classroomId != null) {
+                Optional<Classroom> classroom = classroomService.findClassroomById(classroomId);
+                item.setClassroom(classroom.orElse(null));
+                item.setLab(null);
+            } else {
+                item.setClassroom(null);
+            }
 
+            Map<String, String> detailsMap = new HashMap<>();
             if (detailKeys != null && detailValues != null) {
                 int minLength = Math.min(detailKeys.length, detailValues.length);
-
                 for (int i = 0; i < minLength; i++) {
                     if (detailKeys[i] != null && !detailKeys[i].trim().isEmpty()) {
                         detailsMap.put(detailKeys[i], detailValues[i]);
@@ -277,13 +316,31 @@ public class InventoryItemController {
                 }
             }
 
-            InventoryItem updatedItem = inventoryItemService.updateItem(id, itemDetails, detailsMap);
-            redirectAttributes.addFlashAttribute("success", "Inventory item updated successfully!");
+            InventoryItem updatedItem = inventoryItemService.updateItem(id, item, detailsMap);
+            redirectAttributes.addFlashAttribute("success",
+                    ("classroom".equals(itemType) ? "Classroom" : "Lab") + " inventory item updated successfully!");
+
             return "redirect:/inventory/items/" + updatedItem.getId();
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/inventory/items/" + id + "/edit";
         }
+    }
+
+    // Helper method to process details map
+    private Map<String, String> processDetailsMap(String[] detailKeys, String[] detailValues) {
+        Map<String, String> detailsMap = new HashMap<>();
+
+        if (detailKeys != null && detailValues != null) {
+            int minLength = Math.min(detailKeys.length, detailValues.length);
+            for (int i = 0; i < minLength; i++) {
+                if (detailKeys[i] != null && !detailKeys[i].trim().isEmpty()) {
+                    detailsMap.put(detailKeys[i], detailValues[i]);
+                }
+            }
+        }
+
+        return detailsMap;
     }
 
     @PostMapping("/{id}/delete")

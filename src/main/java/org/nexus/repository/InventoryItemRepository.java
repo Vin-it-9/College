@@ -28,10 +28,13 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, In
     @Query("SELECT DISTINCT i FROM InventoryItem i " +
             "LEFT JOIN i.category c " +
             "LEFT JOIN i.lab r " +
+            "LEFT JOIN i.classroom cl " +
             "WHERE LOWER(i.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
             "OR LOWER(i.serialNumber) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
             "OR LOWER(c.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
-            "OR LOWER(r.labName) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
+            "OR (r IS NOT NULL AND LOWER(r.labName) LIKE LOWER(CONCAT('%', :searchTerm, '%'))) " +
+            "OR (cl IS NOT NULL AND LOWER(cl.classroomNumber) LIKE LOWER(CONCAT('%', :searchTerm, '%'))) " +
+            "OR (cl IS NOT NULL AND LOWER(cl.classroomName) LIKE LOWER(CONCAT('%', :searchTerm, '%')))")
     List<InventoryItem> searchItemsByAnyField(@Param("searchTerm") String searchTerm);
 
     List<InventoryItem> findByNameContainingIgnoreCase(String name);

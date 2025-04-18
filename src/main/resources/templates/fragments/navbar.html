@@ -64,6 +64,12 @@
                 </a>
             </li>
             <li sec:authorize="hasAnyAuthority('Admin','Teacher','LabAssistant')" >
+                <a th:href="@{/classrooms}"
+                   class="px-3 py-2 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded transition duration-150">
+                    Classrooms
+                </a>
+            </li>
+            <li sec:authorize="hasAnyAuthority('Admin','Teacher','LabAssistant')" >
                 <a th:href="@{/inventory/items}"
                    class="px-3 py-2 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded transition duration-150">
                     Inventory
@@ -161,6 +167,12 @@
                         <a th:href="@{/labs}"
                            class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-md">
                             Labs
+                        </a>
+                    </li>
+                    <li sec:authorize="hasAuthority('Admin')">
+                        <a th:href="@{/classrooms}"
+                           class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-md">
+                            Classrooms
                         </a>
                     </li>
                     <li sec:authorize="hasAuthority('Admin')">
