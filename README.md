@@ -197,6 +197,14 @@ The application follows a modern multi-tier architecture:
 - **Git**: Version control
 - **IDE**: Development environment (IntelliJ Idea)
 
+### Tools & Infrastructure  
+- **Maven**: Dependency management and build tool  
+- **Github**: Version control system  
+- **IntelliJ IDEA Ultimate**: Primary development environment
+- **DataGrip**: Database management and querying  
+- **Heroku**: Cloud platform for deployment  
+- **Postman**: API testing and development  
+
 ## 📊 Data Models
 
 ### Core Entities
