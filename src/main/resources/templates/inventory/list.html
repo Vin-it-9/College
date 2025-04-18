@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" lang="en">
 
 <head th:replace="~{fragments/header :: common-header}"></head>
 
 <head>
-    <title>Inventory Items List</title>
+    <title th:text="${title ?: 'Inventory Items List'}">Inventory Items List</title>
 </head>
 <body class="bg-gray-50">
 
-<div sec:authorize="hasAnyAuthority('Admin','Teacher','LabAssistant')"  th:replace="~{fragments/navbar :: navbar}"></div>
+<div sec:authorize="hasAnyAuthority('Admin','Teacher','LabAssistant')" th:replace="~{fragments/navbar :: navbar}"></div>
 
 <div class="container mx-auto px-4 py-8">
 
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Inventory Items</h1>
-
+        <h1 class="text-3xl font-bold text-gray-900" th:text="${title ?: 'Inventory Items'}">Inventory Items</h1>
     </div>
 
     <!-- Success/Error Messages -->
@@ -32,12 +31,33 @@
         </form>
     </div>
 
+    <!-- View Selector -->
+    <div class="mb-6">
+        <div class="inline-flex rounded-md shadow-sm" role="group">
+            <a href="/inventory/items"
+               class="px-4 py-2 text-sm font-medium rounded-l-lg border border-gray-200  hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700"
+               th:classappend="${viewType == 'all' ? 'bg-blue-700 text-white hover:text-white hover:bg-blue-800' : 'bg-white text-gray-900'}">
+                All Items
+            </a>
+            <a href="/inventory/items/labs"
+               class="px-4 py-2 text-sm font-medium border-t border-b border-gray-200  hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700"
+               th:classappend="${viewType == 'labs' ? 'bg-blue-700 text-white hover:text-white hover:bg-blue-800' : 'bg-white text-gray-900'}">
+                Lab Items
+            </a>
+            <a href="/inventory/items/classrooms"
+               class="px-4 py-2 text-sm font-medium rounded-r-lg border border-gray-200  hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700"
+               th:classappend="${viewType == 'classrooms' ? 'bg-blue-700 text-white hover:text-white hover:bg-blue-800' : 'bg-white text-gray-900'}">
+                Classroom Items
+            </a>
+        </div>
+    </div>
+
     <!-- Filters -->
     <div class="flex justify-start items-center flex-wrap gap-4">
         <div class="mb-6">
             <select onchange="window.location.href=this.value"
                     class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="/inventory/items">All Status</option>
+                <option value="/inventory/items" th:selected="${viewType == 'all'}">All Status</option>
                 <option th:each="status : ${T(org.nexus.entity.InventoryStatus).values()}"
                         th:value="@{/inventory/items/status/{status}(status=${status})}"
                         th:text="${status.name()}">
@@ -51,7 +71,7 @@
                 Check for Warranty
             </a>
         </div>
-        <div class="mb-6" sec:authorize="hasAnyAuthority('Admin','Teacher','LabAssistant')" >
+        <div class="mb-6" sec:authorize="hasAnyAuthority('Admin','Teacher','LabAssistant')">
             <a href="/inventory/items/new"
                class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded shadow-lg transition duration-200">
                 Request for Item
@@ -93,17 +113,17 @@
                     <div class="text-sm text-gray-500" th:unless="${item.unitCost != null}">N/A</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                            <span th:switch="${item.status}"
-                                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
-                                  th:classappend="${
-                                    item.status.name() == 'AVAILABLE' ? 'bg-green-100 text-green-800' :
-                                    item.status.name() == 'IN_USE' ? 'bg-blue-100 text-blue-800' :
-                                    item.status.name() == 'UNDER_MAINTENANCE' ? 'bg-yellow-100 text-yellow-800' :
-                                    item.status.name() == 'OUT_OF_SERVICE' ? 'bg-red-100 text-red-800' :
-                                    'bg-gray-100 text-gray-800'
-                                  }">
-                                <span th:text="${item.status}"></span>
-                            </span>
+                    <span th:switch="${item.status}"
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                          th:classappend="${
+                            item.status.name() == 'AVAILABLE' ? 'bg-green-100 text-green-800' :
+                            item.status.name() == 'IN_USE' ? 'bg-blue-100 text-blue-800' :
+                            item.status.name() == 'UNDER_MAINTENANCE' ? 'bg-yellow-100 text-yellow-800' :
+                            item.status.name() == 'OUT_OF_SERVICE' ? 'bg-red-100 text-red-800' :
+                            'bg-gray-100 text-gray-800'
+                          }">
+                        <span th:text="${item.status}"></span>
+                    </span>
                 </td>
 
                 <td class="px-6 py-4 whitespace-nowrap">
@@ -124,9 +144,21 @@
                     </div>
                 </td>
 
+                <!-- Location column - shows lab or classroom based on item association -->
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900" th:text="${item.lab?.labName ?: 'Unassigned'}"></div>
+                    <div th:if="${item.lab != null}" class="text-sm text-gray-900">
+                        <span class="font-medium text-xs text-blue-700">Lab: </span>
+                        <span th:text="${item.lab.labName}"></span>
+                    </div>
+                    <div th:if="${item.classroom != null}" class="text-sm text-gray-900">
+                        <span class="font-medium text-xs text-green-700">Classroom: </span>
+                        <span th:text="${item.classroom.classroomName}"></span>
+                    </div>
+                    <div th:if="${item.lab == null && item.classroom == null}" class="text-sm text-gray-500">
+                        Unassigned
+                    </div>
                 </td>
+
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm text-gray-900" th:text="${item.category?.name ?: 'Uncategorized'}"></div>
                 </td>
@@ -156,7 +188,7 @@
             <tr th:if="${#lists.isEmpty(items)}">
                 <td colspan="9" class="px-6 py-8 text-center">
                     <div class="text-gray-500">
-                        <p class="text-xl font-semibold mb-2">No inventory items found</p>
+                        <p class="text-xl font-semibold mb-2" th:text="${'No ' + (viewType == 'labs' ? 'lab' : viewType == 'classrooms' ? 'classroom' : '') + ' inventory items found'}">No inventory items found</p>
                         <p class="text-sm">Get started by adding your first inventory item.</p>
                     </div>
                 </td>
@@ -168,7 +200,7 @@
     <!-- Summary Section -->
     <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
         <div class="bg-white p-4 rounded-lg shadow">
-            <h3 class="text-lg font-semibold text-gray-700">Total Items</h3>
+            <h3 class="text-lg font-semibold text-gray-700" th:text="${'Total ' + (viewType == 'labs' ? 'Lab' : viewType == 'classrooms' ? 'Classroom' : '') + ' Items'}">Total Items</h3>
             <p class="text-2xl font-bold text-gray-900" th:text="${#lists.size(items)}">0</p>
         </div>
         <div class="bg-white p-4 rounded-lg shadow">
@@ -189,6 +221,15 @@
                 <span th:text="${#lists.size(items.?[!approved])}">0</span>
             </p>
         </div>
+    </div>
+
+    <!-- Back Navigation -->
+    <div class="mt-6" th:if="${viewType == 'specificLab' or viewType == 'specificClassroom'}">
+        <a th:href="${viewType == 'specificLab' ? '/labs/' + labId : '/classrooms/' + classroomId}"
+           class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md transition">
+            <span class="mr-2">←</span>
+            <span th:text="${viewType == 'specificLab' ? 'Back to Lab Details' : 'Back to Classroom Details'}">Back</span>
+        </a>
     </div>
 
 </div>

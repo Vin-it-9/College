@@ -44,6 +44,19 @@ public class InventoryItemService {
         return inventoryItemRepository.findAll(pageable);
     }
 
+    public List<InventoryItem> findItemsByLab() {
+        return inventoryItemRepository.findByLabIsNotNull();
+    }
+
+    public List<InventoryItem> findItemsByClassroom() {
+        return inventoryItemRepository.findByClassroomIsNotNull();
+    }
+
+    public List<InventoryItem> findItemsByClassroomId(Integer classroomId) {
+        return inventoryItemRepository.findByClassroomId(classroomId);
+    }
+
+
     public Optional<InventoryItem> findItemById(Integer id) {
         return inventoryItemRepository.findByIdWithDetails(id);
     }
@@ -131,6 +144,8 @@ public class InventoryItemService {
 
         return inventoryItemRepository.findByIdWithDetails(savedItem.getId()).orElse(savedItem);
     }
+
+
 
     @Transactional
     public InventoryItem updateItem(Integer id, InventoryItem itemDetails, Map<String, String> details) {
@@ -400,22 +415,10 @@ public class InventoryItemService {
         if (item.getCategory() == null || item.getCategory().getId() == null) {
             throw new IllegalArgumentException("Inventory item must be assigned to a category");
         } else {
-            // Verify category exists
             if (!inventoryCategoryRepository.existsById(item.getCategory().getId())) {
                 throw new IllegalArgumentException("Category not found with id: " + item.getCategory().getId());
             }
         }
-
-        if (item.getLab() == null || item.getLab().getId() == null) {
-            throw new IllegalArgumentException("Inventory item must be assigned to a room");
-        } else {
-            // Verify room exists
-            if (!roomRepository.existsById(item.getLab().getId())) {
-                throw new IllegalArgumentException("Lab not found with id: " + item.getLab().getId());
-            }
-        }
-
-        // Check serial number uniqueness if provided
         if (item.getSerialNumber() != null && !item.getSerialNumber().trim().isEmpty()) {
             Optional<InventoryItem> existingItem = inventoryItemRepository.findBySerialNumber(item.getSerialNumber());
             if (existingItem.isPresent()) {

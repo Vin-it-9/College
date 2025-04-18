@@ -70,4 +70,9 @@ public interface InventoryItemRepository extends JpaRepository<InventoryItem, In
 
     List<InventoryItem> findByLabDepartmentId(Integer departmentId);
 
+    List<InventoryItem> findByLabIsNotNull();
+    List<InventoryItem> findByClassroomIsNotNull();
+    List<InventoryItem> findByClassroomId(Integer classroomId);
+
+
 }

@@ -1,9 +1,11 @@
 package org.nexus.controller;
 
 import org.nexus.entity.*;
+import org.nexus.entity.classroom.Classroom;
 import org.nexus.entity.transferDTO.TransferResult;
 import org.nexus.entity.transferDTO.TransferValidationResult;
 import org.nexus.exception.*;
+import org.nexus.repository.ClassroomRepoistory;
 import org.nexus.repository.UserRepository;
 import org.nexus.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,22 +34,64 @@ public class InventoryItemController {
     private final InventoryCategoryService categoryService;
     private final UserRepository userRepository;
     private final InventoryItemDetailService inventoryItemDetailService;
+    private final ClassroomService classroomService;
+    private final ClassroomRepoistory  classroomRepoistory;
 
     @Autowired
     public InventoryItemController(InventoryItemService inventoryItemService,
                                    LabService labService,
-                                   InventoryCategoryService categoryService, UserService userService, UserRepository userRepository, InventoryItemDetailService inventoryItemDetailService) {
+                                   InventoryCategoryService categoryService, UserService userService, UserRepository userRepository, InventoryItemDetailService inventoryItemDetailService, ClassroomService classroomService, ClassroomRepoistory classroomRepoistory) {
         this.inventoryItemService = inventoryItemService;
         this.labService = labService;
         this.categoryService = categoryService;
         this.userRepository = userRepository;
         this.inventoryItemDetailService = inventoryItemDetailService;
+        this.classroomService = classroomService;
+        this.classroomRepoistory = classroomRepoistory;
     }
+
 
     @GetMapping
     public String getAllItems(Model model) {
         List<InventoryItem> items = inventoryItemService.findAllItems();
         model.addAttribute("items", items);
+        model.addAttribute("viewType", "all");
+        return "inventory/list";
+    }
+
+    @GetMapping("/labs")
+    public String getLabItems(Model model) {
+        List<InventoryItem> labItems = inventoryItemService.findItemsByLab();
+        model.addAttribute("items", labItems);
+        model.addAttribute("viewType", "labs");
+        model.addAttribute("title", "Lab Inventory Items");
+        return "inventory/list";
+    }
+
+    @GetMapping("/classrooms")
+    public String getClassroomItems(Model model) {
+        List<InventoryItem> classroomItems = inventoryItemService.findItemsByClassroom();
+        model.addAttribute("items", classroomItems);
+        model.addAttribute("viewType", "classrooms");
+        model.addAttribute("title", "Classroom Inventory Items");
+        return "inventory/list";
+    }
+
+    @GetMapping("/items/lab/{labId}")
+    public String getItemsForLab(@PathVariable Integer labId, Model model) {
+        List<InventoryItem> labItems = inventoryItemService.findItemsByLabId(labId);
+        model.addAttribute("items", labItems);
+        model.addAttribute("viewType", "specificLab");
+        model.addAttribute("labId", labId);
+        return "inventory/list";
+    }
+
+    @GetMapping("/items/classroom/{classroomId}")
+    public String getItemsForClassroom(@PathVariable Integer classroomId, Model model) {
+        List<InventoryItem> classroomItems = inventoryItemService.findItemsByClassroomId(classroomId);
+        model.addAttribute("items", classroomItems);
+        model.addAttribute("viewType", "specificClassroom");
+        model.addAttribute("classroomId", classroomId);
         return "inventory/list";
     }
 
@@ -75,35 +119,72 @@ public class InventoryItemController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-
+        if (!model.containsAttribute("item")) {
+            model.addAttribute("item", new InventoryItem());
+        }
         List<Lab> labs = labService.findAllLabs();
         List<InventoryCategory> categories = categoryService.findAllCategories();
-        model.addAttribute("item", new InventoryItem());
         model.addAttribute("labs", labs);
         model.addAttribute("categories", categories);
         model.addAttribute("statuses", InventoryStatus.values());
+        model.addAttribute("formType", "lab");
 
         return "inventory/create-form";
+    }
 
+    @GetMapping("/new/classroom")
+    public String showCreateFormClassroom(Model model) {
+        if (!model.containsAttribute("item")) {
+            model.addAttribute("item", new InventoryItem());
+        }
+        List<Classroom> classrooms = classroomService.findAllClassrooms();
+        List<InventoryCategory> categories = categoryService.findAllCategories();
+        model.addAttribute("classrooms", classrooms);
+        model.addAttribute("categories", categories);
+        model.addAttribute("statuses", InventoryStatus.values());
+        model.addAttribute("formType", "classroom");
+
+        return "inventory/create-form";
     }
 
     @PostMapping
-    public String createItem(@Valid @ModelAttribute InventoryItem item,
+    public String createItem(@Valid @ModelAttribute("item") InventoryItem item,
+                             @RequestParam(value = "formType", required = false) String formType,
                              @RequestParam(value = "detailKeys[]", required = false) String[] detailKeys,
                              @RequestParam(value = "detailValues[]", required = false) String[] detailValues,
                              BindingResult result,
+                             Model model,
                              RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
+            model.addAttribute("item", item);
+            model.addAttribute("statuses", InventoryStatus.values());
+            model.addAttribute("formType", formType);
+
+            List<InventoryCategory> categories = categoryService.findAllCategories();
+            model.addAttribute("categories", categories);
+
+            if ("classroom".equals(formType)) {
+                List<Classroom> classrooms = classroomService.findAllClassrooms();
+                model.addAttribute("classrooms", classrooms);
+            } else {
+                List<Lab> labs = labService.findAllLabs();
+                model.addAttribute("labs", labs);
+            }
+
             return "inventory/create-form";
         }
 
         try {
-            Map<String, String> detailsMap = new HashMap<>();
+            if ("classroom".equals(formType)) {
+                item.setLab(null);
+            } else {
+                item.setClassroom(null);
+            }
 
+            Map<String, String> detailsMap = new HashMap<>();
             if (detailKeys != null && detailValues != null) {
                 int minLength = Math.min(detailKeys.length, detailValues.length);
-
                 for (int i = 0; i < minLength; i++) {
                     if (detailKeys[i] != null && !detailKeys[i].trim().isEmpty()) {
                         detailsMap.put(detailKeys[i], detailValues[i]);
@@ -117,6 +198,22 @@ public class InventoryItemController {
             return "redirect:/inventory/items/" + createdItem.getId();
         } catch (IllegalArgumentException e) {
             result.rejectValue("serialNumber", "error.item", e.getMessage());
+
+            model.addAttribute("item", item);
+            model.addAttribute("statuses", InventoryStatus.values());
+            model.addAttribute("formType", formType);
+
+            List<InventoryCategory> categories = categoryService.findAllCategories();
+            model.addAttribute("categories", categories);
+
+            if ("classroom".equals(formType)) {
+                List<Classroom> classrooms = classroomService.findAllClassrooms();
+                model.addAttribute("classrooms", classrooms);
+            } else {
+                List<Lab> labs = labService.findAllLabs();
+                model.addAttribute("labs", labs);
+            }
+
             return "inventory/create-form";
         }
     }

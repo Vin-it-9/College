@@ -32,6 +32,9 @@ public class ClassroomService {
     public Optional<Classroom> findClassroomById(int id) {
         return classroomRepoistory.findById(id);
     }
+    public Classroom findClassroomByIdcode(Integer id){
+        return classroomRepoistory.findById(id).orElseThrow(() -> new RuntimeException("Classroom not found with id: " + id));
+    }
 
     public Optional<Classroom> findClassroomByNumber(String classroomNumber) {
         return classroomRepoistory.findByClassroomNumber(classroomNumber);
