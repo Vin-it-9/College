@@ -30,6 +30,9 @@ public class RequestController {
     @Autowired
     private DepartmentRepository departmentRepository;
 
+    @Autowired
+    private RequestRepository requestRepository;
+
 
     @GetMapping("/new")
     public String showNewRequestForm(Model model) {
@@ -58,10 +61,23 @@ public class RequestController {
         return "redirect:/requests";
     }
 
+    @GetMapping("/all")
+    public String showAllRequests(Model model) {
+        List<Request> allRequests = requestRepository.findAll();
+
+        model.addAttribute("requests", allRequests);
+        model.addAttribute("isHod", false);
+        model.addAttribute("isAdminView", true);
+        model.addAttribute("viewTitle", "All System Requests");
+
+        addCommonAttributes(model);
+
+        return "requests/list-requests";
+    }
+
 
     @GetMapping
     public String listRequests(Model model) {
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         User currentUser = userRepository.getUserByEmail(email);
@@ -125,6 +141,16 @@ public class RequestController {
         return "requests/view-request";
     }
 
+    @GetMapping("/pending-approvals/all")
+    public String pendingApprovalsAll(Model model) {
+
+        List<Request> pendingRequests = requestService.getPendingRequests();
+        model.addAttribute("pendingRequests", pendingRequests);
+        addCommonAttributes(model);
+
+        return "requests/pending-approvals";
+    }
+
     @GetMapping("/pending-approvals")
     public String pendingApprovals(Model model) {
 
@@ -136,7 +162,7 @@ public class RequestController {
         boolean isHod = hodDepartment.isPresent();
 
         if (!isHod) {
-            return "error/403";
+            return "requests/pending-approvals";
         }
 
         Department department = hodDepartment.get();
@@ -155,7 +181,7 @@ public class RequestController {
                                  RedirectAttributes redirectAttributes) {
         requestService.approveRequest(id, comments);
         redirectAttributes.addFlashAttribute("message", "Request has been approved successfully!");
-        return "redirect:/requests/pending-approvals";
+        return "redirect:/requests";
     }
 
     @PostMapping("/{id}/reject")
@@ -164,7 +190,7 @@ public class RequestController {
                                 RedirectAttributes redirectAttributes) {
         requestService.rejectRequest(id, comments);
         redirectAttributes.addFlashAttribute("message", "Request has been rejected.");
-        return "redirect:/requests/pending-approvals";
+        return "redirect:/requests";
     }
 
 

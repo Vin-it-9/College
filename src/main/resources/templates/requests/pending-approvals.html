@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"  lang="en">
 <head th:replace="~{fragments/header :: common-header}"></head>
 
 <head>
@@ -18,7 +18,6 @@
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900">Pending Approvals</h1>
                     <p class="mt-1 text-sm text-gray-600" th:text="${departmentName + ' Department'}">
-                        Electronics & Telecommunication Department
                     </p>
                 </div>
                 <div class="text-right">
@@ -62,7 +61,7 @@
             <div class="bg-white rounded-lg shadow overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-200">
                     <h2 class="text-lg font-medium text-gray-900">Requests Awaiting Your Approval</h2>
-                    <p class="mt-1 text-sm text-gray-500">Review and process pending requests from your department.</p>
+                    <p class="mt-1 text-sm text-gray-500">Review and process pending requests</p>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -92,28 +91,22 @@
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900" th:text="${req.user.firstName + ' ' + req.user.lastName}">
-                                            John Doe
                                         </div>
                                         <div class="text-sm text-gray-500" th:text="${req.user.email}">
-                                            john.doe@example.com
                                         </div>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="text-sm text-gray-900" th:text="${req.subject}">
-                                    Request for new laboratory equipment
                                 </div>
                                 <div class="text-xs text-gray-500 mt-1 truncate max-w-xs" th:text="${#strings.abbreviate(req.message, 80)}">
-                                    I would like to request new equipment for the...
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-500" th:text="${#temporals.format(req.createdAt, 'yyyy-MM-dd HH:mm')}">
-                                    2025-04-10 14:23
                                 </div>
                                 <div class="text-xs text-gray-400" th:text="${#temporals.format(req.createdAt, 'EEEE')}">
-                                    Thursday
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -153,7 +146,7 @@
 
             <div class="mt-6">
                 <a th:href="@{/requests}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-md transition duration-200">
-                    Back to All Requests
+                    Back to Requests List
                 </a>
             </div>
         </div>

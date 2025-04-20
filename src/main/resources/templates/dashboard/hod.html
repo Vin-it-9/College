@@ -205,7 +205,7 @@
                     <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
                         <div>
                             <p class="text-sm font-medium text-gray-500">Annual Budget</p>
-                            <h3 class="text-3xl font-bold text-slate-800">₹ 25L</h3>
+                            <h3 class="text-3xl font-bold text-slate-800" th:text="${totalBudget}">₹ 25L</h3>
                         </div>
                         <div class="bg-emerald-100 p-3 rounded-full">
                             <img src="https://img.icons8.com/?size=100&id=OS06UppbaUP1&format=png&color=000000" alt="Budget" class="h-6 w-6">
@@ -220,6 +220,7 @@
                         </a>
                     </div>
                 </div>
+
 
                 <div class="col-span-1 md:col-span-2 bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                     <div class="px-6 py-5 border-b border-gray-100">

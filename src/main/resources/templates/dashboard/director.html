@@ -47,25 +47,35 @@
 <main>
     <div class="my-12 mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center max-w-4xl">
         <!-- Overview -->
+        <a th:href="@{/}" class="block" >
         <div class="bg-gradient-to-br from-white to-blue-100 w-[300px] h-40 rounded-xl shadow-lg flex flex-col items-center justify-center transition duration-300 ease-in-out cursor-pointer hover:scale-105 hover:shadow-xl">
             <img src="https://img.icons8.com/?size=100&id=11733&format=png&color=228BE6" alt="Overview" class="h-[45px] mb-3 filter-blue">
             <h2 class="text-lg text-navy font-semibold">Overview</h2>
         </div>
+        </a>
         <!-- Requests -->
+        <a th:href="@{/requests/all}" class="block" >
         <div class="bg-gradient-to-br from-white to-blue-100 w-[300px] h-40 rounded-xl shadow-lg flex flex-col items-center justify-center transition duration-300 ease-in-out cursor-pointer hover:scale-105 hover:shadow-xl">
             <img src="https://img.icons8.com/?size=100&id=57714&format=png&color=228BE6" alt="Requests" class="h-[45px] mb-3 filter-blue">
             <h2 class="text-lg text-navy font-semibold">Requests</h2>
         </div>
+        </a>
         <!-- College Inventory -->
-        <div class="bg-gradient-to-br from-white to-blue-100 w-[300px] h-40 rounded-xl shadow-lg flex flex-col items-center justify-center transition duration-300 ease-in-out cursor-pointer hover:scale-105 hover:shadow-xl">
-            <img src="https://img.icons8.com/?size=100&id=W4ZV--femrbv&format=png&color=228BE6" alt="College Inventory" class="h-[45px] mb-3 filter-blue">
-            <h2 class="text-lg text-navy font-semibold">College Inventory</h2>
-        </div>
+        <a th:href="@{/inventory/items}" class="block">
+            <div   class="bg-gradient-to-br from-white to-blue-100 w-[300px] h-40 rounded-xl shadow-lg flex flex-col items-center justify-center transition duration-300 ease-in-out cursor-pointer hover:scale-105 hover:shadow-xl"  >
+                <img   src="https://img.icons8.com/?size=100&id=W4ZV--femrbv&format=png&color=228BE6"  alt="College Inventory"     class="h-[45px] mb-3 filter-blue"/>
+                <h2 class="text-lg text-navy font-semibold">College Inventory</h2>
+            </div>
+        </a>
+
         <!-- Budget -->
-        <div class="bg-gradient-to-br from-white to-blue-100 w-[300px] h-40 rounded-xl shadow-lg flex flex-col items-center justify-center transition duration-300 ease-in-out cursor-pointer hover:scale-105 hover:shadow-xl">
-            <img src="https://img.icons8.com/?size=100&id=59733&format=png&color=228BE6" alt="Budget" class="h-[45px] mb-3 filter-blue">
-            <h2 class="text-lg text-navy font-semibold">Budget</h2>
-        </div>
+        <a th:href="@{/budget}" class="block">
+            <div class="bg-gradient-to-br from-white to-blue-100 w-[300px] h-40 rounded-xl shadow-lg  flex flex-col items-center justify-center transition duration-300 ease-in-out  cursor-pointer hover:scale-105 hover:shadow-xl"  >
+                <img  src="https://img.icons8.com/?size=100&id=59733&format=png&color=228BE6"  alt="Budget"  class="h-[45px] mb-3 filter-blue"/>
+                <h2 class="text-lg text-navy font-semibold">Budget</h2>
+            </div>
+        </a>
+
     </div>
 </main>
 

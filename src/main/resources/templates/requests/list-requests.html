@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Requests</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
 </head>
 <body class="bg-gray-100 font-sans">
 <div class="min-h-screen flex flex-col">
@@ -20,6 +19,9 @@
                     <h1 class="text-2xl font-bold text-gray-900">Request Management</h1>
                     <p class="mt-1 text-sm text-gray-600" th:if="${isHod}" th:text="${departmentName + ' Department'}">
                         Department Requests
+                    </p>
+                    <p class="mt-1 text-sm text-gray-600" th:if="${isAdminView}">
+                        All departments
                     </p>
                 </div>
                 <div class="text-right">
@@ -55,17 +57,39 @@
             </div>
 
             <div class="flex justify-between mb-6">
-                <h2 class="text-xl font-medium text-gray-900" th:text="${isHod ? 'Department Requests' : 'Your Requests'}">
+                <h2 class="text-xl font-medium text-gray-900" >
                     Your Requests
                 </h2>
                 <div class="flex space-x-3">
-            <a sec:authorize="hasAnyRole('ADMIN','PRINCIPAL', 'DIRECTOR')" th:href="@{/requests/pending-approvals}"
-             class="bg-amber-500 hover:bg-amber-600 text-white font-medium py-2 px-4 rounded-md shadow transition duration-200 flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-                  Pending Approvals
-            </a>
+                    <!-- Admin view navigation -->
+                    <div sec:authorize="hasAnyAuthority('Admin','Director','Principal')"  class="flex space-x-3">
+                        <a th:href="@{/requests/all}"
+                           class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded-md shadow transition duration-200 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                            View All Requests
+                        </a>
+                    </div>
+
+                    <!-- Pending approvals button -->
+                    <a sec:authorize="hasAnyAuthority('Admin','Director','Principal')"
+                       th:href="@{/requests/pending-approvals/all}"
+                       class="bg-amber-500 hover:bg-amber-600 text-white font-medium py-2 px-4 rounded-md shadow transition duration-200 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        Pending Approvals
+                    </a>
+                    <a sec:authorize="hasAnyAuthority('HOD')"
+                       th:href="@{/requests/pending-approvals}"
+                       class="bg-amber-500 hover:bg-amber-600 text-white font-medium py-2 px-4 rounded-md shadow transition duration-200 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        Pending Approvals
+                    </a>
+
                     <a th:href="@{/requests/new}"
                        class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow transition duration-200 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -90,7 +114,7 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Created At
                             </th>
-                            <th th:if="${isHod}" scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th  scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Requester
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -106,35 +130,39 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                        <span th:if="${req.status.name() == 'PENDING'}"
-                                              class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                            Pending
-                                        </span>
+                                <span th:if="${req.status.name() == 'PENDING'}"
+                                      class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Pending
+                                </span>
                                 <span th:if="${req.status.name() == 'APPROVED'}"
                                       class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                            Approved
-                                        </span>
+                                    Approved
+                                </span>
                                 <span th:if="${req.status.name() == 'REJECTED'}"
                                       class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                            Rejected
-                                        </span>
+                                    Rejected
+                                </span>
                                 <span th:if="${req.status.name() == 'COMPLETED'}"
                                       class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                            Completed
-                                        </span>
+                                    Completed
+                                </span>
                                 <span th:if="${req.status.name() == 'CANCELLED'}"
                                       class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                                            Cancelled
-                                        </span>
+                                    Cancelled
+                                </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-500" th:text="${#temporals.format(req.createdAt, 'yyyy-MM-dd HH:mm')}">
                                     2025-04-10 14:23
                                 </div>
                             </td>
-                            <td th:if="${isHod}" class="px-6 py-4 whitespace-nowrap">
+                            <!-- Requester info for HOD or admin view -->
+                            <td  class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900" th:text="${req.user.firstName + ' ' + req.user.lastName}">
                                     John Doe
+                                </div>
+                                <div class="text-xs text-gray-500" th:text="${req.user.email}">
+                                    john.doe@example.com
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -145,7 +173,7 @@
                         </tr>
 
                         <tr th:if="${#lists.isEmpty(requests)}">
-                            <td th:colspan="${isHod ? 5 : 4}" class="px-6 py-10 text-center">
+                            <td th:colspan="${isAdminView ? 6 : (isHod ? 5 : 4)}" class="px-6 py-10 text-center">
                                 <div class="flex flex-col items-center">
                                     <svg class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -159,12 +187,8 @@
                     </table>
                 </div>
             </div>
-
-
         </div>
     </main>
-
-
 </div>
 </body>
 </html>

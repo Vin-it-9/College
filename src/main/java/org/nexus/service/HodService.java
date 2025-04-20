@@ -2,6 +2,7 @@ package org.nexus.service;
 import org.nexus.entity.Department;
 import org.nexus.entity.InventoryItem;
 import org.nexus.entity.User;
+import org.nexus.repository.BudgetRepository;
 import org.nexus.repository.DepartmentRepository;
 import org.nexus.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class HodService {
     @Autowired
     private LabService labService;
 
+    @Autowired
+    private BudgetRepository budgetRepository;
+
 
     public int getTotalLabsForHod() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -43,6 +47,10 @@ public class HodService {
         }
 
         return 0;
+    }
+
+    public Double getTotalBudget() {
+        return budgetRepository.getTotalBudgetAmount();
     }
 
     public int getTotalInventoryForHod() {

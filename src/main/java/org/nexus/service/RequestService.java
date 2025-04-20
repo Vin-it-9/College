@@ -37,6 +37,8 @@ public class RequestService {
         return requestRepository.save(request);
     }
 
+
+
     public Request getRequestById(Integer id) {
         return requestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Request not found with id: " + id));
@@ -57,6 +59,10 @@ public class RequestService {
                 .stream()
                 .filter(request -> request.getStatus() == Request.RequestStatus.PENDING)
                 .toList();
+    }
+
+    public List<Request> getPendingRequests() {
+        return requestRepository.findAll().stream().filter(request -> request.getStatus() == Request.RequestStatus.PENDING).toList();
     }
 
 
