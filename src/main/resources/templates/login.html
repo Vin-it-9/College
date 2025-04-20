@@ -36,71 +36,84 @@
         .bg-custom-blue {
             background-color: rgb(1, 98, 177);
         }
+
+        @media (max-width: 640px) {
+            .wave-divider {
+                height: 40px;
+            }
+        }
+
+        input:focus, button:focus {
+            outline: 2px solid rgb(1, 98, 177);
+            outline-offset: 2px;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-primary to-secondary font-['Inter']">
 <div class="min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden animate-scaleIn">
-        <div class="flex">
-            <!-- Left Side - Design -->
-            <div class="w-1/2 bg-custom-blue p-8 flex flex-col items-center justify-center relative">
-                <!-- Curved edge design -->
-                <div class="absolute right-0 top-0 h-full w-16 bg-white transform translate-x-8 rounded-l-full"></div>
 
-                <!-- Content container -->
-                <div class="relative z-10 flex flex-col items-center space-y-8">
-                    <!-- PICT Logo -->
-                    <div class="bg-white p-6 rounded-xl w-40 h-40 flex items-center justify-center shadow-lg">
+        <div class="flex flex-col md:flex-row">
+
+            <div class="w-full md:w-1/2 bg-custom-blue p-8 flex flex-col items-center justify-center relative">
+
+                <div class="hidden md:block absolute right-0 top-0 h-full w-16 bg-white transform translate-x-8 rounded-l-full"></div>
+
+
+                <div class="absolute bottom-0 left-0 right-0 block md:hidden wave-divider">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" fill="#ffffff" preserveAspectRatio="none" class="w-full h-10">
+                        <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,100L1360,100C1280,100,1120,100,960,100C800,100,640,100,480,100C320,100,160,100,80,100L0,100Z"></path>
+                    </svg>
+                </div>
+
+                <div class="relative z-10 flex flex-col items-center space-y-6 py-6 md:py-0 md:space-y-8">
+
+                    <div class="bg-white p-4 md:p-6 rounded-xl w-28 h-28 md:w-40 md:h-40 flex items-center justify-center shadow-lg">
                         <img src="https://www.pict.edu/images/pic.jpg" alt="PICT Logo" class="w-full h-full object-contain">
                     </div>
 
-                    <!-- Title -->
                     <div class="text-center">
-                        <h1 class="text-4xl font-bold text-white leading-tight">
+                        <h1 class="text-2xl md:text-4xl font-bold text-white leading-tight">
                             College Inventory<br>Management<br>System
                         </h1>
                     </div>
 
-                    <!-- Decorative line -->
                     <div class="w-24 h-1 bg-white/50 rounded-full"></div>
                 </div>
             </div>
 
-            <!-- Right Side - Login Form -->
-            <div class="w-1/2 p-16">
-                <div class="text-center space-y-4 mb-12">
-                    <h2 class="text-4xl font-bold text-gray-900">Login</h2>
-                    <p class="text-lg text-gray-600">Please login to your account</p>
+            <div class="w-full md:w-1/2 p-6 md:p-16">
+                <div class="text-center space-y-2 md:space-y-4 mb-8 md:mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Login</h2>
+                    <p class="text-base md:text-lg text-gray-600">Please login to your account</p>
                 </div>
 
-                <!-- Error messages -->
                 <div th:if="${param.error}" class="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-center">
                     <p>[[ ${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
                 </div>
 
-                <!-- Logout message -->
                 <div th:if="${param.logout}" class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg text-center">
                     <p>You have been logged out</p>
                 </div>
 
-                <form th:action="@{/login}" method="post" class="space-y-8">
-                    <div class="space-y-6">
+                <form th:action="@{/login}" method="post" class="space-y-6 md:space-y-8">
+                    <div class="space-y-4 md:space-y-6">
                         <div>
                             <label for="email" class="block text-base font-medium text-gray-700 mb-2">Email</label>
                             <input type="email" id="email" name="email" required
-                                   class="w-full px-5 py-4 text-lg rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200"
+                                   class="w-full px-4 py-3 md:px-5 md:py-4 text-base md:text-lg rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200"
                                    placeholder="Enter your email">
                         </div>
                         <div>
                             <label for="password" class="block text-base font-medium text-gray-700 mb-2">Password</label>
                             <input type="password" id="password" name="password" required
-                                   class="w-full px-5 py-4 text-lg rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200"
+                                   class="w-full px-4 py-3 md:px-5 md:py-4 text-base md:text-lg rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200"
                                    placeholder="Enter your password">
                         </div>
                     </div>
 
                     <button type="submit"
-                            class="w-full bg-primary text-white py-4 px-6 text-lg rounded-lg font-medium hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 transition-all duration-200">
+                            class="w-full bg-primary text-white py-3 md:py-4 px-6 text-base md:text-lg rounded-lg font-medium hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 transition-all duration-200">
                         Login
                     </button>
                 </form>
@@ -128,6 +141,13 @@
             window.history.go(1);
         };
     }
+
+    window.addEventListener('resize', function() {
+
+        document.body.style.display = 'none';
+        document.body.offsetHeight;
+        document.body.style.display = '';
+    });
 </script>
 </body>
 </html>

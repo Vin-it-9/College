@@ -5,20 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="updated">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/SeminarHall.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/SeminarhallRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/SeminarhallService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard/labassitant.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard/teacher.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/seminarhall/list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.copilot-plugin" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/HodController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/HodController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/RequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/RequestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/repository/BudgetRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/BudgetRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/service/HodService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/HodService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/service/RequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/RequestService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/InventoryItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/repository/InventoryItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/InventoryItemRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/repository/LabRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/LabRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/security/CustomAuthenticationSuccessHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/security/CustomAuthenticationSuccessHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/budget/budget.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/budget/budget.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/dashboard/director.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard/director.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/dashboard/hod.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard/hod.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/dashboard/principle.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard/principle.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/requests/list-requests.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/requests/list-requests.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/requests/pending-approvals.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/requests/pending-approvals.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,6 +107,9 @@
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Vineet\Desktop\College\src\main\resources\templates\team" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.nexus.entity" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.CollegeInventoryApplication">
@@ -218,7 +225,9 @@
       <workItem from="1745063605672" duration="27000" />
       <workItem from="1745063689104" duration="14000" />
       <workItem from="1745063868745" duration="25000" />
-      <workItem from="1745136543333" duration="9764000" />
+      <workItem from="1745136543333" duration="9796000" />
+      <workItem from="1745156970550" duration="3635000" />
+      <workItem from="1745167507384" duration="5405000" />
     </task>
     <task id="LOCAL-00001" summary="commit inventory">
       <option name="closed" value="true" />
@@ -516,7 +525,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745139651894</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="updated">
+      <option name="closed" value="true" />
+      <created>1745147852642</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1745147852642</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

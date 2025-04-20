@@ -30,14 +30,14 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 redirectUrl = "/dashboard/hod";
                 break;
             }
-//            else if ("LabAssistant".equals(role)) {
-//                redirectUrl = "/dashboard/lab-assistant";
-//                break;
-//            }
-//            else if ("Teacher".equals(role)) {
-//                redirectUrl = "/dashboard/teacher";
-//                break;
-//            }
+            else if ("LabAssistant".equals(role)) {
+                redirectUrl = "/dashboard/labassitant";
+                break;
+            }
+            else if ("Teacher".equals(role)) {
+                redirectUrl = "/dashboard/teacher";
+                break;
+            }
         }
         response.sendRedirect(redirectUrl);
     }

@@ -1,6 +1,7 @@
 package org.nexus.repository;
 
 import org.nexus.entity.Lab;
+import org.nexus.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,10 @@ public interface LabRepository extends JpaRepository<Lab, Integer> {
     boolean existsByLabNumber(String labNumber);
 
     List<Lab> findByDepartmentId(int departmentId);
+
+    List<Lab> findByLabAssistant(User labAssistant);
+
+    List<Lab> findByLabTeacher(User labTeacher);
 
 
 }

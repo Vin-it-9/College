@@ -54,10 +54,24 @@ public class InventoryItem {
     private Lab lab;
 
     @ManyToOne
+    @JoinColumn(name = "seminarhall_id")
+    @JsonBackReference
+    @JsonIgnoreProperties("inventoryItems")
+    private SeminarHall SeminarHall;
+
+    @ManyToOne
     @JoinColumn(name = "classroom_id")
     @JsonBackReference
     @JsonIgnoreProperties("inventoryItems")
     private Classroom classroom;
+
+    public SeminarHall getSeminarHall() {
+        return SeminarHall;
+    }
+
+    public void setSeminarHall(SeminarHall seminarHall) {
+        SeminarHall = seminarHall;
+    }
 
     public Classroom getClassroom() {
         return classroom;

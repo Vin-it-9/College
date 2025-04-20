@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head th:replace="~{fragments/header :: common-header}"></head>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab Assistant Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+<div class="flex h-screen">
+
+    <aside class="w-64 bg-slate-800 text-white shadow-xl flex flex-col">
+
+        <div class="p-6 border-b border-slate-700">
+            <h2 class="text-2xl font-bold text-center">Lab Assistant</h2>
+        </div>
+
+        <div class="px-4 py-5 flex items-center border-b border-slate-700">
+            <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-xl font-bold mr-3">
+                <span th:text="${#authentication.principal.Fullname?.substring(0,1)}"></span>
+            </div>
+            <div>
+                <h3 class="font-medium" th:text="${#authentication.principal.Fullname}"></h3>
+                <p class="text-xs text-slate-400">Lab Assistant</p>
+            </div>
+        </div>
+
+        <nav class="flex-1 py-6 space-y-1">
+            <a href="#" class="flex items-center px-6 py-3 text-slate-200 hover:bg-slate-700 hover:text-white border-l-4 border-blue-600">
+                <img src="https://img.icons8.com/?size=100&id=EWiNJQyqQJOT&format=png&color=FFFFFF" alt="" class="h-5 w-5 mr-3">
+                <span>Dashboard</span>
+            </a>
+            <a th:href="@{/labs}" class="flex items-center px-6 py-3 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-l-4 hover:border-blue-600">
+                <img src="https://img.icons8.com/?size=100&id=97037&format=png&color=FFFFFF" alt="" class="h-5 w-5 mr-3">
+                <span>Labs</span>
+            </a>
+            <a th:href="@{/inventory/items}" class="flex items-center px-6 py-3 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-l-4 hover:border-blue-600">
+                <img src="https://img.icons8.com/?size=100&id=boRU6gYY2kDO&format=png&color=FFFFFF" alt="" class="h-5 w-5 mr-3">
+                <span>Inventory</span>
+            </a>
+            <a th:href="@{/inventory/items/warranty-expiring}" class="flex items-center px-6 py-3 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-l-4 hover:border-blue-600">
+                <img src="https://img.icons8.com/?size=100&id=56387&format=png&color=FFFFFF" alt="" class="h-5 w-5 mr-3">
+                <span>Warranty Alerts</span>
+            </a>
+            <a th:href="@{/inventory/items/new}" class="flex items-center px-6 py-3 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-l-4 hover:border-blue-600">
+                <img src="https://img.icons8.com/?size=100&id=LFC9fivf2q5C&format=png&color=FFFFFF" alt="" class="h-5 w-5 mr-3">
+                <span>New Item</span>
+            </a>
+            <a th:href="@{/profile}" class="flex items-center px-6 py-3 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-l-4 hover:border-blue-600">
+                <img src="https://img.icons8.com/?size=100&id=ywULFSPkh4kI&format=png&color=FFFFFF" alt="" class="h-5 w-5 mr-3">
+                <span>Profile</span>
+            </a>
+            <a th:href="@{/logout}" class="flex items-center px-6 py-3 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-l-4 hover:border-blue-600">
+                <img src="https://img.icons8.com/?size=100&id=ywULFSPkh4kI&format=png&color=FFFFFF" alt="" class="h-5 w-5 mr-3">
+                <span>Logout</span>
+            </a>
+        </nav>
+    </aside>
+
+    <div class="flex-1 overflow-y-auto">
+
+        <header class="bg-white shadow-sm">
+            <div class="flex justify-between items-center px-8 py-6">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Lab Assistant Dashboard</h1>
+                    <p class="text-sm text-gray-600">Inventory Management System</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-600">Current Date & Time</p>
+                    <p class="text-base font-medium" id="current-datetime" th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">Loading...</p>
+                    <script>
+                        function updateDateTime() {
+                            const now = new Date();
+                            const formattedDate = now.getFullYear() + '-' +
+                                String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                                String(now.getDate()).padStart(2, '0') + ' ' +
+                                String(now.getHours()).padStart(2, '0') + ':' +
+                                String(now.getMinutes()).padStart(2, '0') + ':' +
+                                String(now.getSeconds()).padStart(2, '0');
+                            document.getElementById('current-datetime').textContent = formattedDate;
+                        }
+                        updateDateTime();
+                        setInterval(updateDateTime, 1000);
+                    </script>
+                </div>
+            </div>
+        </header>
+
+        <div class="bg-slate-800 text-white px-8 py-6 shadow-md">
+            <h2 class="text-3xl font-semibold">Welcome, <span th:text="${#authentication.principal.Fullname}"></span></h2>
+            <p class="mt-1 text-slate-300">Lab Assistant, <span th:text="${labName != null ? labName : 'Inventory Management System'}"></span></p>
+        </div>
+
+        <div class="p-8">
+
+            <!-- Main Stats Cards Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Total Inventory</p>
+                            <h3 class="text-3xl font-bold text-slate-800" th:text="${totalInventory != null ? totalInventory : 0}">0</h3>
+                        </div>
+                        <div class="bg-blue-100 p-3 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="px-6 py-3 bg-gray-50">
+                        <a th:href="@{/inventory/items}" class="text-sm font-medium text-blue-600 hover:text-blue-800 inline-flex items-center">
+                            View all items
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Labs Managed</p>
+                            <h3 class="text-3xl font-bold text-slate-800" th:text="${totalLabs != null ? totalLabs : 0}">0</h3>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <img src="https://img.icons8.com/?size=100&id=97037&format=png&color=1A1A1A" alt="Labs" class="h-6 w-6">
+                        </div>
+                    </div>
+                    <div class="px-6 py-3 bg-gray-50">
+                        <a th:href="@{/labs}" class="text-sm font-medium text-blue-600 hover:text-blue-800 inline-flex items-center">
+                            View labs
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Warranty Expiring</p>
+                            <h3 class="text-3xl font-bold text-slate-800" th:text="${warrantyExpiringCount != null ? warrantyExpiringCount : 0}">0</h3>
+                        </div>
+                        <div class="bg-amber-100 p-3 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="px-6 py-3 bg-gray-50">
+                        <a th:href="@{/inventory/items/warranty-expiring}" class="text-sm font-medium text-blue-600 hover:text-blue-800 inline-flex items-center">
+                            View items
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Categories</p>
+                            <h3 class="text-3xl font-bold text-slate-800" th:text="${categoriesCount != null ? categoriesCount : 0}">0</h3>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Inventory Status Section -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Inventory Status</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <!-- Available -->
+                    <a th:href="@{/inventory/items/status/AVAILABLE}" class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300 border-t-4 border-green-500">
+                        <div class="flex flex-col">
+                            <h3 class="text-sm font-medium text-gray-600">Available</h3>
+                            <p class="text-2xl font-bold text-gray-900" th:text="${availableCount != null ? availableCount : 0}">0</p>
+                        </div>
+                    </a>
+
+                    <!-- In Use -->
+                    <a th:href="@{/inventory/items/status/IN_USE}" class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300 border-t-4 border-blue-500">
+                        <div class="flex flex-col">
+                            <h3 class="text-sm font-medium text-gray-600">In Use</h3>
+                            <p class="text-2xl font-bold text-gray-900" th:text="${inUseCount != null ? inUseCount : 0}">0</p>
+                        </div>
+                    </a>
+
+                    <!-- Under Maintenance -->
+                    <a th:href="@{/inventory/items/status/UNDER_MAINTENANCE}" class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300 border-t-4 border-amber-500">
+                        <div class="flex flex-col">
+                            <h3 class="text-sm font-medium text-gray-600">Maintenance</h3>
+                            <p class="text-2xl font-bold text-gray-900" th:text="${maintenanceCount != null ? maintenanceCount : 0}">0</p>
+                        </div>
+                    </a>
+
+                    <!-- Damaged -->
+                    <a th:href="@{/inventory/items/status/DAMAGED}" class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300 border-t-4 border-red-500">
+                        <div class="flex flex-col">
+                            <h3 class="text-sm font-medium text-gray-600">Damaged</h3>
+                            <p class="text-2xl font-bold text-gray-900" th:text="${damagedCount != null ? damagedCount : 0}">0</p>
+                        </div>
+                    </a>
+
+                    <!-- Retired -->
+                    <a th:href="@{/inventory/items/status/RETIRED}" class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300 border-t-4 border-gray-500">
+                        <div class="flex flex-col">
+                            <h3 class="text-sm font-medium text-gray-600">Retired</h3>
+                            <p class="text-2xl font-bold text-gray-900" th:text="${retiredCount != null ? retiredCount : 0}">0</p>
+                        </div>
+                    </a>
+
+                    <!-- Lost -->
+                    <a th:href="@{/inventory/items/status/LOST}" class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300 border-t-4 border-purple-500">
+                        <div class="flex flex-col">
+                            <h3 class="text-sm font-medium text-gray-600">Lost</h3>
+                            <p class="text-2xl font-bold text-gray-900" th:text="${lostCount != null ? lostCount : 0}">0</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Labs Section -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="font-semibold text-lg text-gray-900">Assigned Labs</h3>
+                    <a th:href="@{/labs}" class="text-sm font-medium text-blue-600 hover:text-blue-800">
+                        View all labs
+                    </a>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lab Number</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lab Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tr th:each="lab : ${labs}" class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900" th:text="${lab.labNumber}"></div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900" th:text="${lab.labName}"></div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900"
+                                     th:text="${lab.department != null ? lab.department.departmentName : 'Not Assigned'}"></div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span th:if="${lab.isActive}"
+                                      class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Active
+                                </span>
+                                <span th:unless="${lab.isActive}"
+                                      class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    Inactive
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a th:href="@{/labs/{id}(id=${lab.id})}"
+                                   class="text-green-600 hover:text-green-900 bg-green-100 hover:bg-green-200 px-2 py-1 rounded">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                        <!-- Empty State -->
+                        <tr th:if="${#lists.isEmpty(labs)}">
+                            <td colspan="5" class="px-6 py-8 text-center">
+                                <div class="text-gray-500">
+                                    <p class="text-xl font-semibold mb-2">No labs assigned</p>
+                                    <p class="text-sm">Contact administrator to assign labs.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Quick Actions Section -->
+            <div class="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="px-6 py-5 border-b border-gray-100">
+                    <h3 class="font-semibold text-lg text-gray-900">Quick Actions</h3>
+                </div>
+                <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <a th:href="@{/inventory/items/new}" class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-md transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Add New Item
+                    </a>
+                    <a th:href="@{/inventory/report}" class="inline-flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-3 px-4 rounded-md transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Generate Report
+                    </a>
+                    <a th:href="@{/inventory/items/warranty-expiring}" class="inline-flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-3 px-4 rounded-md transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Check Warranty Status
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

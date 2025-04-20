@@ -55,6 +55,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/inventory/**").permitAll()
                         .requestMatchers("/dashboard/director/**").hasAnyAuthority("Director")
                         .requestMatchers("/dashboard/principal/**").hasAnyAuthority("Principal")
+                        .requestMatchers("/dashboard/labassitant/**").hasAnyAuthority("LabAssistant")
+                        .requestMatchers("/dashboard/teacher/**").hasAnyAuthority("Teacher")
                         .requestMatchers("/dashboard/hod/**").hasAnyAuthority("HOD")
                         .requestMatchers("/Users/**").hasAnyAuthority("Admin", "Principal", "Director")
                         .requestMatchers("/images/**", "/js/**", "/webjars/**").permitAll()
