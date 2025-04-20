@@ -98,7 +98,7 @@ public class ClassroomController {
     @GetMapping("/new")
     public String showCreateForm(Model model) {
 
-        List<User> teachers = userRepository.findByRoles_Name("TEACHER");
+        List<User> teachers = userRepository.findByRoles_Name("Teacher");
 
         List<Department> departments = departmentRepository.findAll();
 
