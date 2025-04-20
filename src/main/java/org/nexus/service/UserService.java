@@ -16,8 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -37,7 +35,6 @@ public class UserService {
     public List<User> listAll() {
         return (List<User>) userRepo.findAll();
     }
-
 
     public Page<User> listByPage(int pageNum, String keyword) {
 
@@ -67,7 +64,6 @@ public class UserService {
     public Optional<User> getUserById(Integer id) {
         return userRepo.findById(id);
     }
-
 
 
     public User save(User user) {

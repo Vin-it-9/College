@@ -4,17 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="inventory for classroom and lab">
+    <list default="true" id="5d86af9c-5647-47ea-b59d-0ebaeb7c9516" name="Changes" comment="inventory updated">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/BudgetController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/entity/Budget.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/BudgetRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/BudgetService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/budget/budget.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/budget/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.copilot-plugin" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/controller/InventoryItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/repository/InventoryItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/InventoryItemRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/security/WebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/nexus/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/nexus/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/edit-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/edit-form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/search-results.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/search-results.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inventory/status-list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inventory/status-list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/dashboard/director.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard/director.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -207,7 +212,14 @@
       <workItem from="1744832245203" duration="646000" />
       <workItem from="1744909228719" duration="3213000" />
       <workItem from="1744958260501" duration="5147000" />
-      <workItem from="1744969251866" duration="11295000" />
+      <workItem from="1744969251866" duration="11484000" />
+      <workItem from="1745052394482" duration="3930000" />
+      <workItem from="1745062493621" duration="469000" />
+      <workItem from="1745063247460" duration="282000" />
+      <workItem from="1745063605672" duration="27000" />
+      <workItem from="1745063689104" duration="14000" />
+      <workItem from="1745063868745" duration="25000" />
+      <workItem from="1745136543333" duration="2955000" />
     </task>
     <task id="LOCAL-00001" summary="commit inventory">
       <option name="closed" value="true" />
@@ -489,7 +501,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744974509042</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="inventory updated">
+      <option name="closed" value="true" />
+      <created>1744981648945</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1744981648945</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -524,7 +544,6 @@
     <MESSAGE value="dashboard created for D,P" />
     <MESSAGE value="team" />
     <MESSAGE value="Security updated" />
-    <MESSAGE value="inventory updated" />
     <MESSAGE value="commit" />
     <MESSAGE value="HOD dashboard completed" />
     <MESSAGE value="Project Completed" />
@@ -532,7 +551,8 @@
     <MESSAGE value="error for roles solved" />
     <MESSAGE value="correction solve" />
     <MESSAGE value="inventory for classroom and lab" />
-    <option name="LAST_COMMIT_MESSAGE" value="inventory for classroom and lab" />
+    <MESSAGE value="inventory updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="inventory updated" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
