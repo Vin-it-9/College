@@ -34,7 +34,7 @@ public class HodController {
     @Autowired
     private InventoryItemRepository inventoryItemRepository;
 
-    @GetMapping("/dashboard/labassitant")
+    @GetMapping("/dashboard/labassistant")
     public String showLabassitantDashboard(Model model) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

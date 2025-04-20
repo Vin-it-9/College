@@ -1,92 +1,134 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="~{fragments/header :: common-header}"></head>
-
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Director Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'roboto': ['Roboto', 'sans-serif'],
-                    },
-                    colors: {
-                        'navy': '#003366',
-                        'navy-light': '#004080',
-                    }
-                }
-            }
+    <style>
+        .card-hover:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
         }
-    </script>
+    </style>
 </head>
-<body class="font-roboto bg-gradient-to-r from-[#f5f7fa] to-[#c3cfe2] text-gray-800">
 
-<header>
-
-    <div th:replace="~{fragments/navbar :: navbar}"></div>
-
-
-    <div class="flex items-center justify-center gap-5 bg-white p-5 text-center flex-wrap">
-        <div class="w-30 h-30 w-[120px] h-[120px] rounded-full bg-[url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwuy6pDzwEKU_LzwyumGntBC-iljLNsC_aaQ&s)] bg-cover bg-no-repeat bg-center"></div>
-        <div>
-            <h3 class="text-gray-600 text-base mb-2.5">Society for Computer Technology and Research's</h3>
-            <h1 class="text-navy text-2xl">PUNE INSTITUTE OF COMPUTER TECHNOLOGY</h1>
-            <h2 class="text-red-700 text-xl mt-1.5">College Inventory Management System</h2>
-        </div>
+<body class="bg-slate-200">
+<div class="flex p-7">
+    <!-- Sidebar -->
+    <div class="bg-slate-700 h-screen w-1/4 rounded-l-lg shadow-2xl">
+        <h3 class="text-center font-semibold mt-10 text-white text-2xl">Director Interface</h3>
+        <br><br>
+        <a th:href="@{/dashboard/director}" class="text-left font-semibold mt-4 text-white text-lg pl-10 flex hover:text-red-500">
+            <img src="https://img.icons8.com/?size=100&id=EWiNJQyqQJOT&format=png&color=FFFFFF" alt="" class="h-7 w-7 mr-3">Dashboard
+        </a>
+        <a th:href="@{/inventory/items}" class="text-left font-semibold mt-4 text-white text-lg pl-10 flex hover:text-red-500">
+            <img src="https://img.icons8.com/?size=100&id=boRU6gYY2kDO&format=png&color=FFFFFF" alt="" class="h-7 w-7 mr-2">Inventory
+        </a>
+        <a th:href="@{/requests/all}" class="text-left font-semibold mt-4 text-white text-lg pl-10 flex hover:text-red-500">
+            <img src="https://img.icons8.com/?size=100&id=56387&format=png&color=FFFFFF" alt="" class="h-7 w-7 mr-3">Requests
+        </a>
+        <a th:href="@{/budget}" class="text-left font-semibold mt-4 text-white text-lg pl-10 flex hover:text-red-500">
+            <img src="https://img.icons8.com/?size=100&id=OS06UppbaUP1&format=png&color=000000" alt="" class="h-7 w-7 mr-3">Budget
+        </a>
+        <a th:href="@{/profile}" class="text-left font-semibold mt-4 text-white text-lg pl-10 flex hover:text-red-500">
+            <img src="https://img.icons8.com/?size=100&id=ywULFSPkh4kI&format=png&color=FFFFFF" alt="" class="h-7 w-7 mr-3">Profile
+        </a>
+        <a th:href="@{/logout}" class="text-left font-semibold mt-4 text-white text-lg pl-10 flex hover:text-red-500">
+            <img src="https://img.icons8.com/?size=100&id=ywULFSPkh4kI&format=png&color=FFFFFF" alt="" class="h-7 w-7 mr-3">Logout
+        </a>
     </div>
 
+    <!-- Main Content -->
+    <div class="bg-slate-100 h-screen w-full rounded-r-lg shadow-xl overflow-y-auto">
+        <h1 class="text-5xl p-8 pb-0 font-sans font-normal">PICT COLLEGE INVENTORY</h1>
+        <h1 class="text-5xl ml-8 mt-3 font-sans font-normal">MANAGEMENT SYSTEM</h1>
+        <br><br>
+        <h3 class="text-4xl ml-8 font-serif font-semibold text-red-600">Welcome, Director</h3>
+        <h3 class="text-2xl ml-8 font-medium text-gray-800" th:text="${#authentication.principal.Fullname}">Full Name</h3>
+        <br>
 
-</header>
-
-<main>
-    <div class="my-12 mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center max-w-4xl">
-        <!-- Overview -->
-        <a th:href="@{/}" class="block" >
-        <div class="bg-gradient-to-br from-white to-blue-100 w-[300px] h-40 rounded-xl shadow-lg flex flex-col items-center justify-center transition duration-300 ease-in-out cursor-pointer hover:scale-105 hover:shadow-xl">
-            <img src="https://img.icons8.com/?size=100&id=11733&format=png&color=228BE6" alt="Overview" class="h-[45px] mb-3 filter-blue">
-            <h2 class="text-lg text-navy font-semibold">Overview</h2>
-        </div>
-        </a>
-        <!-- Requests -->
-        <a th:href="@{/requests/all}" class="block" >
-        <div class="bg-gradient-to-br from-white to-blue-100 w-[300px] h-40 rounded-xl shadow-lg flex flex-col items-center justify-center transition duration-300 ease-in-out cursor-pointer hover:scale-105 hover:shadow-xl">
-            <img src="https://img.icons8.com/?size=100&id=57714&format=png&color=228BE6" alt="Requests" class="h-[45px] mb-3 filter-blue">
-            <h2 class="text-lg text-navy font-semibold">Requests</h2>
-        </div>
-        </a>
-        <!-- College Inventory -->
-        <a th:href="@{/inventory/items}" class="block">
-            <div   class="bg-gradient-to-br from-white to-blue-100 w-[300px] h-40 rounded-xl shadow-lg flex flex-col items-center justify-center transition duration-300 ease-in-out cursor-pointer hover:scale-105 hover:shadow-xl"  >
-                <img   src="https://img.icons8.com/?size=100&id=W4ZV--femrbv&format=png&color=228BE6"  alt="College Inventory"     class="h-[45px] mb-3 filter-blue"/>
-                <h2 class="text-lg text-navy font-semibold">College Inventory</h2>
+        <!-- Stats Overview Row -->
+        <div class="flex flex-wrap gap-4 mx-8">
+            <!-- Total Inventory -->
+            <div class="h-32 w-64 bg-gray-200 justify-center rounded-md shadow-md hover:shadow-xl hover:scale-105 transition duration-300 ease-in-out">
+                <h3 class="font-sans font-medium text-xl p-4">Total Inventory</h3>
+                <a href="#" class="font-sans font-medium text-3xl p-4 pb-0 text-blue-950 hover:text-red-500" th:text="${inventoryItems.size()}">0</a>
             </div>
-        </a>
 
-        <!-- Budget -->
-        <a th:href="@{/budget}" class="block">
-            <div class="bg-gradient-to-br from-white to-blue-100 w-[300px] h-40 rounded-xl shadow-lg  flex flex-col items-center justify-center transition duration-300 ease-in-out  cursor-pointer hover:scale-105 hover:shadow-xl"  >
-                <img  src="https://img.icons8.com/?size=100&id=59733&format=png&color=228BE6"  alt="Budget"  class="h-[45px] mb-3 filter-blue"/>
-                <h2 class="text-lg text-navy font-semibold">Budget</h2>
+            <!-- Total Departments -->
+            <div class="h-32 w-64 bg-gray-200 justify-center rounded-md shadow-md hover:shadow-xl hover:scale-105 transition duration-300 ease-in-out">
+                <h3 class="font-sans font-medium text-xl p-4">Total Departments</h3>
+                <a href="#" class="font-sans font-medium text-3xl p-4 pb-0 text-blue-950 hover:text-red-500" th:text="${departments.size()}">0</a>
             </div>
-        </a>
 
+            <!-- Total Labs -->
+            <div class="h-32 w-64 bg-gray-200 justify-center rounded-md shadow-md hover:shadow-xl hover:scale-105 transition duration-300 ease-in-out">
+                <h3 class="font-sans font-medium text-xl p-4">Total Labs</h3>
+                <a href="#" class="font-sans font-medium text-3xl p-4 pb-0 text-blue-950 hover:text-red-500" th:text="${labs.size()}">0</a>
+            </div>
+        </div>
+
+        <br>
+
+        <!-- Feature Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mx-8 mt-8">
+            <!-- Overview Card -->
+            <a th:href="@{/dashboard/overview}" class="block">
+                <div class="bg-white rounded-xl shadow-lg p-6 flex items-center card-hover">
+                    <div class="bg-blue-100 p-4 rounded-full mr-5">
+                        <img src="https://img.icons8.com/?size=100&id=11733&format=png&color=228BE6" alt="Overview" class="h-12 w-12">
+                    </div>
+                    <div>
+                        <h2 class="text-2xl text-gray-800 font-semibold">Overview</h2>
+                        <p class="text-gray-600 mt-1">Complete college overview</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Requests Card -->
+            <a th:href="@{/requests/all}" class="block">
+                <div class="bg-white rounded-xl shadow-lg p-6 flex items-center card-hover">
+                    <div class="bg-green-100 p-4 rounded-full mr-5">
+                        <img src="https://img.icons8.com/?size=100&id=57714&format=png&color=228BE6" alt="Requests" class="h-12 w-12">
+                    </div>
+                    <div>
+                        <h2 class="text-2xl text-gray-800 font-semibold">Requests</h2>
+                        <p class="text-gray-600 mt-1">View and manage all requests</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- College Inventory Card -->
+            <a th:href="@{/inventory/items}" class="block">
+                <div class="bg-white rounded-xl shadow-lg p-6 flex items-center card-hover">
+                    <div class="bg-purple-100 p-4 rounded-full mr-5">
+                        <img src="https://img.icons8.com/?size=100&id=W4ZV--femrbv&format=png&color=228BE6" alt="College Inventory" class="h-12 w-12">
+                    </div>
+                    <div>
+                        <h2 class="text-2xl text-gray-800 font-semibold">College Inventory</h2>
+                        <p class="text-gray-600 mt-1">Manage all college inventory items</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Budget Card -->
+            <a th:href="@{/budget}" class="block">
+                <div class="bg-white rounded-xl shadow-lg p-6 flex items-center card-hover">
+                    <div class="bg-amber-100 p-4 rounded-full mr-5">
+                        <img src="https://img.icons8.com/?size=100&id=59733&format=png&color=228BE6" alt="Budget" class="h-12 w-12">
+                    </div>
+                    <div>
+                        <h2 class="text-2xl text-gray-800 font-semibold">Budget</h2>
+                        <p class="text-gray-600 mt-1">Manage college budget allocation</p>
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
-</main>
-
-
-<style>
-    .filter-blue {
-        filter: invert(20%) sepia(95%) saturate(600%) hue-rotate(190deg);
-    }
-    .bg-crimson {
-        background-color: crimson;
-    }
-</style>
+</div>
 </body>
 </html>

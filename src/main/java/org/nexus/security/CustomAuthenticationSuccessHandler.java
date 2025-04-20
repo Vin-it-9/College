@@ -31,7 +31,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 break;
             }
             else if ("LabAssistant".equals(role)) {
-                redirectUrl = "/dashboard/labassitant";
+                redirectUrl = "/dashboard/labassistant";
                 break;
             }
             else if ("Teacher".equals(role)) {
