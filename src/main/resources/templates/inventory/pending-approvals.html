@@ -58,7 +58,7 @@
                         <div class="text-sm text-gray-500" th:text="${item.quantity}">0</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-500" th:text="${item.unitCost != null ? '$' + #numbers.formatDecimal(item.unitCost, 1, 2) : 'N/A'}">$0.00</div>
+                        <div class="text-sm text-gray-500" th:text="${item.unitCost != null ? '₹' + #numbers.formatDecimal(item.unitCost, 1, 2) : 'N/A'}">$0.00</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-500" th:text="${item.lab != null ? item.lab.labName : 'Not assigned'}">Lab location</div>
